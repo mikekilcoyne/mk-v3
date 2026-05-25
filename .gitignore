@@ -1,0 +1,17 @@
+# Source/originals — not needed for web deployment
+PHOTOS_FOR_SITE/
+NISEKO_JP/
+
+# Dev tools — server-side only
+manage.js
+face_detect.py
+face_detect.swift
+xml/
+
+# macOS metadata
+.DS_Store
+**/.DS_Store
+._*
+**/._*
+._.git
+.claude/

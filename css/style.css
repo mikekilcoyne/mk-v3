@@ -1,0 +1,1741 @@
+/* ── Design tokens ─────────────────────────────────────────── */
+:root {
+    --font-ui: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --ls-ui: 2px;        /* standard letter-spacing for all UI text */
+    --ls-label: 3px;     /* slightly wider for column headers / badges */
+    --fw-ui: 700;        /* single weight for all labels, buttons, headings */
+}
+
+@font-face {
+    font-family: 'NCL Neo Vibes';
+    src: url('../docs/ncl_neovibes/woff/NCLNeovibes-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'NCL Neo Vibes Slant';
+    src: url('../docs/ncl_neovibes/woff/NCLNeovibes-Slant.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'NCL Neo Vibes Outline';
+    src: url('../docs/ncl_neovibes/woff/NCLNeovibes-Outline.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'NCL Neo Vibes Outline Slant';
+    src: url('../docs/ncl_neovibes/woff/NCLNeovibes-OutlineSlant.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-ui);
+    color: #ffffff;
+    background-color: #000000;
+    overflow: hidden; /* Prevent scrolling for the hero screen */
+}
+
+/* Premium Navigation Header */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 4rem;
+    z-index: 90;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 1.15rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #fff;
+    cursor: default;
+}
+
+.header-center {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.header-flow-link {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.header-flow-link:hover {
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+.header-flow-arrow {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.3);
+    user-select: none;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.nav-btn-work {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.6rem 1.4rem;
+    background: transparent;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.nav-btn-work:hover {
+    background: #fff !important;
+    color: #000 !important;
+    border-color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255,255,255,0.1);
+}
+
+/* Background Setup */
+.bg-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+}
+
+#bg-video {
+    width: 100vw;
+    height: 56.25vw; /* 16:9 Aspect Ratio */
+    min-height: 100vh;
+    min-width: 177.77vh; /* 16:9 Aspect Ratio */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    filter: brightness(0.5); /* Darken for text readability */
+}
+
+.bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%);
+}
+
+/* Main Content Structure */
+/* ── Main layout — center block locked to 33vh on all devices ── */
+.content-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2rem;
+    text-align: center;
+}
+
+/* The 33vh box that holds headlines + CTAs — never grows or shrinks */
+.center-block {
+    height: 33vh;
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Headlines fill the upper ~70% of the block */
+.text-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 1.5vh;
+    overflow: hidden;
+}
+
+/* Typography styles */
+.top-line {
+    font-weight: var(--fw-ui);
+    font-size: clamp(0.9rem, 2.2vw, 2rem);
+    letter-spacing: var(--ls-ui);
+    margin-bottom: 0.6vh;
+    text-transform: uppercase;
+    text-shadow: 0 2px 15px rgba(0,0,0,0.8);
+    white-space: nowrap;
+}
+
+.bottom-line {
+    font-size: clamp(1.8rem, 5.5vw, 5.5rem);
+    height: 8vh; /* locked — CTAs never shift */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Two-line phrase: shrink font + expand height slightly so both lines breathe */
+.bottom-line.is-multiline {
+    font-size: clamp(1rem, 2.8vw, 2.8rem);
+    height: auto;
+    min-height: 8vh;
+    line-height: 1.25;
+    padding-top: 0.2vh;
+    padding-bottom: 0.2vh;
+}
+
+.bottom-line br {
+    flex-basis: 100%;
+    height: 0;
+}
+
+.bottom-line.fade-out {
+    opacity: 0;
+    transform: translateY(-20px);
+    filter: blur(8px);
+}
+
+.bottom-line.fade-in-start {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(8px);
+}
+
+.cursor {
+    animation: blink 0.8s step-end infinite;
+    font-weight: 400;
+    margin-left: 5px;
+    opacity: 1;
+}
+
+.cursor.hidden {
+    opacity: 0;
+    animation: none;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* Font Classes for Swapping Text */
+
+/* "BREAKFAST CLUB" — Helvetica Neue Bold, white glow, fully transparent bg */
+.font-breakfast {
+
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #fff;
+    background: transparent;
+    text-shadow: 0 0 18px rgba(255,255,255,0.95), 0 0 40px rgba(255,255,255,0.6), 0 0 80px rgba(255,255,255,0.3);
+}
+
+/* "ADVENTURES" / connector words — NCL Neo Vibes Outline, pink hollow glow */
+.font-adventures {
+    font-family: 'NCL Neo Vibes Outline', 'Helvetica Neue', sans-serif;
+    font-weight: normal;
+    text-transform: uppercase;
+    color: transparent;
+    -webkit-text-stroke: 1.5px #ff3aab;
+    text-shadow: 0 0 15px rgba(255, 20, 147, 0.8), 0 0 30px rgba(255, 20, 147, 0.5), 0 0 55px rgba(255, 20, 147, 0.3);
+    letter-spacing: 5px;
+}
+
+/* "MOVIES" — NCL Neo Vibes Regular, electric blue glow */
+.font-blue-glow {
+    font-family: 'NCL Neo Vibes', 'Helvetica Neue', sans-serif;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #66D3FA;
+    text-shadow: 0 0 15px rgba(102, 211, 250, 0.95), 0 0 35px rgba(102, 211, 250, 0.6), 0 0 60px rgba(102, 211, 250, 0.3);
+}
+
+/* "DREAMS" — NCL Neo Vibes Regular, #FFDD66 gold glow */
+.font-yellow-glow {
+    font-family: 'NCL Neo Vibes', 'Helvetica Neue', sans-serif;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #FFDD66;
+    text-shadow: 0 0 15px rgba(255, 221, 102, 0.95), 0 0 35px rgba(255, 221, 102, 0.6), 0 0 60px rgba(255, 221, 102, 0.3);
+}
+
+/* "REALITY" — NCL Neo Vibes Regular, pink glow */
+.font-pink-glow {
+    font-family: 'NCL Neo Vibes', 'Helvetica Neue', sans-serif;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #ff3aab;
+    text-shadow: 0 0 15px rgba(255, 20, 147, 0.95), 0 0 35px rgba(255, 20, 147, 0.6), 0 0 60px rgba(255, 20, 147, 0.3);
+}
+
+/* "MAKING MOVIES" — NCL Neo Vibes Slant, dynamic angle with pink glow */
+.font-movies {
+    font-family: 'NCL Neo Vibes Slant', 'Helvetica Neue', sans-serif;
+    font-weight: normal;
+    letter-spacing: 4px;
+    color: #fff;
+    text-shadow: 0 0 15px rgba(255, 20, 147, 0.8), 0 0 30px rgba(255, 20, 147, 0.5);
+}
+
+/* "Making Your Dreams Come True" — NCL Neo Vibes Outline Slant, italic outline elegance */
+.font-flowy {
+    font-family: 'NCL Neo Vibes Outline Slant', 'Helvetica Neue', sans-serif;
+    font-weight: normal;
+    text-transform: none;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    font-size: 6vw;
+}
+
+/* Legacy — unused in rotation but kept for reference */
+.font-dreams {
+    font-family: 'NCL Neo Vibes', 'Helvetica Neue', sans-serif;
+    font-weight: normal;
+    text-transform: none;
+    color: #FFDD66;
+    text-shadow: 0 0 15px #FFDD66, 0 0 30px rgba(255, 221, 102, 0.5);
+    font-size: 6vw;
+}
+
+.highlight {
+    color: #ffd700;
+    text-shadow: 0 0 15px #ffd700, 0 0 30px #ffd700;
+}
+
+/* Buttons Section */
+.buttons-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    padding-top: 1.5vh;
+    animation: fadeInUp 1s ease 4s forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.main-flow-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(1rem, 2.5vw, 2.5rem);
+}
+
+.main-flow-link {
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    padding: 0.5rem 0;
+}
+
+.main-flow-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #fff;
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.main-flow-link:hover {
+    color: #fff;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+}
+
+.main-flow-link:hover::after {
+    width: 100%;
+}
+
+.main-flow-arrow {
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    color: rgba(255, 255, 255, 0.3);
+    user-select: none;
+    transition: transform 0.4s ease;
+}
+
+.main-flow-container:hover .main-flow-arrow {
+    transform: scale(1.1);
+}
+
+.btn {
+    padding: 1.1rem 2.4rem;
+
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 2px solid #fff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 0; /* Square, minimal */
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: inline-block;
+    text-align: center;
+    backdrop-filter: blur(5px);
+}
+
+.btn:hover {
+    background: #fff;
+    color: #000;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255,255,255,0.15);
+}
+
+.btn-featured {
+    background: #fff;
+    color: #000;
+    font-size: 1.2rem;
+    padding: 1.3rem 3.2rem;
+    letter-spacing: 3px;
+    box-shadow: 0 0 35px rgba(255,255,255,0.25), 0 0 70px rgba(255,255,255,0.1);
+}
+
+.btn-featured:hover {
+    background: transparent;
+    color: #fff;
+    box-shadow: 0 0 45px rgba(255,255,255,0.5), 0 0 90px rgba(255,255,255,0.2);
+    transform: translateY(-3px);
+}
+
+/* Homepage Social Buttons removed - styled inline on modals */
+
+/* Overlays */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.95);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.overlay-content {
+    position: relative;
+    width: 80%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 ratio */
+    height: 0;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.close-btn {
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 3rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.close-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Qwest Overlay Specifics */
+.qwest-content {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.qwest-photo-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.qwest-photo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.8);
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+
+.qwest-photo.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.qwest-header {
+    position: absolute;
+    top: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    text-align: center;
+}
+
+#qwest-location {
+
+    font-weight: 700;
+    font-size: clamp(2rem, 6vw, 110px);
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    margin-bottom: 0.5rem;
+    color: #fff;
+    text-shadow: 0 10px 40px rgba(0,0,0,0.9);
+    line-height: 0.9;
+    white-space: nowrap;
+}
+
+.qwest-change-btn {
+    font-size: 0.9rem;
+    padding: 0.8rem 1.5rem;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.qwest-change-btn:hover {
+    background: #fff;
+    color: #000;
+}
+
+.qwest-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    color: rgba(255,255,255,0.4);
+    border: none;
+    font-size: 2.2rem;
+    padding: 2rem 1.2rem;
+    cursor: pointer;
+    z-index: 10;
+    transition: color 0.2s ease;
+}
+
+.qwest-nav:hover {
+    color: #fff;
+    background: none;
+}
+
+.qwest-nav.prev {
+    left: 0;
+}
+
+.qwest-nav.next {
+    right: 0;
+}
+
+/* Location Picker — full-page, two-column grid, no scroll */
+/* ── Location Picker ──────────────────────────────────────────────────────── */
+
+.location-picker {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 3rem 2.5rem;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    overflow-y: auto;
+}
+
+.location-picker.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.picker-content {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.picker-content h3 { display: none; }
+
+/* Outer list — each item is a country section */
+#location-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+/* One row per country group */
+.location-group-section {
+    display: flex;
+    align-items: baseline;
+    gap: 0;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding: 0.6rem 0;
+}
+
+.location-group-section:last-child {
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+/* Country label — fixed left column */
+.location-country-header {
+
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.18);
+    width: 90px;
+    flex-shrink: 0;
+    padding: 0.45rem 0;
+    pointer-events: none;
+    cursor: default;
+}
+
+/* Cities row — flex wrap, fills remaining width */
+.location-group-cities {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    flex: 1;
+}
+
+.location-group-cities li {
+
+    font-size: clamp(0.65rem, 1.6vw, 0.8rem);
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    padding: 0.45rem 1.2rem 0.45rem 0;
+    cursor: pointer;
+    transition: color 0.15s ease;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.location-group-cities li:hover {
+    color: #fff;
+}
+
+/* Bottom actions */
+#picker-substack-cta {
+
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.25);
+    cursor: pointer;
+    padding: 1.5rem 0 0.25rem;
+    transition: color 0.2s ease;
+    text-align: left;
+    display: block;
+}
+
+#picker-substack-cta:hover { color: #FFDD66; }
+
+.close-picker-btn {
+
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.2);
+    cursor: pointer;
+    padding: 0.5rem 0;
+    transition: color 0.2s ease;
+    display: block;
+}
+
+.close-picker-btn:hover { color: #fff; }
+
+@media (max-width: 600px) {
+    .location-picker { padding: 3.5rem 1.5rem 2rem; }
+    .location-country-header { width: 60px; font-size: 0.5rem; }
+    .location-group-cities li { font-size: 0.65rem; padding-right: 0.8rem; }
+}
+
+#qwest-overlay .close-btn {
+    top: 20px;
+    right: 30px;
+    z-index: 30;
+}
+
+/* NEW badge on photo overlay */
+.qwest-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.new-badge {
+
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #000;
+    background: #ffd700;
+    padding: 0.3rem 0.7rem;
+    text-transform: uppercase;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    align-self: center;
+    margin-bottom: 0.1rem;
+}
+
+.new-badge.visible {
+    opacity: 1;
+}
+
+/* NEW dot in location picker list */
+.list-new-dot {
+    font-size: 0.65rem;
+    font-weight: var(--fw-ui);
+    letter-spacing: var(--ls-ui);
+    color: #000;
+    background: #ffd700;
+    padding: 0.2rem 0.5rem;
+    vertical-align: middle;
+    margin-left: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .center-block { height: 33vh; }
+    .top-line { font-size: clamp(0.75rem, 4vw, 1.1rem); white-space: normal; }
+    .bottom-line { font-size: clamp(1.6rem, 8vw, 3.5rem); height: 8vh; }
+    .bottom-line.is-multiline { font-size: clamp(0.9rem, 4.5vw, 1.8rem); }
+    .main-flow-container { gap: 0.75rem; flex-wrap: wrap; }
+    .main-flow-link { font-size: clamp(0.75rem, 3.5vw, 1rem); }
+    .main-flow-arrow { font-size: clamp(0.9rem, 3vw, 1.2rem); }
+    .primary-buttons { flex-direction: column; width: 100%; gap: 1rem; }
+    .social-buttons { width: 100%; justify-content: center; }
+    .btn { width: 100%; }
+    .btn-social { width: auto; justify-content: center; }
+    .close-btn { top: -40px; right: 0; }
+}
+
+/* Tablet */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .center-block { height: 33vh; }
+    .top-line { font-size: clamp(1rem, 2.8vw, 1.6rem); }
+    .bottom-line { font-size: clamp(2rem, 5vw, 4rem); height: 8vh; }
+    .bottom-line.is-multiline { font-size: clamp(1.2rem, 2.8vw, 2.2rem); }
+}
+
+/* ==========================================================================
+   Grid Picker & Cities Grid Styles
+   ========================================================================== */
+
+/* Qwest view-toggle icons inline with title */
+.qwest-view-icons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-left: 0.5rem;
+}
+
+.qwest-icon-btn {
+    background: none;
+    border: none;
+    padding: 4px 6px;
+    cursor: pointer;
+    color: rgba(255,255,255,0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.18s ease;
+    line-height: 1;
+}
+
+.qwest-icon-btn:hover {
+    color: #fff;
+}
+
+.qwest-icon-btn svg {
+    display: block;
+    filter: drop-shadow(0 1px 4px rgba(0,0,0,0.6));
+}
+
+.qwest-icon-btn.active {
+    color: #FFDD66;
+}
+
+/* Subheader below city name */
+.qwest-subheader {
+    font-size: clamp(0.65rem, 1.4vw, 0.85rem);
+    font-weight: var(--fw-ui);
+    letter-spacing: var(--ls-ui);
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    text-align: center;
+    margin-bottom: 0.4rem;
+    font-style: italic;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.9);
+}
+
+/* Grid Picker Overlay Container */
+.grid-picker-container {
+    width: 90%;
+    max-width: 1400px;
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #fff;
+    overflow-y: auto;
+    padding: 2rem 1rem;
+}
+
+.grid-title {
+
+    font-weight: 700;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+}
+
+.grid-subtitle {
+    font-size: 0.75rem;
+    font-weight: var(--fw-ui);
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 3rem;
+    text-align: center;
+    letter-spacing: var(--ls-ui);
+    text-transform: uppercase;
+}
+
+/* Scrollbar styling */
+.grid-picker-container::-webkit-scrollbar {
+    width: 6px;
+}
+.grid-picker-container::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.2);
+}
+.grid-picker-container::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+    border-radius: 3px;
+}
+.grid-picker-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.4);
+}
+
+/* Cities Grid */
+.cities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    width: 100%;
+    padding-bottom: 4rem;
+}
+
+/* City Card */
+.city-card {
+    position: relative;
+    aspect-ratio: 16/10;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: #0d0d0d;
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.city-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 60%, rgba(0,0,0,0.3) 100%);
+    z-index: 2;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.city-card-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                opacity 0.4s ease-in-out;
+}
+
+.city-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255,255,255,0.6);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px rgba(255,255,255,0.1);
+}
+
+.city-card:hover .city-card-img {
+    transform: scale(1.05);
+}
+
+.city-card-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.2rem;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.city-card-name {
+    font-size: 1.2rem;
+    font-weight: var(--fw-ui);
+    letter-spacing: var(--ls-ui);
+    text-transform: uppercase;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    color: #fff;
+    transition: color 0.3s ease;
+}
+
+.city-card:hover .city-card-name {
+    color: #ffd700;
+}
+
+.city-card-count {
+    font-size: 0.75rem;
+    font-weight: var(--fw-ui);
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-ui);
+}
+
+.city-card-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 3;
+    font-size: 0.65rem;
+    font-weight: var(--fw-ui);
+    letter-spacing: var(--ls-ui);
+    color: #000;
+    background: #ffd700;
+    padding: 0.2rem 0.5rem;
+    text-transform: uppercase;
+}
+
+/* ==========================================================================
+   Substack Overlay & Floating CTA Styles
+   ========================================================================== */
+
+/* Substack Card Modal */
+.substack-card {
+    position: relative;
+    width: 90%;
+    max-width: 540px;
+    padding: 3.5rem 3rem;
+    background: rgba(13, 13, 13, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    text-align: center;
+    box-shadow: 0 30px 100px rgba(0, 0, 0, 0.9);
+    animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes scaleUp {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.substack-title {
+
+    font-weight: 700;
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #fff;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.substack-desc {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+}
+
+.substack-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+#substack-email {
+    width: 100%;
+    padding: 1.1rem;
+
+    font-size: 1rem;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border-radius: 0;
+    transition: all 0.3s ease;
+    letter-spacing: var(--ls-ui);
+}
+
+#substack-email:focus {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #fff;
+    outline: none;
+    box-shadow: 0 0 15px rgba(255,255,255,0.05);
+}
+
+.btn-substack-submit {
+    width: 100%;
+    background: #fff;
+    color: #000;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1.1rem;
+    font-size: 1rem;
+}
+
+.btn-substack-submit:hover {
+    background: transparent;
+    color: #fff;
+}
+
+.btn-substack-submit:hover .arrow-icon {
+    transform: translateX(4px);
+}
+
+.arrow-icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+    transition: transform 0.3s ease;
+}
+
+.substack-link {
+    font-size: 0.8rem;
+    font-weight: var(--fw-ui);
+    letter-spacing: var(--ls-ui);
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: inline-block;
+}
+
+.substack-link:hover {
+    color: #ffd700;
+}
+
+/* Global Floating CTA Badge */
+.floating-cta {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 95;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 1.4rem;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cta-text {
+
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    white-space: nowrap;
+    transition: color 0.3s ease;
+}
+
+.cta-arrow {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.4);
+    transition: color 0.3s ease, transform 0.3s ease;
+    line-height: 1;
+}
+
+.floating-cta:hover {
+    background: #fff;
+    border-color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255,255,255,0.1);
+}
+
+.floating-cta:hover .cta-text,
+.floating-cta:hover .cta-arrow {
+    color: #000;
+}
+
+@media (max-width: 768px) {
+    .floating-cta {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        padding: 0.55rem 1.1rem;
+    }
+    .cta-text {
+        font-size: 0.75rem;
+    }
+}
+
+/* ==========================================================================
+   Work Together Overlay Styles
+   ========================================================================== */
+
+/* Work Card Modal */
+.work-card {
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    padding: 3.5rem 3rem;
+    background: rgba(13, 13, 13, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    text-align: center;
+    box-shadow: 0 30px 100px rgba(0, 0, 0, 0.9);
+    animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.work-title {
+
+    font-weight: 700;
+    font-size: 2.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #fff;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.work-desc {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+}
+
+.work-email-btn {
+    width: 100%;
+    margin-bottom: 2rem;
+    background: #fff;
+    color: #000;
+    font-size: 1.1rem;
+    letter-spacing: var(--ls-ui);
+    padding: 1.2rem;
+    display: block;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+}
+
+.work-email-btn:hover {
+    background: transparent;
+    color: #fff;
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.35);
+}
+
+.work-socials {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.work-social-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    color: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.03);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.work-social-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.work-social-icon:hover {
+    color: #fff;
+    border-color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15);
+}
+
+/* ==========================================================================
+   Let's Play Overlay
+   ========================================================================== */
+
+.main-flow-link--play {
+    color: #FFDD66;
+    text-shadow: 0 0 12px rgba(255, 221, 102, 0.7), 0 0 30px rgba(255, 221, 102, 0.3);
+}
+
+.main-flow-link--play::after {
+    background: #FFDD66;
+}
+
+.main-flow-link--play:hover {
+    color: #FFDD66;
+    text-shadow: 0 0 20px rgba(255, 221, 102, 1), 0 0 50px rgba(255, 221, 102, 0.5);
+}
+
+/* Overlay reuses .overlay base — just add inner layout */
+.letsplay-content {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.letsplay-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.letsplay-gif {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.65);
+}
+
+/* Cory GIF is brighter — 20-30% more visible than Let's Play */
+#cory-overlay .letsplay-gif {
+    filter: brightness(0.88);
+}
+
+.letsplay-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.72) 100%);
+}
+
+#cory-overlay .letsplay-bg-overlay {
+    background: radial-gradient(circle at center, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.45) 100%);
+}
+
+.letsplay-body {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 2rem;
+}
+
+.letsplay-title {
+
+    font-weight: 700;
+    font-size: clamp(3.5rem, 10vw, 9rem);
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    color: #fff;
+    text-shadow: 0 4px 40px rgba(0,0,0,0.9);
+    line-height: 1;
+    margin-bottom: 2rem;
+}
+
+.letsplay-desc {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: var(--ls-ui);
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto 2.5rem;
+}
+
+.letsplay-cta {
+    display: inline-block;
+
+    font-size: 1rem;
+    font-weight: var(--fw-ui);
+    letter-spacing: var(--ls-ui);
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #000;
+    background: #FFDD66;
+    padding: 1.1rem 3rem;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 35px rgba(255, 221, 102, 0.35), 0 0 70px rgba(255, 221, 102, 0.12);
+}
+
+.letsplay-cta:hover {
+    background: #fff;
+    color: #000;
+    transform: translateY(-3px);
+    box-shadow: 0 0 45px rgba(255,255,255,0.4);
+}
+
+/* IG icon link — in overlays and main page footer */
+.ig-icon-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgba(255,255,255,0.3);
+    transition: color 0.3s ease;
+    text-decoration: none;
+}
+
+.ig-icon-link svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.ig-icon-link:hover {
+    color: rgba(255,255,255,0.8);
+}
+
+/* In the Let's Play overlay */
+.letsplay-ig {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+}
+
+/* On the main landing page — bottom left */
+.footer-ig {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    z-index: 95;
+}
+
+@media (max-width: 768px) {
+    .footer-ig { bottom: 1.5rem; left: 1.5rem; }
+}
+
+
+/* Friends CTA under flipbook header */
+.qwest-friends-cta {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.3);
+
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.2s;
+    white-space: nowrap;
+}
+.qwest-friends-cta:hover { color: #FFDD66; }
+
+/* Next-city popup toast */
+#next-city-popup {
+    position: absolute;
+    bottom: 5rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    background: rgba(0,0,0,0.82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 1rem 1.4rem;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 20;
+    white-space: nowrap;
+}
+#next-city-popup.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+.next-city-msg {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: var(--fw-ui);
+    letter-spacing: var(--ls-ui);
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 0.6rem;
+}
+.next-city-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+}
+.next-city-actions button {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.6);
+    font-size: 0.68rem;
+    font-weight: var(--fw-ui);
+    letter-spacing: var(--ls-ui);
+    text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+}
+.next-city-actions button:hover {
+    color: #FFDD66;
+    border-color: #FFDD66;
+}
+
+/* ── Cory overlay: foreground CTA block ────────────────────── */
+.cory-cta-block {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(14px);
+    width: 100%;
+    padding: 2.5rem 2rem 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.1rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.55) 60%, transparent 100%);
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.7s ease, transform 0.7s ease;
+    pointer-events: none;
+}
+.cory-cta-block.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+.cory-cta-headline {
+    font-size: clamp(1rem, 2.2vw, 1.5rem);
+    font-weight: var(--fw-ui);
+    color: #fff;
+    text-align: center;
+    line-height: 1.5;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.8);
+}
+
+.cory-email-form {
+    display: flex;
+    gap: 0;
+    width: 100%;
+    max-width: 440px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 6px;
+    overflow: hidden;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.cory-email-input {
+    flex: 1;
+    background: rgba(0,0,0,0.45);
+    border: none;
+    outline: none;
+    color: #fff;
+
+    font-size: 0.75rem;
+    font-weight: var(--fw-ui);
+    letter-spacing: var(--ls-ui);
+    text-transform: uppercase;
+    padding: 0.85rem 1.1rem;
+}
+.cory-email-input::placeholder {
+    color: rgba(255,255,255,0.3);
+}
+.cory-email-input:focus {
+    background: rgba(0,0,0,0.6);
+}
+
+.cory-email-btn {
+    background: #FFDD66;
+    border: none;
+    color: #000;
+
+    font-size: 0.72rem;
+    font-weight: var(--fw-ui);
+    letter-spacing: var(--ls-ui);
+    text-transform: uppercase;
+    padding: 0.85rem 1.3rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.18s ease;
+    flex-shrink: 0;
+}
+.cory-email-btn:hover {
+    background: #ffe985;
+}
+
+.cory-substack-link {
+    font-size: 0.7rem;
+    font-weight: var(--fw-ui);
+    letter-spacing: var(--ls-ui);
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: color 0.18s ease;
+}
+.cory-substack-link:hover {
+    color: rgba(255,255,255,0.8);
+}
+
+#letsplay-overlay .close-btn {
+    top: 20px;
+    right: 30px;
+    z-index: 10;
+}
+
+/* Karaoke bar */
+/* ── Shared karaoke bar base ───────────────────────────────── */
+.karaoke-bar {
+    position: absolute;
+    bottom: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    text-align: center;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+/* ── Cory overlay: two-line stacked layout ─────────────────── */
+.cory-karaoke-bar {
+    bottom: 10%;
+    width: 90%;
+    max-width: 700px;
+    white-space: normal;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    align-items: center;
+    background: rgba(0,0,0,0.18);
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    border-radius: 10px;
+    padding: 1rem 1.5rem 1.1rem;
+}
+
+.karaoke-line {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    gap: 0 0.15rem;
+    width: 100%;
+}
+
+/* Mike's response line — slight indent feel */
+.karaoke-line--response {
+    margin-top: 0.15rem;
+}
+
+/* ── Words — NCL Neo Vibes, same family as main typewriter ─── */
+.karaoke-word {
+    font-family: 'NCL Neo Vibes Outline', 'Helvetica Neue', sans-serif;
+    font-size: clamp(1.4rem, 3vw, 2.4rem);
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    /* Dim outline: stroke visible, fill transparent — mirrors font-adventures rest state */
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255, 58, 171, 0.25);
+    margin: 0 0.25rem;
+    transition: color 0.18s ease, -webkit-text-stroke 0.18s ease, text-shadow 0.18s ease;
+    display: inline-block;
+}
+
+/* Active: full pink glow (Cory's words) */
+.karaoke-word.active {
+    color: transparent;
+    -webkit-text-stroke: 1.5px #ff3aab;
+    text-shadow: 0 0 15px rgba(255, 20, 147, 0.9), 0 0 35px rgba(255, 20, 147, 0.55), 0 0 60px rgba(255, 20, 147, 0.3);
+}
+
+/* Mike's words: NCL Neo Vibes Regular (filled), yellow glow — mirrors font-yellow-glow */
+.karaoke-word--wink {
+    font-family: 'NCL Neo Vibes', 'Helvetica Neue', sans-serif;
+    color: rgba(255, 221, 102, 0.2);
+    -webkit-text-stroke: 0;
+}
+.karaoke-word--wink.active {
+    color: #FFDD66;
+    -webkit-text-stroke: 0;
+    text-shadow: 0 0 15px rgba(255, 221, 102, 0.95), 0 0 35px rgba(255, 221, 102, 0.6), 0 0 60px rgba(255, 221, 102, 0.3);
+}
+
+/* Speaker label (CORY: / MIKE:) — small Helvetica caps, always legible */
+.karaoke-word--speaker {
+    font-size: clamp(0.65rem, 1.3vw, 0.9rem);
+    font-weight: var(--fw-ui);
+    letter-spacing: var(--ls-label);
+    color: rgba(255,255,255,0.4);
+    -webkit-text-stroke: 0;
+    margin-right: 0.6rem;
+}
+.karaoke-word--speaker.active {
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+@media (max-width: 500px) {
+    .work-card {
+        padding: 2.5rem 1.5rem;
+    }
+    .work-email-btn {
+        font-size: 0.95rem;
+        padding: 1rem;
+    }
+    .work-social-icon {
+        width: 44px;
+        height: 44px;
+    }
+    .work-social-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+}
