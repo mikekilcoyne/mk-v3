@@ -32,13 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // BREAKFAST CLUB — Helvetica Neue Bold, white glow
         [{ text: "BREAKFAST CLUB", cls: "font-breakfast" }],
 
-        // TURNING DREAMS (line 1) / INTO REALITIES (line 2)
+        // DREAMIN' BIG — BIG highlighted in yellow glow
         [
-            { text: "TURNING ", cls: "font-adventures" },
-            { text: "DREAMS",   cls: "font-yellow-glow" },
-            { br: true },
-            { text: "INTO ",    cls: "font-adventures"  },
-            { text: "REALITIES", cls: "font-pink-glow"  }
+            { text: "DREAMIN' ", cls: "font-adventures" },
+            { text: "BIG",       cls: "font-yellow-glow" }
         ]
     ];
 
