@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MK Admin</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #0a0a0a; color: #fff; min-height: 100vh; }
+
+/* ── Auth gate ── */
+#auth-screen {
+    display: flex; align-items: center; justify-content: center;
+    height: 100vh;
+}
+.auth-card {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    padding: 3rem; text-align: center; width: 340px;
+}
+.auth-card h1 { font-size: 0.75rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 2rem; }
+.auth-card input {
+    width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
+    color: #fff; padding: 0.9rem 1rem; font-size: 0.85rem; letter-spacing: 2px;
+    text-align: center; margin-bottom: 1rem; outline: none;
+}
+.auth-card input:focus { border-color: rgba(255,255,255,0.4); }
+.auth-card button {
+    width: 100%; background: #fff; color: #000; border: none;
+    padding: 0.9rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; cursor: pointer;
+}
+.auth-card button:hover { background: #FFDD66; }
+#auth-error { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: #ff3aab; margin-top: 0.8rem; }
+
+/* ── Main layout ── */
+#app { display: none; height: 100vh; flex-direction: column; }
+#app.visible { display: flex; }
+
+.top-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2rem; border-bottom: 1px solid rgba(255,255,255,0.07);
+    flex-shrink: 0;
+}
+.top-bar h1 { font-size: 0.7rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+.top-bar .actions { display: flex; gap: 0.75rem; align-items: center; }
+
+.btn-save {
+    background: #FFDD66; color: #000; border: none; padding: 0.55rem 1.4rem;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+}
+.btn-save:hover { background: #ffe985; }
+.btn-save:disabled { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.3); cursor: default; }
+.save-status { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+
+.main { display: flex; flex: 1; overflow: hidden; }
+
+/* ── Sidebar ── */
+.sidebar {
+    width: 220px; flex-shrink: 0; border-right: 1px solid rgba(255,255,255,0.07);
+    overflow-y: auto; padding: 1rem 0;
+}
+.sidebar-section { padding: 0.5rem 1.2rem; font-size: 0.55rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.2); margin-bottom: 0.25rem; }
+
+.city-item {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.6rem 1.2rem; cursor: pointer;
+    border-left: 2px solid transparent; transition: all 0.15s;
+}
+.city-item:hover { background: rgba(255,255,255,0.04); }
+.city-item.active { border-left-color: #FFDD66; background: rgba(255,221,102,0.06); }
+.city-item.hidden-city { opacity: 0.35; }
+
+.city-name { flex: 1; font-size: 0.72rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+.toggle-btn {
+    background: none; border: none; cursor: pointer; color: rgba(255,255,255,0.3);
+    font-size: 0.9rem; padding: 0 0.2rem; transition: color 0.15s; line-height: 1;
+}
+.toggle-btn:hover { color: #fff; }
+
+/* ── Photo grid ── */
+.content { flex: 1; overflow-y: auto; padding: 1.5rem 2rem; }
+
+.city-header {
+    display: flex; align-items: baseline; gap: 1rem;
+    margin-bottom: 1.5rem; padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.city-header h2 { font-size: 1.2rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+.city-header span { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+
+.photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+
+.photo-card { background: #111; border: 1px solid rgba(255,255,255,0.08); position: relative; }
+.photo-card.is-hidden { opacity: 0.4; }
+
+.img-wrap {
+    position: relative; width: 100%; padding-bottom: 66%;
+    overflow: hidden; cursor: crosshair; user-select: none;
+}
+.img-wrap img {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; pointer-events: none;
+}
+
+.photo-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.5rem 0.6rem; gap: 0.5rem;
+}
+.pos-inputs { display: flex; gap: 0.3rem; align-items: center; }
+.pos-inputs input {
+    width: 48px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+    color: #fff; font-size: 0.65rem; letter-spacing: 1px; padding: 0.3rem 0.4rem;
+    text-align: center; outline: none;
+}
+.pos-inputs input:focus { border-color: rgba(255,255,255,0.35); }
+.pos-label { font-size: 0.55rem; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.25); }
+
+.photo-hide-btn {
+    background: none; border: none; cursor: pointer; color: rgba(255,255,255,0.3);
+    font-size: 1rem; padding: 0.1rem; transition: color 0.15s; line-height: 1;
+}
+.photo-hide-btn:hover { color: #fff; }
+
+.no-city { display: flex; align-items: center; justify-content: center; height: 60%; color: rgba(255,255,255,0.2); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; }
+
+/* scrollbar */
+.sidebar::-webkit-scrollbar, .content::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb, .content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
+</style>
+</head>
+<body>
+
+<!-- Auth -->
+<div id="auth-screen">
+    <div class="auth-card">
+        <h1>MK Admin</h1>
+        <input type="password" id="pw-input" placeholder="PASSWORD" autocomplete="current-password">
+        <button id="pw-btn">Enter →</button>
+        <div id="auth-error"></div>
+    </div>
+</div>
+
+<!-- App -->
+<div id="app">
+    <div class="top-bar">
+        <h1>MK &mdash; Site Admin</h1>
+        <div class="actions">
+            <span class="save-status" id="save-status"></span>
+            <button class="btn-save" id="save-btn" disabled>Save + Deploy</button>
+        </div>
+    </div>
+    <div class="main">
+        <div class="sidebar">
+            <div class="sidebar-section">Cities</div>
+            <div id="city-list"></div>
+        </div>
+        <div class="content" id="content">
+            <div class="no-city">← Select a city</div>
+        </div>
+    </div>
+</div>
+
+<script>
+const API = '/.netlify/functions/admin';
+let password = '';
+let scriptContent = '';
+let scriptSha = '';
+let qwestData = [];
+let dirty = false;
+let activeCityIdx = null;
+
+// ── Auth ──────────────────────────────────────────────────────────
+document.getElementById('pw-btn').addEventListener('click', tryAuth);
+document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') tryAuth(); });
+
+async function tryAuth() {
+    const pw = document.getElementById('pw-input').value.trim();
+    const errEl = document.getElementById('auth-error');
+    errEl.textContent = '';
+    const res = await fetch(`${API}?action=auth`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pw })
+    });
+    if (res.ok) {
+        password = pw;
+        document.getElementById('auth-screen').style.display = 'none';
+        document.getElementById('app').classList.add('visible');
+        await loadScript();
+    } else {
+        errEl.textContent = 'Wrong password';
+    }
+}
+
+// ── Load script.js from GitHub ────────────────────────────────────
+async function loadScript() {
+    setStatus('Loading…');
+    const res = await fetch(`${API}?action=read`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+    });
+    const data = await res.json();
+    scriptContent = data.content;
+    scriptSha = data.sha;
+    qwestData = extractQwestData(scriptContent);
+    renderSidebar();
+    setStatus('');
+}
+
+// ── Parse qwestData out of script.js ─────────────────────────────
+function extractQwestData(src) {
+    const match = src.match(/const qwestData\s*=\s*(\[[\s\S]*?\]);(?=\s*\/\/|$|\s*\n\s*\/\/|\s*\n\s*const|\s*\n\s*let|\s*\n\s*function)/);
+    if (!match) {
+        // Fallback: find the array more broadly
+        const start = src.indexOf('const qwestData = [');
+        const arrStart = src.indexOf('[', start);
+        let depth = 0, i = arrStart;
+        for (; i < src.length; i++) {
+            if (src[i] === '[' || src[i] === '{') depth++;
+            else if (src[i] === ']' || src[i] === '}') { depth--; if (depth === 0) break; }
+        }
+        const arrStr = src.slice(arrStart, i + 1);
+        return new Function('return ' + arrStr)();
+    }
+    return new Function('return ' + match[1])();
+}
+
+// ── Serialize qwestData back into script.js ───────────────────────
+function serializeQwestData(data) {
+    function serializePhoto(p) {
+        if (typeof p === 'string') return `"${p}"`;
+        const parts = [`"src": "${p.src}"`];
+        if (p.pos) parts.push(`"pos": "${p.pos}"`);
+        if (p.hidden) parts.push(`"hidden": true`);
+        if (p.isNew) parts.push(`"isNew": true`);
+        return `{ ${parts.join(', ')} }`;
+    }
+    const entries = data.map(city => {
+        const photos = city.photos.map(p => `                ${serializePhoto(p)}`).join(',\n');
+        let cityStr = `            "location": "${city.location}",\n            "photos": [\n${photos}\n            ]`;
+        if (city.hidden) cityStr += `,\n            "hidden": true`;
+        return `        {\n${cityStr}\n        }`;
+    });
+    return `        [\n${entries.join(',\n')}\n        ]`;
+}
+
+function updateScriptContent() {
+    const serialized = serializeQwestData(qwestData);
+    // Replace the qwestData array in script.js
+    const newContent = scriptContent.replace(
+        /const qwestData\s*=\s*\[[\s\S]*?\](?=\s*;)/,
+        `const qwestData = ${serialized.trim()}`
+    );
+    return newContent;
+}
+
+// ── Sidebar ───────────────────────────────────────────────────────
+function renderSidebar() {
+    const list = document.getElementById('city-list');
+    list.innerHTML = '';
+    qwestData.forEach((city, i) => {
+        const item = document.createElement('div');
+        item.className = 'city-item' + (city.hidden ? ' hidden-city' : '') + (activeCityIdx === i ? ' active' : '');
+        item.innerHTML = `
+            <span class="city-name">${city.location}</span>
+            <button class="toggle-btn" data-idx="${i}" title="${city.hidden ? 'Show' : 'Hide'}">${city.hidden ? '○' : '●'}</button>`;
+        item.addEventListener('click', e => {
+            if (!e.target.closest('.toggle-btn')) selectCity(i);
+        });
+        item.querySelector('.toggle-btn').addEventListener('click', e => {
+            e.stopPropagation();
+            toggleCity(i);
+        });
+        list.appendChild(item);
+    });
+}
+
+function toggleCity(i) {
+    qwestData[i].hidden = !qwestData[i].hidden;
+    markDirty();
+    renderSidebar();
+    if (activeCityIdx === i) renderPhotos(i);
+}
+
+// ── Photo grid ────────────────────────────────────────────────────
+function selectCity(i) {
+    activeCityIdx = i;
+    renderSidebar();
+    renderPhotos(i);
+}
+
+function renderPhotos(cityIdx) {
+    const city = qwestData[cityIdx];
+    const content = document.getElementById('content');
+    const visible = city.photos.filter(p => !(typeof p === 'object' && p.hidden)).length;
+
+    content.innerHTML = `
+        <div class="city-header">
+            <h2>${city.location}</h2>
+            <span>${visible} / ${city.photos.length} visible</span>
+        </div>
+        <div class="photo-grid" id="photo-grid"></div>`;
+
+    const grid = document.getElementById('photo-grid');
+    city.photos.forEach((photo, pi) => {
+        const src = typeof photo === 'string' ? photo : photo.src;
+        const pos = typeof photo === 'object' && photo.pos ? photo.pos : '50% 50%';
+        const hidden = typeof photo === 'object' && photo.hidden;
+        const [px, py] = pos.split(' ').map(v => parseFloat(v));
+        const filename = src.split('/').pop();
+
+        const card = document.createElement('div');
+        card.className = 'photo-card' + (hidden ? ' is-hidden' : '');
+        card.innerHTML = `
+            <div class="img-wrap" data-city="${cityIdx}" data-photo="${pi}">
+                <img src="/${src}" style="object-position: ${pos}" alt="">
+            </div>
+            <div class="photo-footer">
+                <span class="pos-label">X</span>
+                <div class="pos-inputs">
+                    <input type="number" class="x-input" value="${Math.round(px)}" min="0" max="100" data-city="${cityIdx}" data-photo="${pi}">
+                    <span class="pos-label">%</span>
+                    <span class="pos-label" style="margin-left:0.5rem">Y</span>
+                    <input type="number" class="y-input" value="${Math.round(py)}" min="0" max="100" data-city="${cityIdx}" data-photo="${pi}">
+                    <span class="pos-label">%</span>
+                </div>
+                <button class="photo-hide-btn" data-city="${cityIdx}" data-photo="${pi}">${hidden ? '○' : '●'}</button>
+            </div>`;
+
+        // Drag to reframe
+        const wrap = card.querySelector('.img-wrap');
+        const img  = wrap.querySelector('img');
+        let dragging = false, startX, startY, startPx, startPy;
+
+        wrap.addEventListener('mousedown', e => {
+            dragging = true; startX = e.clientX; startY = e.clientY;
+            startPx = Math.round(px); startPy = Math.round(py);
+            e.preventDefault();
+        });
+        window.addEventListener('mousemove', e => {
+            if (!dragging) return;
+            const rect = wrap.getBoundingClientRect();
+            const dx = ((e.clientX - startX) / rect.width)  * -100;
+            const dy = ((e.clientY - startY) / rect.height) * -100;
+            const newX = Math.max(0, Math.min(100, startPx + dx));
+            const newY = Math.max(0, Math.min(100, startPy + dy));
+            img.style.objectPosition = `${newX.toFixed(1)}% ${newY.toFixed(1)}%`;
+            card.querySelector('.x-input').value = Math.round(newX);
+            card.querySelector('.y-input').value = Math.round(newY);
+            setPhotoPos(cityIdx, pi, newX, newY);
+        });
+        window.addEventListener('mouseup', () => { dragging = false; });
+
+        // Input change
+        card.querySelector('.x-input').addEventListener('change', e => {
+            const newX = parseFloat(e.target.value);
+            const curY = parseFloat(card.querySelector('.y-input').value);
+            img.style.objectPosition = `${newX}% ${curY}%`;
+            setPhotoPos(cityIdx, pi, newX, curY);
+        });
+        card.querySelector('.y-input').addEventListener('change', e => {
+            const newY = parseFloat(e.target.value);
+            const curX = parseFloat(card.querySelector('.x-input').value);
+            img.style.objectPosition = `${curX}% ${newY}%`;
+            setPhotoPos(cityIdx, pi, curX, newY);
+        });
+
+        // Hide/show
+        card.querySelector('.photo-hide-btn').addEventListener('click', () => {
+            togglePhoto(cityIdx, pi);
+        });
+
+        grid.appendChild(card);
+    });
+}
+
+function setPhotoPos(cityIdx, pi, x, y) {
+    const p = qwestData[cityIdx].photos[pi];
+    const pos = `${Math.round(x)}% ${Math.round(y)}%`;
+    if (typeof p === 'string') {
+        qwestData[cityIdx].photos[pi] = { src: p, pos };
+    } else {
+        qwestData[cityIdx].photos[pi] = { ...p, pos };
+    }
+    markDirty();
+}
+
+function togglePhoto(cityIdx, pi) {
+    const p = qwestData[cityIdx].photos[pi];
+    if (typeof p === 'string') {
+        qwestData[cityIdx].photos[pi] = { src: p, hidden: true };
+    } else {
+        qwestData[cityIdx].photos[pi] = { ...p, hidden: !p.hidden };
+    }
+    markDirty();
+    renderPhotos(cityIdx);
+    renderSidebar();
+}
+
+// ── Save ──────────────────────────────────────────────────────────
+function markDirty() {
+    dirty = true;
+    document.getElementById('save-btn').disabled = false;
+    setStatus('Unsaved changes');
+}
+
+function setStatus(msg) {
+    document.getElementById('save-status').textContent = msg;
+}
+
+document.getElementById('save-btn').addEventListener('click', async () => {
+    const btn = document.getElementById('save-btn');
+    btn.disabled = true;
+    setStatus('Saving…');
+    try {
+        const newContent = updateScriptContent();
+        const res = await fetch(`${API}?action=write`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                password, content: newContent, sha: scriptSha,
+                message: 'admin: update photo positions + visibility'
+            })
+        });
+        if (!res.ok) throw new Error('Save failed');
+        scriptContent = newContent;
+        // Re-fetch sha after write
+        await loadScript();
+        dirty = false;
+        setStatus('Saved ✓ — deploying…');
+        setTimeout(() => setStatus(''), 4000);
+    } catch (err) {
+        setStatus('Error — try again');
+        btn.disabled = false;
+    }
+});
+</script>
+</body>
+</html>
