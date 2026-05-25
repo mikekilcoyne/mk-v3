@@ -190,7 +190,6 @@ body {
     align-items: center;
     width: 100%;
     padding-bottom: 1.5vh;
-    overflow: hidden;
 }
 
 /* Typography styles */
@@ -209,8 +208,9 @@ body {
     height: 8vh; /* locked — CTAs never shift */
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: baseline;
     justify-content: center;
+    overflow: visible;
     opacity: 1;
     transform: translateY(0);
     filter: blur(0);
@@ -266,13 +266,13 @@ body {
 
 /* "BREAKFAST CLUB" — Helvetica Neue Bold, white glow, fully transparent bg */
 .font-breakfast {
-
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 3px;
     color: #fff;
     background: transparent;
-    text-shadow: 0 0 18px rgba(255,255,255,0.95), 0 0 40px rgba(255,255,255,0.6), 0 0 80px rgba(255,255,255,0.3);
+    mix-blend-mode: screen;
+    text-shadow: 0 0 25px rgba(255,255,255,1), 0 0 55px rgba(255,255,255,0.7), 0 0 100px rgba(255,255,255,0.4);
 }
 
 /* "ADVENTURES" / connector words — NCL Neo Vibes Outline, pink hollow glow */
@@ -1056,6 +1056,14 @@ body {
     text-align: center;
     box-shadow: 0 30px 100px rgba(0, 0, 0, 0.9);
     animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    margin: auto;
+}
+
+#substack-overlay .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 2rem;
 }
 
 @keyframes scaleUp {
@@ -1354,7 +1362,12 @@ body {
 }
 
 #cory-overlay .letsplay-bg-overlay {
-    background: radial-gradient(circle at center, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.45) 100%);
+    background: radial-gradient(circle at center, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.55) 100%);
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+#cory-overlay .letsplay-bg-overlay.visible {
+    opacity: 1;
 }
 
 .letsplay-body {
@@ -1529,17 +1542,22 @@ body {
 /* ── Cory overlay: foreground CTA block ────────────────────── */
 .cory-cta-block {
     position: absolute;
-    bottom: 0;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%) translateY(14px);
-    width: 100%;
-    padding: 2.5rem 2rem 3rem;
+    transform: translate(-50%, -40%);
+    width: 90%;
+    max-width: 500px;
+    padding: 2.5rem 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 1.1rem;
-    background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.55) 60%, transparent 100%);
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
     z-index: 5;
     opacity: 0;
     transition: opacity 0.7s ease, transform 0.7s ease;
@@ -1547,7 +1565,7 @@ body {
 }
 .cory-cta-block.visible {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translate(-50%, -50%);
     pointer-events: auto;
 }
 

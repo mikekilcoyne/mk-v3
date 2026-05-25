@@ -238,11 +238,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const coryCtaBlock   = document.getElementById('cory-cta-block');
     let coryTimer = null, coryIdx = 0;
 
+    const coryBgOverlay = document.querySelector('#cory-overlay .letsplay-bg-overlay');
+
     function showCoryCta() {
         if (coryCtaBlock) coryCtaBlock.classList.add('visible');
+        if (coryBgOverlay) coryBgOverlay.classList.add('visible');
     }
     function hideCoryCta() {
         if (coryCtaBlock) coryCtaBlock.classList.remove('visible');
+        if (coryBgOverlay) coryBgOverlay.classList.remove('visible');
     }
 
     function coryKaraokeStep() {
