@@ -179,7 +179,8 @@ body {
     text-align: center;
 }
 
-/* Headlines + CTAs as one centered stack in the middle of the viewport */
+/* Headlines + CTAs as one centered stack, nudged down so the title sits at
+   true center (the buttons below would otherwise push the title high) */
 .center-block {
     width: 100%;
     max-width: 1000px;
@@ -188,6 +189,7 @@ body {
     justify-content: center;
     align-items: center;
     gap: 2.5vh;
+    transform: translateY(5vh);
 }
 
 /* Headlines */
@@ -819,7 +821,7 @@ body {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .center-block { height: 33vh; }
+    .center-block { transform: translateY(10vh); }
     .top-line { font-size: clamp(0.75rem, 4vw, 1.1rem); white-space: normal; }
     .bottom-line { font-size: clamp(1.4rem, 7vw, 3rem); height: 8vh; }
     .bottom-line.is-multiline { font-size: clamp(0.9rem, 4.5vw, 1.8rem); }
