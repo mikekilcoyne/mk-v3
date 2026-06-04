@@ -54,7 +54,17 @@ exports.handler = async event => {
     }
 
     if (action === 'read') {
+        if (!GITHUB_TOKEN) {
+            return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: 'GITHUB_TOKEN is not set on the server' }) };
+        }
         const res = await ghRequest('GET');
+        if (res.status !== 200 || !res.body || !res.body.content) {
+            return { statusCode: 502, headers: CORS, body: JSON.stringify({
+                error: 'GitHub read failed',
+                githubStatus: res.status,
+                githubMessage: res.body && res.body.message
+            }) };
+        }
         const content = Buffer.from(res.body.content, 'base64').toString('utf8');
         return { statusCode: 200, headers: CORS, body: JSON.stringify({ content, sha: res.body.sha }) };
     }

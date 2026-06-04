@@ -221,6 +221,11 @@ async function loadScript() {
         body: JSON.stringify({ password })
     });
     const data = await res.json();
+    if (!res.ok || !data.content) {
+        const detail = data.githubStatus ? ` (GitHub ${data.githubStatus}: ${data.githubMessage || '?'})` : '';
+        setStatus(`Load failed: ${data.error || 'unknown'}${detail}`);
+        return;
+    }
     scriptContent = data.content;
     scriptSha = data.sha;
     qwestData = extractQwestData(scriptContent);
