@@ -467,13 +467,13 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             "location": "Kyoto, JP",
             "photos": [
-                { "src": "photos_web/22_KYOTO_JP/P1013155.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/22_KYOTO_JP/P1013156.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/22_KYOTO_JP/P1013158.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/22_KYOTO_JP/P1013721.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/22_KYOTO_JP/P1013720.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/22_KYOTO_JP/P1013943.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/22_KYOTO_JP/P1013940.jpg", "pos": "50% 50%", "isNew": true }
+                { "src": "photos_web/22_KYOTO_JP/P1013155.jpg", "pos": "55% 38%", "isNew": true },
+                { "src": "photos_web/22_KYOTO_JP/P1013156.jpg", "pos": "56% 41%", "isNew": true },
+                { "src": "photos_web/22_KYOTO_JP/P1013158.jpg", "pos": "69% 31%", "isNew": true },
+                { "src": "photos_web/22_KYOTO_JP/P1013721.jpg", "pos": "81% 26%", "isNew": true },
+                { "src": "photos_web/22_KYOTO_JP/P1013720.jpg", "pos": "86% 21%", "isNew": true },
+                { "src": "photos_web/22_KYOTO_JP/P1013943.jpg", "pos": "54% 42%", "isNew": true },
+                { "src": "photos_web/22_KYOTO_JP/P1013940.jpg", "pos": "53% 44%", "isNew": true }
             ]
         },
         {
