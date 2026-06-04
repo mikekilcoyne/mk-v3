@@ -3,10 +3,14 @@ PHOTOS_FOR_SITE/
 NISEKO_JP/
 
 # Dev tools — server-side only
-manage.js
 face_detect.py
 face_detect.swift
 xml/
+
+# Photo ingest — keep the tool + folder structure, ignore raw drops
+_inbox/**
+!_inbox/.gitkeep
+!_inbox/README.txt
 
 # macOS metadata
 .DS_Store
