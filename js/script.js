@@ -523,9 +523,9 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             "location": "Vancouver, BC",
             "photos": [
-                { "src": "photos_web/18_VANCOUVER_BC/P1009177.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/18_VANCOUVER_BC/P1009202.jpg", "pos": "50% 50%" },
-                { "src": "photos_web/18_VANCOUVER_BC/P1009205.jpg", "pos": "50% 50%" }
+                { "src": "photos_web/18_VANCOUVER_BC/P1009177.jpg", "pos": "54% 49%", "isNew": true },
+                { "src": "photos_web/18_VANCOUVER_BC/P1009202.jpg", "pos": "48% 48%" },
+                { "src": "photos_web/18_VANCOUVER_BC/P1009205.jpg", "pos": "46% 47%" }
             ]
         },
         {
