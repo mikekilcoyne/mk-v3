@@ -350,12 +350,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 { "src": "photos_web/03_NEW_YORK_NY/P1001769-Enhanced.jpg", "hidden": true },
                 { "src": "photos_web/03_NEW_YORK_NY/P1002488-Enhanced.jpg", "hidden": true },
                 { "src": "photos_web/03_NEW_YORK_NY/P1002559.jpg", "hidden": true },
-                { "src": "photos_web/03_NEW_YORK_NY/P1002496.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/03_NEW_YORK_NY/P1002499.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/03_NEW_YORK_NY/P1002503.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/03_NEW_YORK_NY/P1000804.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/03_NEW_YORK_NY/P1000805.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/03_NEW_YORK_NY/P1000803.jpg", "pos": "50% 50%", "isNew": true }
+                { "src": "photos_web/03_NEW_YORK_NY/P1002496.jpg", "pos": "45% 78%", "isNew": true },
+                { "src": "photos_web/03_NEW_YORK_NY/P1002499.jpg", "pos": "81% 80%", "isNew": true },
+                { "src": "photos_web/03_NEW_YORK_NY/P1002503.jpg", "pos": "51% 83%", "isNew": true },
+                { "src": "photos_web/03_NEW_YORK_NY/P1000804.jpg", "pos": "42% 31%", "isNew": true },
+                { "src": "photos_web/03_NEW_YORK_NY/P1000805.jpg", "pos": "48% 30%", "isNew": true },
+                { "src": "photos_web/03_NEW_YORK_NY/P1000803.jpg", "pos": "37% 33%", "isNew": true }
             ]
         },
         {
