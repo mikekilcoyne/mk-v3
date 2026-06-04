@@ -332,13 +332,13 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             "location": "Istanbul, TR",
             "photos": [
-                { "src": "photos_web/02_ISTANBUL_TY/P1015644.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/02_ISTANBUL_TY/P1015649.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/02_ISTANBUL_TY/P1015663.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/02_ISTANBUL_TY/P1018292.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/02_ISTANBUL_TY/P1018308.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/02_ISTANBUL_TY/P1018337.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/02_ISTANBUL_TY/P1018353.jpg", "pos": "50% 50%", "isNew": true }
+                { "src": "photos_web/02_ISTANBUL_TY/P1015644.jpg", "pos": "31% 44%", "isNew": true },
+                { "src": "photos_web/02_ISTANBUL_TY/P1015649.jpg", "pos": "62% 50%", "isNew": true },
+                { "src": "photos_web/02_ISTANBUL_TY/P1015663.jpg", "pos": "64% 27%", "isNew": true },
+                { "src": "photos_web/02_ISTANBUL_TY/P1018292.jpg", "pos": "50% 19%", "isNew": true },
+                { "src": "photos_web/02_ISTANBUL_TY/P1018308.jpg", "pos": "49% 37%", "isNew": true },
+                { "src": "photos_web/02_ISTANBUL_TY/P1018337.jpg", "pos": "51% 32%", "isNew": true },
+                { "src": "photos_web/02_ISTANBUL_TY/P1018353.jpg", "pos": "57% 37%", "isNew": true }
             ]
         },
         {
