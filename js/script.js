@@ -532,9 +532,9 @@ document.addEventListener('DOMContentLoaded', () => {
             "location": "Encinitas, CA",
             "photos": [
                 { "src": "photos_web/19_ENCINITAS_CA/P1008177.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/19_ENCINITAS_CA/P1008180.jpg", "pos": "50% 50%" },
-                { "src": "photos_web/19_ENCINITAS_CA/P1008225.jpg", "pos": "50% 50%" },
-                { "src": "photos_web/19_ENCINITAS_CA/P1008212.jpg", "pos": "50% 50%" }
+                { "src": "photos_web/19_ENCINITAS_CA/P1008180.jpg", "pos": "50% 42%" },
+                { "src": "photos_web/19_ENCINITAS_CA/P1008225.jpg", "pos": "48% 36%" },
+                { "src": "photos_web/19_ENCINITAS_CA/P1008212.jpg", "pos": "62% 44%" }
             ]
         },
         {
