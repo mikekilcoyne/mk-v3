@@ -548,9 +548,9 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             "location": "Rotterdam, NL",
             "photos": [
-                { "src": "photos_web/24_ROTTERDAM_NL/P1002629.jpg", "isNew": true },
-                { "src": "photos_web/24_ROTTERDAM_NL/P1002627.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/24_ROTTERDAM_NL/P1002628.jpg", "isNew": true }
+                { "src": "photos_web/24_ROTTERDAM_NL/P1002629.jpg", "pos": "25% 34%", "isNew": true },
+                { "src": "photos_web/24_ROTTERDAM_NL/P1002627.jpg", "pos": "29% 37%", "isNew": true },
+                { "src": "photos_web/24_ROTTERDAM_NL/P1002628.jpg", "pos": "28% 34%", "isNew": true }
             ]
         },
         {
