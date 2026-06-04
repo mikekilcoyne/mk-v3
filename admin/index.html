@@ -93,14 +93,36 @@ body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: 
 .photo-card { background: #111; border: 1px solid rgba(255,255,255,0.08); position: relative; }
 .photo-card.is-hidden { opacity: 0.4; }
 
+/* Eye-frame editor: show whole photo, click the subject to set focal point */
 .img-wrap {
-    position: relative; width: 100%; padding-bottom: 66%;
+    position: relative; width: 100%; background: #000;
     overflow: hidden; cursor: crosshair; user-select: none;
 }
 .img-wrap img {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    object-fit: cover; pointer-events: none;
+    display: block; width: 100%; height: auto; pointer-events: none;
 }
+.focal-dot {
+    position: absolute; width: 22px; height: 22px; margin: -11px 0 0 -11px;
+    border: 2px solid #FFDD66; border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.6), 0 0 12px rgba(255,221,102,0.6);
+    pointer-events: none;
+}
+.focal-dot::before, .focal-dot::after {
+    content: ''; position: absolute; background: #FFDD66;
+}
+.focal-dot::before { left: 50%; top: 3px; bottom: 3px; width: 1px; margin-left: -0.5px; }
+.focal-dot::after { top: 50%; left: 3px; right: 3px; height: 1px; margin-top: -0.5px; }
+
+/* Live crop previews at real breakpoint ratios */
+.preview-row {
+    display: flex; gap: 0.5rem; align-items: flex-end;
+    padding: 0.55rem 0.6rem 0.1rem;
+}
+.preview-box { position: relative; overflow: hidden; height: 96px; background: #000; border: 1px solid rgba(255,255,255,0.12); }
+.preview-box.phone   { aspect-ratio: 9 / 19.5; }
+.preview-box.desktop { aspect-ratio: 16 / 9; }
+.preview-box img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.preview-cap { font-size: 0.5rem; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.3); align-self: center; }
 
 .photo-footer {
     display: flex; align-items: center; justify-content: space-between;
@@ -311,8 +333,14 @@ function renderPhotos(cityIdx) {
         const card = document.createElement('div');
         card.className = 'photo-card' + (hidden ? ' is-hidden' : '');
         card.innerHTML = `
-            <div class="img-wrap" data-city="${cityIdx}" data-photo="${pi}">
-                <img src="/${src}" style="object-position: ${pos}" alt="">
+            <div class="img-wrap" data-city="${cityIdx}" data-photo="${pi}" title="Click the subject's eyes to set the focal point">
+                <img src="/${src}" alt="">
+                <div class="focal-dot" style="left:${px}%; top:${py}%"></div>
+            </div>
+            <div class="preview-row">
+                <div class="preview-box phone"><img src="/${src}" style="object-position:${pos}" alt=""></div>
+                <div class="preview-box desktop"><img src="/${src}" style="object-position:${pos}" alt=""></div>
+                <span class="preview-cap">Phone&nbsp;/&nbsp;Desktop</span>
             </div>
             <div class="photo-footer">
                 <span class="pos-label">X</span>
@@ -326,48 +354,40 @@ function renderPhotos(cityIdx) {
                 <button class="photo-hide-btn" data-city="${cityIdx}" data-photo="${pi}">${hidden ? '○' : '●'}</button>
             </div>`;
 
-        // Drag to reframe
-        const wrap = card.querySelector('.img-wrap');
-        const img  = wrap.querySelector('img');
-        let dragging = false, startX, startY, startPx, startPy;
+        const wrap   = card.querySelector('.img-wrap');
+        const dot    = card.querySelector('.focal-dot');
+        const previews = card.querySelectorAll('.preview-box img');
+        const xInput = card.querySelector('.x-input');
+        const yInput = card.querySelector('.y-input');
 
-        wrap.addEventListener('mousedown', e => {
-            dragging = true; startX = e.clientX; startY = e.clientY;
-            startPx = Math.round(px); startPy = Math.round(py);
-            e.preventDefault();
-        });
-        window.addEventListener('mousemove', e => {
-            if (!dragging) return;
-            const rect = wrap.getBoundingClientRect();
-            const dx = ((e.clientX - startX) / rect.width)  * -100;
-            const dy = ((e.clientY - startY) / rect.height) * -100;
-            const newX = Math.max(0, Math.min(100, startPx + dx));
-            const newY = Math.max(0, Math.min(100, startPy + dy));
-            img.style.objectPosition = `${newX.toFixed(1)}% ${newY.toFixed(1)}%`;
-            card.querySelector('.x-input').value = Math.round(newX);
-            card.querySelector('.y-input').value = Math.round(newY);
+        function applyFocal(newX, newY) {
+            newX = Math.max(0, Math.min(100, newX));
+            newY = Math.max(0, Math.min(100, newY));
+            const posStr = `${newX.toFixed(1)}% ${newY.toFixed(1)}%`;
+            dot.style.left = `${newX}%`;
+            dot.style.top  = `${newY}%`;
+            previews.forEach(im => { im.style.objectPosition = posStr; });
+            xInput.value = Math.round(newX);
+            yInput.value = Math.round(newY);
             setPhotoPos(cityIdx, pi, newX, newY);
-        });
+        }
+
+        // Click the subject to set the focal point; drag to fine-tune
+        function pointToFocal(e) {
+            const rect = wrap.getBoundingClientRect();
+            const fx = ((e.clientX - rect.left) / rect.width)  * 100;
+            const fy = ((e.clientY - rect.top)  / rect.height) * 100;
+            applyFocal(fx, fy);
+        }
+        let dragging = false;
+        wrap.addEventListener('mousedown', e => { dragging = true; pointToFocal(e); e.preventDefault(); });
+        window.addEventListener('mousemove', e => { if (dragging) pointToFocal(e); });
         window.addEventListener('mouseup', () => { dragging = false; });
 
-        // Input change
-        card.querySelector('.x-input').addEventListener('change', e => {
-            const newX = parseFloat(e.target.value);
-            const curY = parseFloat(card.querySelector('.y-input').value);
-            img.style.objectPosition = `${newX}% ${curY}%`;
-            setPhotoPos(cityIdx, pi, newX, curY);
-        });
-        card.querySelector('.y-input').addEventListener('change', e => {
-            const newY = parseFloat(e.target.value);
-            const curX = parseFloat(card.querySelector('.x-input').value);
-            img.style.objectPosition = `${curX}% ${newY}%`;
-            setPhotoPos(cityIdx, pi, curX, newY);
-        });
+        xInput.addEventListener('change', e => applyFocal(parseFloat(e.target.value), parseFloat(yInput.value)));
+        yInput.addEventListener('change', e => applyFocal(parseFloat(xInput.value), parseFloat(e.target.value)));
 
-        // Hide/show
-        card.querySelector('.photo-hide-btn').addEventListener('click', () => {
-            togglePhoto(cityIdx, pi);
-        });
+        card.querySelector('.photo-hide-btn').addEventListener('click', () => togglePhoto(cityIdx, pi));
 
         grid.appendChild(card);
     });

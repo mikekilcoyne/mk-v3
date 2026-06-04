@@ -281,13 +281,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const makeFriendsPill = document.getElementById('make-friends-pill');
     if (makeFriendsPill) makeFriendsPill.addEventListener('click', openCory);
 
-    const qwestFriendsCta = document.getElementById('qwest-friends-cta');
-    if (qwestFriendsCta) qwestFriendsCta.addEventListener('click', () => {
-        qwestOverlay.classList.remove('active');
-        stopQwestRotation();
-        openCory();
-    });
-
     // ── Shuffle button ────────────────────────────────────────────────────────
     const shuffleBtn = document.getElementById('qwest-shuffle');
     if (shuffleBtn) {
@@ -328,47 +321,47 @@ document.addEventListener('DOMContentLoaded', () => {
                         {
                                 "src": "photos_web/01_DENVER_CO/P1001838.jpg",
                                 "isNew": true,
-                                "pos": "35% 26%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/01_DENVER_CO/P1001839.jpg",
                                 "isNew": true,
-                                "pos": "41% 33%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/01_DENVER_CO/P1001840.jpg",
                                 "isNew": true,
-                                "pos": "38% 33%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/01_DENVER_CO/P1002001.jpg",
                                 "isNew": true,
-                                "pos": "37% 86%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/01_DENVER_CO/P1002005.jpg",
                                 "isNew": true,
-                                "pos": "35% 60%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/01_DENVER_CO/P1002002-2.jpg",
                                 "isNew": true,
-                                "pos": "52% 74%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/01_DENVER_CO/P1006537.jpg",
                                 "isNew": true,
-                                "pos": "64% 37%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/01_DENVER_CO/P1006587.jpg",
                                 "isNew": true,
-                                "pos": "66% 39%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/01_DENVER_CO/P1006596.jpg",
                                 "isNew": true,
-                                "pos": "43% 33%"
+                                "pos": "50% 50%"
                         }
                 ]
         },
@@ -378,37 +371,37 @@ document.addEventListener('DOMContentLoaded', () => {
                         {
                                 "src": "photos_web/02_ISTANBUL_TY/P1015644.jpg",
                                 "isNew": true,
-                                "pos": "36% 38%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/02_ISTANBUL_TY/P1015649.jpg",
                                 "isNew": true,
-                                "pos": "40% 15%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/02_ISTANBUL_TY/P1015663.jpg",
                                 "isNew": true,
-                                "pos": "65% 48%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/02_ISTANBUL_TY/P1018292.jpg",
                                 "isNew": true,
-                                "pos": "79% 0%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/02_ISTANBUL_TY/P1018308.jpg",
                                 "isNew": true,
-                                "pos": "60% 43%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/02_ISTANBUL_TY/P1018337.jpg",
                                 "isNew": true,
-                                "pos": "49% 50%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/02_ISTANBUL_TY/P1018353.jpg",
                                 "isNew": true,
-                                "pos": "49% 50%"
+                                "pos": "50% 50%"
                         }
                 ]
         },
@@ -442,32 +435,32 @@ document.addEventListener('DOMContentLoaded', () => {
                         {
                                 "src": "photos_web/03_NEW_YORK_NY/P1002496.jpg",
                                 "isNew": true,
-                                "pos": "38% 100%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/03_NEW_YORK_NY/P1002499.jpg",
                                 "isNew": true,
-                                "pos": "73% 100%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/03_NEW_YORK_NY/P1002503.jpg",
                                 "isNew": true,
-                                "pos": "18% 100%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/03_NEW_YORK_NY/P1000804.jpg",
                                 "isNew": true,
-                                "pos": "48% 12%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/03_NEW_YORK_NY/P1000805.jpg",
                                 "isNew": true,
-                                "pos": "50% 8%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/03_NEW_YORK_NY/P1000803.jpg",
                                 "isNew": true,
-                                "pos": "49% 25%"
+                                "pos": "50% 50%"
                         }
                 ]
         },
@@ -500,7 +493,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         },
                         {
                                 "src": "photos_web/04_EAST_HAMPTON_NY/P1002348.jpg",
-                                "pos": "0% 0%",
+                                "pos": "50% 50%",
                                 "hidden": true
                         }
                 ]
@@ -510,11 +503,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 "photos": [
                         {
                                 "src": "photos_web/05_PARIS_FR/P1002427.jpg",
-                                "pos": "50% 22%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/05_PARIS_FR/P1002507.jpg",
-                                "pos": "50% 100%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/05_PARIS_FR/P1002541.jpg"
@@ -601,15 +594,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 "photos": [
                         {
                                 "src": "photos_web/10_WEST_VILLAGE_NY/P1002107.jpg",
-                                "pos": "50% 14%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/10_WEST_VILLAGE_NY/P1002140.jpg",
-                                "pos": "51% 11%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/10_WEST_VILLAGE_NY/P1002186.jpg",
-                                "pos": "53% 83%"
+                                "pos": "50% 50%"
                         }
                 ]
         },
@@ -627,19 +620,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 "photos": [
                         {
                                 "src": "photos_web/12_LOS_ANGELES_CA/P1014438.jpg",
-                                "pos": "49% 39%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/12_LOS_ANGELES_CA/P1014466-Enhanced.jpg",
-                                "pos": "49% 50%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/12_LOS_ANGELES_CA/P1014498-Enhanced.jpg",
-                                "pos": "50% 100%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/12_LOS_ANGELES_CA/P1014519-Enhanced.jpg",
-                                "pos": "50% 0%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/12_LOS_ANGELES_CA/P1014531-Enhanced.jpg"
@@ -708,37 +701,37 @@ document.addEventListener('DOMContentLoaded', () => {
                         {
                                 "src": "photos_web/22_KYOTO_JP/P1013155.jpg",
                                 "isNew": true,
-                                "pos": "84% 24%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/22_KYOTO_JP/P1013156.jpg",
                                 "isNew": true,
-                                "pos": "86% 44%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/22_KYOTO_JP/P1013158.jpg",
                                 "isNew": true,
-                                "pos": "76% 47%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/22_KYOTO_JP/P1013721.jpg",
                                 "isNew": true,
-                                "pos": "66% 83%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/22_KYOTO_JP/P1013720.jpg",
                                 "isNew": true,
-                                "pos": "57% 51%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/22_KYOTO_JP/P1013943.jpg",
                                 "isNew": true,
-                                "pos": "62% 40%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/22_KYOTO_JP/P1013940.jpg",
                                 "isNew": true,
-                                "pos": "52% 88%"
+                                "pos": "50% 50%"
                         }
                 ]
         },
@@ -818,7 +811,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         {
                                 "src": "photos_web/21_BRECKENRIDGE_CO/P1003054.jpg",
                                 "isNew": true,
-                                "pos": "99% 100%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/21_BRECKENRIDGE_CO/P1003017.jpg",
@@ -827,7 +820,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         {
                                 "src": "photos_web/21_BRECKENRIDGE_CO/P1003066.jpg",
                                 "isNew": true,
-                                "pos": "50% 46%"
+                                "pos": "50% 50%"
                         }
                 ]
         },
@@ -837,15 +830,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         {
                                 "src": "photos_web/18_VANCOUVER_BC/P1009177.jpg",
                                 "isNew": true,
-                                "pos": "50% 40%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/18_VANCOUVER_BC/P1009202.jpg",
-                                "pos": "51% 39%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/18_VANCOUVER_BC/P1009205.jpg",
-                                "pos": "51% 36%"
+                                "pos": "50% 50%"
                         }
                 ]
         },
@@ -855,19 +848,19 @@ document.addEventListener('DOMContentLoaded', () => {
                         {
                                 "src": "photos_web/19_ENCINITAS_CA/P1008177.jpg",
                                 "isNew": true,
-                                "pos": "50% 56%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/19_ENCINITAS_CA/P1008180.jpg",
-                                "pos": "51% 37%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/19_ENCINITAS_CA/P1008225.jpg",
-                                "pos": "53% 56%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/19_ENCINITAS_CA/P1008212.jpg",
-                                "pos": "40% 10%"
+                                "pos": "50% 50%"
                         }
                 ]
         },
@@ -896,7 +889,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         {
                                 "src": "photos_web/24_ROTTERDAM_NL/P1002627.jpg",
                                 "isNew": true,
-                                "pos": "0% 51%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/24_ROTTERDAM_NL/P1002628.jpg",
@@ -910,43 +903,43 @@ document.addEventListener('DOMContentLoaded', () => {
                         {
                                 "src": "photos_web/25_BIARRITZ_FR/P1002476.jpg",
                                 "isNew": true,
-                                "pos": "89% 1%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/25_BIARRITZ_FR/P1002478.jpg",
                                 "isNew": true,
-                                "pos": "58% 13%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/25_BIARRITZ_FR/P1002485.jpg",
                                 "isNew": true,
-                                "pos": "62% 49%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/25_BIARRITZ_FR/P1002504.jpg",
                                 "isNew": true,
-                                "pos": "80% 35%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/25_BIARRITZ_FR/P1002486.jpg",
                                 "isNew": true,
-                                "pos": "77% 51%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/25_BIARRITZ_FR/P1002488.jpg",
                                 "isNew": true,
-                                "pos": "65% 30%"
+                                "pos": "50% 50%"
                         },
                         {
                                 "src": "photos_web/25_BIARRITZ_FR/P1002492.jpg",
                                 "isNew": true,
-                                "pos": "42% 28%",
+                                "pos": "50% 50%",
                                 "hidden": true
                         },
                         {
                                 "src": "photos_web/25_BIARRITZ_FR/P1002496.jpg",
                                 "isNew": true,
-                                "pos": "16% 24%",
+                                "pos": "50% 50%",
                                 "hidden": true
                         }
                 ]
