@@ -318,14 +318,14 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             "location": "Denver, CO",
             "photos": [
-                { "src": "photos_web/01_DENVER_CO/P1001838.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/01_DENVER_CO/P1001839.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/01_DENVER_CO/P1001840.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/01_DENVER_CO/P1002001.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/01_DENVER_CO/P1002005.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/01_DENVER_CO/P1002002-2.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/01_DENVER_CO/P1006537.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/01_DENVER_CO/P1006587.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/01_DENVER_CO/P1001838.jpg", "pos": "53% 49%", "isNew": true },
+                { "src": "photos_web/01_DENVER_CO/P1001839.jpg", "pos": "54% 47%", "isNew": true },
+                { "src": "photos_web/01_DENVER_CO/P1001840.jpg", "pos": "46% 47%", "isNew": true },
+                { "src": "photos_web/01_DENVER_CO/P1002001.jpg", "pos": "62% 68%", "isNew": true },
+                { "src": "photos_web/01_DENVER_CO/P1002005.jpg", "pos": "57% 59%", "isNew": true },
+                { "src": "photos_web/01_DENVER_CO/P1002002-2.jpg", "pos": "59% 65%", "isNew": true },
+                { "src": "photos_web/01_DENVER_CO/P1006537.jpg", "pos": "46% 36%", "isNew": true },
+                { "src": "photos_web/01_DENVER_CO/P1006587.jpg", "pos": "78% 50%", "isNew": true },
                 { "src": "photos_web/01_DENVER_CO/P1006596.jpg", "pos": "50% 50%", "isNew": true }
             ]
         },
