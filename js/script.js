@@ -434,11 +434,11 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             "location": "Los Angeles, CA",
             "photos": [
-                { "src": "photos_web/12_LOS_ANGELES_CA/P1014438.jpg", "pos": "50% 50%" },
-                { "src": "photos_web/12_LOS_ANGELES_CA/P1014466-Enhanced.jpg", "pos": "50% 50%" },
-                { "src": "photos_web/12_LOS_ANGELES_CA/P1014498-Enhanced.jpg", "pos": "50% 50%" },
-                { "src": "photos_web/12_LOS_ANGELES_CA/P1014519-Enhanced.jpg", "pos": "50% 50%" },
-                { "src": "photos_web/12_LOS_ANGELES_CA/P1014531-Enhanced.jpg" },
+                { "src": "photos_web/12_LOS_ANGELES_CA/P1014438.jpg", "pos": "45% 48%" },
+                { "src": "photos_web/12_LOS_ANGELES_CA/P1014466-Enhanced.jpg", "pos": "62% 49%" },
+                { "src": "photos_web/12_LOS_ANGELES_CA/P1014498-Enhanced.jpg", "pos": "56% 71%" },
+                { "src": "photos_web/12_LOS_ANGELES_CA/P1014519-Enhanced.jpg", "pos": "46% 25%" },
+                { "src": "photos_web/12_LOS_ANGELES_CA/P1014531-Enhanced.jpg", "pos": "39% 45%" },
                 { "src": "photos_web/12_LOS_ANGELES_CA/P1019460.jpg", "hidden": true },
                 { "src": "photos_web/12_LOS_ANGELES_CA/P1019569.jpg", "hidden": true }
             ]
