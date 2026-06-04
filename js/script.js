@@ -496,9 +496,9 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             "location": "Lower East Side, NY",
             "photos": [
-                { "src": "photos_web/15_LES_NEW_YORK/IMG_2684.jpg", "isNew": true },
-                { "src": "photos_web/15_LES_NEW_YORK/IMG_2686.jpg" },
-                { "src": "photos_web/15_LES_NEW_YORK/IMG_2687.jpg" }
+                { "src": "photos_web/15_LES_NEW_YORK/IMG_2684.jpg", "pos": "51% 44%", "isNew": true },
+                { "src": "photos_web/15_LES_NEW_YORK/IMG_2686.jpg", "pos": "48% 49%" },
+                { "src": "photos_web/15_LES_NEW_YORK/IMG_2687.jpg", "pos": "46% 53%" }
             ]
         },
         {
