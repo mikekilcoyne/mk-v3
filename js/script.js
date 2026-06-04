@@ -316,635 +316,257 @@ document.addEventListener('DOMContentLoaded', () => {
     // Photos can be a string path OR { src, isNew: true } for NEW badge
     const qwestData = [
         {
-                "location": "Denver, CO",
-                "photos": [
-                        {
-                                "src": "photos_web/01_DENVER_CO/P1001838.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/01_DENVER_CO/P1001839.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/01_DENVER_CO/P1001840.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/01_DENVER_CO/P1002001.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/01_DENVER_CO/P1002005.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/01_DENVER_CO/P1002002-2.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/01_DENVER_CO/P1006537.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/01_DENVER_CO/P1006587.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/01_DENVER_CO/P1006596.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        }
-                ]
+            "location": "Denver, CO",
+            "photos": [
+                { "src": "photos_web/01_DENVER_CO/P1001838.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/01_DENVER_CO/P1001839.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/01_DENVER_CO/P1001840.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/01_DENVER_CO/P1002001.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/01_DENVER_CO/P1002005.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/01_DENVER_CO/P1002002-2.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/01_DENVER_CO/P1006537.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/01_DENVER_CO/P1006587.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/01_DENVER_CO/P1006596.jpg", "pos": "50% 50%", "isNew": true }
+            ]
         },
         {
-                "location": "Istanbul, TR",
-                "photos": [
-                        {
-                                "src": "photos_web/02_ISTANBUL_TY/P1015644.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/02_ISTANBUL_TY/P1015649.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/02_ISTANBUL_TY/P1015663.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/02_ISTANBUL_TY/P1018292.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/02_ISTANBUL_TY/P1018308.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/02_ISTANBUL_TY/P1018337.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/02_ISTANBUL_TY/P1018353.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        }
-                ]
+            "location": "Istanbul, TR",
+            "photos": [
+                { "src": "photos_web/02_ISTANBUL_TY/P1015644.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/02_ISTANBUL_TY/P1015649.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/02_ISTANBUL_TY/P1015663.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/02_ISTANBUL_TY/P1018292.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/02_ISTANBUL_TY/P1018308.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/02_ISTANBUL_TY/P1018337.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/02_ISTANBUL_TY/P1018353.jpg", "pos": "50% 50%", "isNew": true }
+            ]
         },
         {
-                "location": "New York, NY",
-                "photos": [
-                        {
-                                "src": "photos_web/03_NEW_YORK_NY/IMG_2921.jpg",
-                                "hidden": true
-                        },
-                        {
-                                "src": "photos_web/03_NEW_YORK_NY/P1000803.jpg",
-                                "hidden": true
-                        },
-                        {
-                                "src": "photos_web/03_NEW_YORK_NY/P1001261.jpg",
-                                "hidden": true
-                        },
-                        {
-                                "src": "photos_web/03_NEW_YORK_NY/P1001769-Enhanced.jpg",
-                                "hidden": true
-                        },
-                        {
-                                "src": "photos_web/03_NEW_YORK_NY/P1002488-Enhanced.jpg",
-                                "hidden": true
-                        },
-                        {
-                                "src": "photos_web/03_NEW_YORK_NY/P1002559.jpg",
-                                "hidden": true
-                        },
-                        {
-                                "src": "photos_web/03_NEW_YORK_NY/P1002496.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/03_NEW_YORK_NY/P1002499.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/03_NEW_YORK_NY/P1002503.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/03_NEW_YORK_NY/P1000804.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/03_NEW_YORK_NY/P1000805.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/03_NEW_YORK_NY/P1000803.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        }
-                ]
+            "location": "New York, NY",
+            "photos": [
+                { "src": "photos_web/03_NEW_YORK_NY/IMG_2921.jpg", "hidden": true },
+                { "src": "photos_web/03_NEW_YORK_NY/P1000803.jpg", "hidden": true },
+                { "src": "photos_web/03_NEW_YORK_NY/P1001261.jpg", "hidden": true },
+                { "src": "photos_web/03_NEW_YORK_NY/P1001769-Enhanced.jpg", "hidden": true },
+                { "src": "photos_web/03_NEW_YORK_NY/P1002488-Enhanced.jpg", "hidden": true },
+                { "src": "photos_web/03_NEW_YORK_NY/P1002559.jpg", "hidden": true },
+                { "src": "photos_web/03_NEW_YORK_NY/P1002496.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/03_NEW_YORK_NY/P1002499.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/03_NEW_YORK_NY/P1002503.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/03_NEW_YORK_NY/P1000804.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/03_NEW_YORK_NY/P1000805.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/03_NEW_YORK_NY/P1000803.jpg", "pos": "50% 50%", "isNew": true }
+            ]
         },
         {
-                "location": "East Hampton, NY",
-                "photos": [
-                        {
-                                "src": "photos_web/04_EAST_HAMPTON_NY/P1010224.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/04_EAST_HAMPTON_NY/P1010235.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/04_EAST_HAMPTON_NY/P1010253.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/04_EAST_HAMPTON_NY/P1010266.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/04_EAST_HAMPTON_NY/P1010270.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/04_EAST_HAMPTON_NY/P1002360.jpg",
-                                "hidden": true
-                        },
-                        {
-                                "src": "photos_web/04_EAST_HAMPTON_NY/P1002348.jpg",
-                                "pos": "50% 50%",
-                                "hidden": true
-                        }
-                ]
+            "location": "East Hampton, NY",
+            "photos": [
+                { "src": "photos_web/04_EAST_HAMPTON_NY/P1010224.jpg", "isNew": true },
+                { "src": "photos_web/04_EAST_HAMPTON_NY/P1010235.jpg", "isNew": true },
+                { "src": "photos_web/04_EAST_HAMPTON_NY/P1010253.jpg", "isNew": true },
+                { "src": "photos_web/04_EAST_HAMPTON_NY/P1010266.jpg", "isNew": true },
+                { "src": "photos_web/04_EAST_HAMPTON_NY/P1010270.jpg", "isNew": true },
+                { "src": "photos_web/04_EAST_HAMPTON_NY/P1002360.jpg", "hidden": true },
+                { "src": "photos_web/04_EAST_HAMPTON_NY/P1002348.jpg", "pos": "50% 50%", "hidden": true }
+            ]
         },
         {
-                "location": "Paris, FR",
-                "photos": [
-                        {
-                                "src": "photos_web/05_PARIS_FR/P1002427.jpg",
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/05_PARIS_FR/P1002507.jpg",
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/05_PARIS_FR/P1002541.jpg"
-                        },
-                        {
-                                "src": "photos_web/05_PARIS_FR/IMG_3445.jpg"
-                        }
-                ]
+            "location": "Paris, FR",
+            "photos": [
+                { "src": "photos_web/05_PARIS_FR/P1002427.jpg", "pos": "50% 50%" },
+                { "src": "photos_web/05_PARIS_FR/P1002507.jpg", "pos": "50% 50%" },
+                { "src": "photos_web/05_PARIS_FR/P1002541.jpg" },
+                { "src": "photos_web/05_PARIS_FR/IMG_3445.jpg" }
+            ]
         },
         {
-                "location": "Maastricht, NL",
-                "photos": [
-                        {
-                                "src": "photos_web/06_MAASTRICTH_NL/P1001039.jpg"
-                        },
-                        {
-                                "src": "photos_web/06_MAASTRICTH_NL/P1001073.jpg"
-                        },
-                        {
-                                "src": "photos_web/06_MAASTRICTH_NL/P1001094.jpg"
-                        },
-                        {
-                                "src": "photos_web/06_MAASTRICTH_NL/P1001174.jpg"
-                        }
-                ],
-                "hidden": true
+            "location": "Maastricht, NL",
+            "photos": [
+                { "src": "photos_web/06_MAASTRICTH_NL/P1001039.jpg" },
+                { "src": "photos_web/06_MAASTRICTH_NL/P1001073.jpg" },
+                { "src": "photos_web/06_MAASTRICTH_NL/P1001094.jpg" },
+                { "src": "photos_web/06_MAASTRICTH_NL/P1001174.jpg" }
+            ],
+            "hidden": true
         },
         {
-                "location": "Ireland",
-                "photos": [
-                        {
-                                "src": "photos_web/07_IRELAND/P1000509-Edit.jpg",
-                                "hidden": true
-                        },
-                        {
-                                "src": "photos_web/07_IRELAND/P1000656.jpg",
-                                "hidden": true
-                        },
-                        {
-                                "src": "photos_web/07_IRELAND/P1000545.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/07_IRELAND/P1000550.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/07_IRELAND/P1000552.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/07_IRELAND/P1000972.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/07_IRELAND/P1000975.jpg",
-                                "isNew": true
-                        }
-                ]
+            "location": "Ireland",
+            "photos": [
+                { "src": "photos_web/07_IRELAND/P1000509-Edit.jpg", "pos": "70% 42%", "hidden": true },
+                { "src": "photos_web/07_IRELAND/P1000656.jpg", "hidden": true },
+                { "src": "photos_web/07_IRELAND/P1000545.jpg", "pos": "53% 30%", "isNew": true },
+                { "src": "photos_web/07_IRELAND/P1000550.jpg", "pos": "50% 29%", "isNew": true },
+                { "src": "photos_web/07_IRELAND/P1000552.jpg", "pos": "50% 32%", "isNew": true },
+                { "src": "photos_web/07_IRELAND/P1000972.jpg", "pos": "43% 61%", "isNew": true },
+                { "src": "photos_web/07_IRELAND/P1000975.jpg", "pos": "88% 48%", "isNew": true }
+            ]
         },
         {
-                "location": "London, UK",
-                "photos": [
-                        {
-                                "src": "photos_web/08_LONDON_UK/P1001252.jpg"
-                        },
-                        {
-                                "src": "photos_web/08_LONDON_UK/P1001266.jpg"
-                        }
-                ],
-                "hidden": true
+            "location": "London, UK",
+            "photos": [
+                { "src": "photos_web/08_LONDON_UK/P1001252.jpg" },
+                { "src": "photos_web/08_LONDON_UK/P1001266.jpg" }
+            ],
+            "hidden": true
         },
         {
-                "location": "Santa Monica, CA",
-                "photos": [
-                        {
-                                "src": "photos_web/09_SANTA_MONICA_CA/P1001553.jpg"
-                        }
-                ],
-                "hidden": true
+            "location": "Santa Monica, CA",
+            "photos": [
+                { "src": "photos_web/09_SANTA_MONICA_CA/P1001553.jpg" }
+            ],
+            "hidden": true
         },
         {
-                "location": "West Village, NY",
-                "photos": [
-                        {
-                                "src": "photos_web/10_WEST_VILLAGE_NY/P1002107.jpg",
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/10_WEST_VILLAGE_NY/P1002140.jpg",
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/10_WEST_VILLAGE_NY/P1002186.jpg",
-                                "pos": "50% 50%"
-                        }
-                ]
+            "location": "West Village, NY",
+            "photos": [
+                { "src": "photos_web/10_WEST_VILLAGE_NY/P1002107.jpg", "pos": "51% 44%" },
+                { "src": "photos_web/10_WEST_VILLAGE_NY/P1002140.jpg", "pos": "40% 42%" },
+                { "src": "photos_web/10_WEST_VILLAGE_NY/P1002186.jpg", "pos": "76% 62%" }
+            ]
         },
         {
-                "location": "Rocky Mountain, CO",
-                "photos": [
-                        {
-                                "src": "photos_web/11_ROCKYS_CO/P1005342.jpg"
-                        }
-                ],
-                "hidden": true
+            "location": "Rocky Mountain, CO",
+            "photos": [
+                { "src": "photos_web/11_ROCKYS_CO/P1005342.jpg" }
+            ],
+            "hidden": true
         },
         {
-                "location": "Los Angeles, CA",
-                "photos": [
-                        {
-                                "src": "photos_web/12_LOS_ANGELES_CA/P1014438.jpg",
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/12_LOS_ANGELES_CA/P1014466-Enhanced.jpg",
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/12_LOS_ANGELES_CA/P1014498-Enhanced.jpg",
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/12_LOS_ANGELES_CA/P1014519-Enhanced.jpg",
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/12_LOS_ANGELES_CA/P1014531-Enhanced.jpg"
-                        },
-                        {
-                                "src": "photos_web/12_LOS_ANGELES_CA/P1019460.jpg",
-                                "hidden": true
-                        },
-                        {
-                                "src": "photos_web/12_LOS_ANGELES_CA/P1019569.jpg",
-                                "hidden": true
-                        }
-                ]
+            "location": "Los Angeles, CA",
+            "photos": [
+                { "src": "photos_web/12_LOS_ANGELES_CA/P1014438.jpg", "pos": "50% 50%" },
+                { "src": "photos_web/12_LOS_ANGELES_CA/P1014466-Enhanced.jpg", "pos": "50% 50%" },
+                { "src": "photos_web/12_LOS_ANGELES_CA/P1014498-Enhanced.jpg", "pos": "50% 50%" },
+                { "src": "photos_web/12_LOS_ANGELES_CA/P1014519-Enhanced.jpg", "pos": "50% 50%" },
+                { "src": "photos_web/12_LOS_ANGELES_CA/P1014531-Enhanced.jpg" },
+                { "src": "photos_web/12_LOS_ANGELES_CA/P1019460.jpg", "hidden": true },
+                { "src": "photos_web/12_LOS_ANGELES_CA/P1019569.jpg", "hidden": true }
+            ]
         },
         {
-                "location": "Iceland",
-                "photos": [
-                        {
-                                "src": "photos_web/13_ICELAND/P1010846-Enhanced.jpg",
-                                "isNew": true
-                        }
-                ],
-                "hidden": true
+            "location": "Iceland",
+            "photos": [
+                { "src": "photos_web/13_ICELAND/P1010846-Enhanced.jpg", "isNew": true }
+            ],
+            "hidden": true
         },
         {
-                "location": "Japan",
-                "photos": [
-                        {
-                                "src": "photos_web/14_JAPAN/P1007387.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/14_JAPAN/P1012490.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/14_JAPAN/P1012817-Enhanced.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/14_JAPAN/P1013145.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/14_JAPAN/P1014251.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/14_JAPAN/P1014552.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/14_JAPAN/P1014556.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/14_JAPAN/P1014749.jpg",
-                                "isNew": true
-                        }
-                ],
-                "hidden": true
+            "location": "Japan",
+            "photos": [
+                { "src": "photos_web/14_JAPAN/P1007387.jpg", "isNew": true },
+                { "src": "photos_web/14_JAPAN/P1012490.jpg", "isNew": true },
+                { "src": "photos_web/14_JAPAN/P1012817-Enhanced.jpg", "isNew": true },
+                { "src": "photos_web/14_JAPAN/P1013145.jpg", "isNew": true },
+                { "src": "photos_web/14_JAPAN/P1014251.jpg", "isNew": true },
+                { "src": "photos_web/14_JAPAN/P1014552.jpg", "isNew": true },
+                { "src": "photos_web/14_JAPAN/P1014556.jpg", "isNew": true },
+                { "src": "photos_web/14_JAPAN/P1014749.jpg", "isNew": true }
+            ],
+            "hidden": true
         },
         {
-                "location": "Kyoto, JP",
-                "photos": [
-                        {
-                                "src": "photos_web/22_KYOTO_JP/P1013155.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/22_KYOTO_JP/P1013156.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/22_KYOTO_JP/P1013158.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/22_KYOTO_JP/P1013721.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/22_KYOTO_JP/P1013720.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/22_KYOTO_JP/P1013943.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/22_KYOTO_JP/P1013940.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        }
-                ]
+            "location": "Kyoto, JP",
+            "photos": [
+                { "src": "photos_web/22_KYOTO_JP/P1013155.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/22_KYOTO_JP/P1013156.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/22_KYOTO_JP/P1013158.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/22_KYOTO_JP/P1013721.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/22_KYOTO_JP/P1013720.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/22_KYOTO_JP/P1013943.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/22_KYOTO_JP/P1013940.jpg", "pos": "50% 50%", "isNew": true }
+            ]
         },
         {
-                "location": "Osaka, JP",
-                "photos": [
-                        {
-                                "src": "photos_web/23_OSAKA_JP/P1014752.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/23_OSAKA_JP/P1014754.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/23_OSAKA_JP/P1014757.jpg",
-                                "isNew": true
-                        }
-                ]
+            "location": "Osaka, JP",
+            "photos": [
+                { "src": "photos_web/23_OSAKA_JP/P1014752.jpg", "isNew": true },
+                { "src": "photos_web/23_OSAKA_JP/P1014754.jpg", "isNew": true },
+                { "src": "photos_web/23_OSAKA_JP/P1014757.jpg", "isNew": true }
+            ]
         },
         {
-                "location": "Kobe, JP",
-                "photos": [
-                        {
-                                "src": "photos_web/16_KOBE_JP/P1014327.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/16_KOBE_JP/P1014334.jpg"
-                        },
-                        {
-                                "src": "photos_web/16_KOBE_JP/P1014356.jpg"
-                        }
-                ],
-                "hidden": true
+            "location": "Kobe, JP",
+            "photos": [
+                { "src": "photos_web/16_KOBE_JP/P1014327.jpg", "isNew": true },
+                { "src": "photos_web/16_KOBE_JP/P1014334.jpg" },
+                { "src": "photos_web/16_KOBE_JP/P1014356.jpg" }
+            ],
+            "hidden": true
         },
         {
-                "location": "Lower East Side, NY",
-                "photos": [
-                        {
-                                "src": "photos_web/15_LES_NEW_YORK/IMG_2684.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/15_LES_NEW_YORK/IMG_2686.jpg"
-                        },
-                        {
-                                "src": "photos_web/15_LES_NEW_YORK/IMG_2687.jpg"
-                        }
-                ]
+            "location": "Lower East Side, NY",
+            "photos": [
+                { "src": "photos_web/15_LES_NEW_YORK/IMG_2684.jpg", "isNew": true },
+                { "src": "photos_web/15_LES_NEW_YORK/IMG_2686.jpg" },
+                { "src": "photos_web/15_LES_NEW_YORK/IMG_2687.jpg" }
+            ]
         },
         {
-                "location": "Phoenix, AZ",
-                "photos": [
-                        {
-                                "src": "photos_web/17_PHOENIX_AZ/P1012017.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/17_PHOENIX_AZ/P1012018.jpg"
-                        },
-                        {
-                                "src": "photos_web/17_PHOENIX_AZ/P1012019.jpg"
-                        },
-                        {
-                                "src": "photos_web/17_PHOENIX_AZ/P1012025.jpg"
-                        },
-                        {
-                                "src": "photos_web/17_PHOENIX_AZ/P1012027.jpg"
-                        }
-                ],
-                "hidden": true
+            "location": "Phoenix, AZ",
+            "photos": [
+                { "src": "photos_web/17_PHOENIX_AZ/P1012017.jpg", "isNew": true },
+                { "src": "photos_web/17_PHOENIX_AZ/P1012018.jpg" },
+                { "src": "photos_web/17_PHOENIX_AZ/P1012019.jpg" },
+                { "src": "photos_web/17_PHOENIX_AZ/P1012025.jpg" },
+                { "src": "photos_web/17_PHOENIX_AZ/P1012027.jpg" }
+            ],
+            "hidden": true
         },
         {
-                "location": "Breckenridge, CO",
-                "photos": [
-                        {
-                                "src": "photos_web/21_BRECKENRIDGE_CO/P1003054.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/21_BRECKENRIDGE_CO/P1003017.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/21_BRECKENRIDGE_CO/P1003066.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        }
-                ]
+            "location": "Breckenridge, CO",
+            "photos": [
+                { "src": "photos_web/21_BRECKENRIDGE_CO/P1003054.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/21_BRECKENRIDGE_CO/P1003017.jpg", "isNew": true },
+                { "src": "photos_web/21_BRECKENRIDGE_CO/P1003066.jpg", "pos": "50% 50%", "isNew": true }
+            ]
         },
         {
-                "location": "Vancouver, BC",
-                "photos": [
-                        {
-                                "src": "photos_web/18_VANCOUVER_BC/P1009177.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/18_VANCOUVER_BC/P1009202.jpg",
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/18_VANCOUVER_BC/P1009205.jpg",
-                                "pos": "50% 50%"
-                        }
-                ]
+            "location": "Vancouver, BC",
+            "photos": [
+                { "src": "photos_web/18_VANCOUVER_BC/P1009177.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/18_VANCOUVER_BC/P1009202.jpg", "pos": "50% 50%" },
+                { "src": "photos_web/18_VANCOUVER_BC/P1009205.jpg", "pos": "50% 50%" }
+            ]
         },
         {
-                "location": "Encinitas, CA",
-                "photos": [
-                        {
-                                "src": "photos_web/19_ENCINITAS_CA/P1008177.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/19_ENCINITAS_CA/P1008180.jpg",
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/19_ENCINITAS_CA/P1008225.jpg",
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/19_ENCINITAS_CA/P1008212.jpg",
-                                "pos": "50% 50%"
-                        }
-                ]
+            "location": "Encinitas, CA",
+            "photos": [
+                { "src": "photos_web/19_ENCINITAS_CA/P1008177.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/19_ENCINITAS_CA/P1008180.jpg", "pos": "50% 50%" },
+                { "src": "photos_web/19_ENCINITAS_CA/P1008225.jpg", "pos": "50% 50%" },
+                { "src": "photos_web/19_ENCINITAS_CA/P1008212.jpg", "pos": "50% 50%" }
+            ]
         },
         {
-                "location": "Smoky Mountains, TN",
-                "photos": [
-                        {
-                                "src": "photos_web/20_SMOKIES_TN/P1005572.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/20_SMOKIES_TN/P1005578.jpg"
-                        },
-                        {
-                                "src": "photos_web/20_SMOKIES_TN/P1005581.jpg"
-                        }
-                ]
+            "location": "Smoky Mountains, TN",
+            "photos": [
+                { "src": "photos_web/20_SMOKIES_TN/P1005572.jpg", "isNew": true },
+                { "src": "photos_web/20_SMOKIES_TN/P1005578.jpg" },
+                { "src": "photos_web/20_SMOKIES_TN/P1005581.jpg" }
+            ]
         },
         {
-                "location": "Rotterdam, NL",
-                "photos": [
-                        {
-                                "src": "photos_web/24_ROTTERDAM_NL/P1002629.jpg",
-                                "isNew": true
-                        },
-                        {
-                                "src": "photos_web/24_ROTTERDAM_NL/P1002627.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/24_ROTTERDAM_NL/P1002628.jpg",
-                                "isNew": true
-                        }
-                ]
+            "location": "Rotterdam, NL",
+            "photos": [
+                { "src": "photos_web/24_ROTTERDAM_NL/P1002629.jpg", "isNew": true },
+                { "src": "photos_web/24_ROTTERDAM_NL/P1002627.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/24_ROTTERDAM_NL/P1002628.jpg", "isNew": true }
+            ]
         },
         {
-                "location": "Biarritz, FR",
-                "photos": [
-                        {
-                                "src": "photos_web/25_BIARRITZ_FR/P1002476.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/25_BIARRITZ_FR/P1002478.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/25_BIARRITZ_FR/P1002485.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/25_BIARRITZ_FR/P1002504.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/25_BIARRITZ_FR/P1002486.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/25_BIARRITZ_FR/P1002488.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%"
-                        },
-                        {
-                                "src": "photos_web/25_BIARRITZ_FR/P1002492.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%",
-                                "hidden": true
-                        },
-                        {
-                                "src": "photos_web/25_BIARRITZ_FR/P1002496.jpg",
-                                "isNew": true,
-                                "pos": "50% 50%",
-                                "hidden": true
-                        }
-                ]
+            "location": "Biarritz, FR",
+            "photos": [
+                { "src": "photos_web/25_BIARRITZ_FR/P1002476.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/25_BIARRITZ_FR/P1002478.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/25_BIARRITZ_FR/P1002485.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/25_BIARRITZ_FR/P1002504.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/25_BIARRITZ_FR/P1002486.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/25_BIARRITZ_FR/P1002488.jpg", "pos": "50% 50%", "isNew": true },
+                { "src": "photos_web/25_BIARRITZ_FR/P1002492.jpg", "pos": "50% 50%", "hidden": true, "isNew": true },
+                { "src": "photos_web/25_BIARRITZ_FR/P1002496.jpg", "pos": "50% 50%", "hidden": true, "isNew": true }
+            ]
         }
-];
+        ];
 
     let currentLocationIndex = 0;
     let currentPhotoIndex = 0;
