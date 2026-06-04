@@ -373,10 +373,10 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             "location": "Paris, FR",
             "photos": [
-                { "src": "photos_web/05_PARIS_FR/P1002427.jpg", "pos": "50% 50%" },
-                { "src": "photos_web/05_PARIS_FR/P1002507.jpg", "pos": "50% 50%" },
-                { "src": "photos_web/05_PARIS_FR/P1002541.jpg" },
-                { "src": "photos_web/05_PARIS_FR/IMG_3445.jpg" }
+                { "src": "photos_web/05_PARIS_FR/P1002427.jpg", "pos": "51% 37%" },
+                { "src": "photos_web/05_PARIS_FR/P1002507.jpg", "pos": "50% 41%" },
+                { "src": "photos_web/05_PARIS_FR/P1002541.jpg", "pos": "19% 24%" },
+                { "src": "photos_web/05_PARIS_FR/IMG_3445.jpg", "pos": "46% 42%" }
             ]
         },
         {
