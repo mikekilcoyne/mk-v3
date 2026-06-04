@@ -479,9 +479,9 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             "location": "Osaka, JP",
             "photos": [
-                { "src": "photos_web/23_OSAKA_JP/P1014752.jpg", "isNew": true },
-                { "src": "photos_web/23_OSAKA_JP/P1014754.jpg", "isNew": true },
-                { "src": "photos_web/23_OSAKA_JP/P1014757.jpg", "isNew": true }
+                { "src": "photos_web/23_OSAKA_JP/P1014752.jpg", "pos": "49% 45%", "isNew": true },
+                { "src": "photos_web/23_OSAKA_JP/P1014754.jpg", "pos": "51% 44%", "isNew": true },
+                { "src": "photos_web/23_OSAKA_JP/P1014757.jpg", "pos": "51% 40%", "isNew": true }
             ]
         },
         {
