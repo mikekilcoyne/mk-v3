@@ -361,11 +361,11 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             "location": "East Hampton, NY",
             "photos": [
-                { "src": "photos_web/04_EAST_HAMPTON_NY/P1010224.jpg", "isNew": true },
-                { "src": "photos_web/04_EAST_HAMPTON_NY/P1010235.jpg", "isNew": true },
-                { "src": "photos_web/04_EAST_HAMPTON_NY/P1010253.jpg", "isNew": true },
-                { "src": "photos_web/04_EAST_HAMPTON_NY/P1010266.jpg", "isNew": true },
-                { "src": "photos_web/04_EAST_HAMPTON_NY/P1010270.jpg", "isNew": true },
+                { "src": "photos_web/04_EAST_HAMPTON_NY/P1010224.jpg", "pos": "47% 42%", "isNew": true },
+                { "src": "photos_web/04_EAST_HAMPTON_NY/P1010235.jpg", "pos": "38% 41%", "isNew": true },
+                { "src": "photos_web/04_EAST_HAMPTON_NY/P1010253.jpg", "pos": "34% 44%", "isNew": true },
+                { "src": "photos_web/04_EAST_HAMPTON_NY/P1010266.jpg", "pos": "49% 46%", "isNew": true },
+                { "src": "photos_web/04_EAST_HAMPTON_NY/P1010270.jpg", "pos": "48% 46%", "isNew": true },
                 { "src": "photos_web/04_EAST_HAMPTON_NY/P1002360.jpg", "hidden": true },
                 { "src": "photos_web/04_EAST_HAMPTON_NY/P1002348.jpg", "pos": "50% 50%", "hidden": true }
             ]
