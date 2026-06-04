@@ -540,9 +540,9 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             "location": "Smoky Mountains, TN",
             "photos": [
-                { "src": "photos_web/20_SMOKIES_TN/P1005572.jpg", "isNew": true },
-                { "src": "photos_web/20_SMOKIES_TN/P1005578.jpg" },
-                { "src": "photos_web/20_SMOKIES_TN/P1005581.jpg" }
+                { "src": "photos_web/20_SMOKIES_TN/P1005572.jpg", "pos": "27% 48%", "isNew": true },
+                { "src": "photos_web/20_SMOKIES_TN/P1005578.jpg", "pos": "33% 49%" },
+                { "src": "photos_web/20_SMOKIES_TN/P1005581.jpg", "pos": "15% 49%" }
             ]
         },
         {
