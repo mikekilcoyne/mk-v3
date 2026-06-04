@@ -515,9 +515,9 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             "location": "Breckenridge, CO",
             "photos": [
-                { "src": "photos_web/21_BRECKENRIDGE_CO/P1003054.jpg", "pos": "50% 50%", "isNew": true },
-                { "src": "photos_web/21_BRECKENRIDGE_CO/P1003017.jpg", "isNew": true },
-                { "src": "photos_web/21_BRECKENRIDGE_CO/P1003066.jpg", "pos": "50% 50%", "isNew": true }
+                { "src": "photos_web/21_BRECKENRIDGE_CO/P1003054.jpg", "pos": "37% 29%", "isNew": true },
+                { "src": "photos_web/21_BRECKENRIDGE_CO/P1003017.jpg", "pos": "53% 37%", "isNew": true },
+                { "src": "photos_web/21_BRECKENRIDGE_CO/P1003066.jpg", "pos": "23% 7%", "isNew": true }
             ]
         },
         {
