@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const topbar = document.createElement('div');
     topbar.className = 'essay-topbar';
-    topbar.innerHTML = '<a href="../index.html">Mike Kilcoyne</a><span class="essay-chapter-label" id="essay-chapter-label"></span>';
+    topbar.innerHTML = '<a href="../index.html">Michael Kilcoyne</a><span class="essay-chapter-label" id="essay-chapter-label"></span>';
 
     const hero = document.createElement('section');
     hero.className = 'essay-hero essay-scene';

@@ -5,7 +5,7 @@
 window.ESSAY = {
     kicker: 'A Photo Essay',
     title: 'What I Talk About When I Talk About Traveling',
-    byline: 'By Mike Kilcoyne &middot; Istanbul',
+    byline: 'By Michael Kilcoyne &middot; Istanbul',
     cover: { img: '../photos_web/00_ESSAY_TRAVELING/DSC01320.jpg', pos: '50% 50%' },
     chapters: [
         {
