@@ -1,0 +1,332 @@
+/* ── Video Essay — scrollytelling layout ─────────────────────────────
+   Tokens mirror css/style.css (see docs/STYLE_GUIDE.md). Standalone so
+   essay pages don't inherit the home page's overflow:hidden hero rules. */
+:root {
+    --font-ui: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-body: Georgia, 'Times New Roman', serif;
+    --ls-ui: 2px;
+    --ls-label: 3px;
+    --fw-ui: 700;
+    --c-text: #ffffff;
+    --c-text-dim: rgba(255,255,255,0.5);
+    --c-accent: #FFDD66;
+    --c-scrim: rgba(0,0,0,0.45);
+    --glow-accent: 0 0 12px rgba(255,221,102,0.55), 0 0 26px rgba(255,221,102,0.25);
+}
+
+@font-face {
+    font-family: 'NCL Neo Vibes';
+    src: url('../docs/ncl_neovibes/woff/NCLNeovibes-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body.essay-body {
+    font-family: var(--font-ui);
+    color: var(--c-text);
+    background-color: #000;
+    overflow-x: hidden;
+}
+
+/* ── Fixed background layer (two imgs crossfade) ── */
+.essay-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    background: #000;
+}
+.essay-bg img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+    opacity: 0;
+    transform: scale(1.04);
+    transition: opacity 1.1s ease, transform 8s ease-out;
+    will-change: opacity, transform;
+}
+.essay-bg img.active {
+    opacity: 1;
+    transform: scale(1);
+}
+/* Gentle global scrim so white text always survives bright skies */
+.essay-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.12) 35%, rgba(0,0,0,0.12) 65%, rgba(0,0,0,0.45) 100%);
+    pointer-events: none;
+}
+
+/* ── Progress bar + top chrome ── */
+.essay-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 0%;
+    background: var(--c-accent);
+    box-shadow: var(--glow-accent);
+    z-index: 30;
+    transition: width 0.15s linear;
+}
+.essay-topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 22px;
+    z-index: 20;
+    pointer-events: none;
+}
+.essay-topbar a,
+.essay-chapter-label {
+    pointer-events: auto;
+    font-family: var(--font-ui);
+    font-weight: var(--fw-ui);
+    font-size: 0.72rem;
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--c-text);
+    text-decoration: none;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.8);
+    opacity: 0.85;
+}
+.essay-topbar a:hover { color: var(--c-accent); }
+.essay-chapter-label {
+    color: var(--c-text-dim);
+    transition: opacity 0.4s ease;
+}
+
+/* ── Hero / title screen ── */
+.essay-hero {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 24px;
+}
+.essay-kicker {
+    font-size: 0.72rem;
+    font-weight: var(--fw-ui);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--c-accent);
+    text-shadow: 0 1px 10px rgba(0,0,0,0.8);
+    margin-bottom: 18px;
+}
+.essay-title {
+    font-family: var(--font-ui);
+    font-weight: var(--fw-ui);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-ui);
+    font-size: clamp(1.6rem, 5.5vw, 3.4rem);
+    line-height: 1.2;
+    max-width: 16ch;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.75);
+}
+.essay-byline {
+    margin-top: 20px;
+    font-size: 0.8rem;
+    letter-spacing: var(--ls-ui);
+    text-transform: uppercase;
+    color: var(--c-text-dim);
+    text-shadow: 0 1px 8px rgba(0,0,0,0.8);
+}
+.essay-scroll-hint {
+    position: absolute;
+    bottom: 34px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.68rem;
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--c-text-dim);
+    animation: essay-bob 2.2s ease-in-out infinite;
+}
+@keyframes essay-bob {
+    0%, 100% { transform: translate(-50%, 0); opacity: 0.55; }
+    50%      { transform: translate(-50%, 8px); opacity: 1; }
+}
+
+/* ── Chapters ── */
+.essay-chapter {
+    position: relative;
+    z-index: 10;
+    padding: 38vh 0 30vh;
+}
+.essay-chapter-heading {
+    margin: 0 auto 26vh;
+    max-width: 620px;
+    padding: 0 24px;
+    text-align: center;
+    font-family: var(--font-ui);
+    font-weight: var(--fw-ui);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-ui);
+    font-size: clamp(1.1rem, 3.2vw, 1.7rem);
+    text-shadow: 0 2px 18px rgba(0,0,0,0.8);
+}
+.essay-chapter-heading .rule {
+    display: block;
+    width: 44px;
+    height: 3px;
+    margin: 16px auto 0;
+    background: var(--c-accent);
+    box-shadow: var(--glow-accent);
+}
+
+/* Text cards that float over the photo */
+.essay-block {
+    max-width: 620px;
+    margin: 0 auto 55vh;
+    padding: 26px 28px;
+    background: var(--c-scrim);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 14px;
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.essay-block.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+.essay-block:last-child { margin-bottom: 0; }
+.essay-block p {
+    font-family: var(--font-body);
+    font-size: 1.08rem;
+    line-height: 1.75;
+    color: rgba(255,255,255,0.94);
+}
+.essay-block p + p { margin-top: 1.1em; }
+.essay-block em { color: var(--c-accent); font-style: italic; }
+
+/* Wrapper adds side gutters on small screens */
+.essay-flow { padding: 0 18px; }
+
+/* ── End card / CTA ── */
+.essay-end {
+    position: relative;
+    z-index: 10;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 24px;
+    gap: 26px;
+}
+.essay-end-title {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.5rem, 4.5vw, 2.4rem);
+    line-height: 1.45;
+    max-width: 24ch;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.8);
+}
+.essay-end-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px 28px;
+}
+.essay-end-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-body);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.02rem;
+    letter-spacing: 0.5px;
+    color: rgba(255,255,255,0.88);
+    text-decoration: none;
+    padding: 11px 24px;
+    border: 1px solid rgba(255,255,255,0.28);
+    border-radius: 999px;
+    background: var(--c-scrim);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.essay-end-links a:hover {
+    color: var(--c-accent);
+    border-color: var(--c-accent);
+    box-shadow: var(--glow-accent);
+}
+.essay-end-links a svg {
+    width: 18px;
+    height: 18px;
+    flex: none;
+}
+.essay-stepper button svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* ── Paragraph stepper (swipe / arrows / buttons) ── */
+.essay-stepper {
+    position: fixed;
+    right: 16px;
+    bottom: 22px;
+    z-index: 25;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.essay-stepper button {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.45);
+    background: var(--c-scrim);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--c-text);
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.essay-stepper button:hover {
+    color: var(--c-accent);
+    border-color: var(--c-accent);
+    box-shadow: var(--glow-accent);
+}
+
+/* ── Mobile tuning ── */
+@media (max-width: 600px) {
+    .essay-chapter { padding: 32vh 0 24vh; }
+    .essay-block {
+        padding: 20px 20px;
+        margin-bottom: 48vh;
+        border-radius: 12px;
+    }
+    .essay-block p { font-size: 1rem; line-height: 1.7; }
+    .essay-topbar { padding: 14px 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .essay-bg img { transition: opacity 0.4s ease; transform: none; }
+    .essay-block { transition: none; opacity: 1; transform: none; }
+    .essay-scroll-hint { animation: none; }
+}
