@@ -1,0 +1,14 @@
+{
+  "essays": [
+    {
+      "slug": "how-to-be-happy",
+      "title": "How to Be Happy",
+      "published": true
+    },
+    {
+      "slug": "the-incident",
+      "title": "What I Talk About When I Talk About Traveling",
+      "published": true
+    }
+  ]
+}

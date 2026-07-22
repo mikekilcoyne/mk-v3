@@ -282,6 +282,19 @@ body.essay-body {
     margin: 0 auto;
 }
 
+/* Shown if the essay JSON can't be fetched */
+.essay-error {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-body);
+    font-style: italic;
+    color: var(--c-text-dim);
+}
+
 /* ── Paragraph stepper (swipe / arrows / buttons) ── */
 .essay-stepper {
     position: fixed;

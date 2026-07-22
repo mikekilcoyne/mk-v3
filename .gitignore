@@ -1,7 +1,9 @@
 # Source/originals — not needed for web deployment
 PHOTOS_FOR_SITE/
 NISEKO_JP/
-assets/260721_IG_IST/
+# Raw photo drops live in date-prefixed folders; only the web-sized
+# copies under photos_web/ get committed.
+assets/[0-9]*/
 
 # Dev tools — server-side only
 face_detect.py
@@ -12,6 +14,8 @@ xml/
 _inbox/**
 !_inbox/.gitkeep
 !_inbox/README.txt
+!_inbox/essays/
+!_inbox/essays/README.txt
 
 # macOS metadata
 .DS_Store
