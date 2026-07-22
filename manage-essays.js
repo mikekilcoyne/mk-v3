@@ -274,7 +274,7 @@ function ingest(slug) {
     const essay = {
         slug,
         title: meta.title || prev?.title || slug,
-        credit: meta.credit || prev?.credit || 'A Photo Essay. Original Photos by Michael Kilcoyne.',
+        credit: meta.credit || prev?.credit || 'A photo essay. Original photos by Michael Kilcoyne.',
         location: meta.location || prev?.location || '',
         description: meta.description || prev?.description || '',
         published: prev ? prev.published !== false : true,

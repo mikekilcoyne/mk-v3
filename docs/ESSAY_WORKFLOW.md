@@ -78,7 +78,7 @@ Text under that chapter. *Italics* with asterisks.
 {
   "slug": "the-incident",
   "title": "…",              // shown on the title screen
-  "credit": "A Photo Essay. Original Photos by Michael Kilcoyne.", // italic
+  "credit": "A photo essay. Original photos by Michael Kilcoyne.", // italic
   "location": "Istanbul, TR", // accent-yellow line under the credit
   "description": "…",         // meta description + link preview
   "published": true,          // false hides it from Next Essay

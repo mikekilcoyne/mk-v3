@@ -52,7 +52,7 @@
     hero.className = 'essay-hero essay-scene';
     hero.dataset.img = imgPath(essay.cover.img);
     hero.dataset.pos = essay.cover.pos || '50% 50%';
-    const credit = essay.credit || 'A Photo Essay. Original Photos by Michael Kilcoyne.';
+    const credit = essay.credit || 'A photo essay. Original photos by Michael Kilcoyne.';
     hero.innerHTML =
         `<h1 class="essay-title">${essay.title}</h1>` +
         `<p class="essay-credit">${credit}</p>` +
