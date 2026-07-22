@@ -137,13 +137,26 @@ body.essay-body {
     max-width: 16ch;
     text-shadow: 0 2px 24px rgba(0,0,0,0.75);
 }
-.essay-byline {
-    margin-top: 20px;
-    font-size: 0.8rem;
-    letter-spacing: var(--ls-ui);
+/* Credit line: quiet italic serif, same voice as the closing quote. */
+.essay-credit {
+    margin-top: 22px;
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.72);
+    text-shadow: 0 1px 10px rgba(0,0,0,0.85);
+    max-width: 34ch;
+}
+/* Location sits below the credit and carries the accent so it reads first. */
+.essay-location {
+    margin-top: 16px;
+    font-size: 0.9rem;
+    font-weight: var(--fw-ui);
+    letter-spacing: 5px;
     text-transform: uppercase;
-    color: var(--c-text-dim);
-    text-shadow: 0 1px 8px rgba(0,0,0,0.8);
+    color: var(--c-accent);
+    text-shadow: 0 1px 10px rgba(0,0,0,0.85), 0 0 18px rgba(255,221,102,0.35);
 }
 .essay-scroll-hint {
     position: absolute;

@@ -52,10 +52,11 @@
     hero.className = 'essay-hero essay-scene';
     hero.dataset.img = imgPath(essay.cover.img);
     hero.dataset.pos = essay.cover.pos || '50% 50%';
+    const credit = essay.credit || 'A Photo Essay. Original Photos by Michael Kilcoyne.';
     hero.innerHTML =
-        (essay.kicker ? `<p class="essay-kicker">${essay.kicker}</p>` : '') +
         `<h1 class="essay-title">${essay.title}</h1>` +
-        (essay.byline ? `<p class="essay-byline">${essay.byline}</p>` : '') +
+        `<p class="essay-credit">${credit}</p>` +
+        (essay.location ? `<p class="essay-location">${essay.location}</p>` : '') +
         '<span class="essay-scroll-hint">Scroll &darr;</span>';
 
     const flow = document.createElement('div');

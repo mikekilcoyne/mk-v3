@@ -53,7 +53,7 @@ regenerates the pages and index from the JSON without touching photos.
 ```markdown
 ---
 title: How to Be Happy
-byline: By Michael Kilcoyne · Kyoto
+location: Kyoto, JP
 description: One line for search results and link previews.
 ---
 
@@ -78,8 +78,8 @@ Text under that chapter. *Italics* with asterisks.
 {
   "slug": "the-incident",
   "title": "…",              // shown on the title screen
-  "kicker": "A Photo Essay",  // small yellow line above the title
-  "byline": "By Michael Kilcoyne · Istanbul",
+  "credit": "A Photo Essay. Original Photos by Michael Kilcoyne.", // italic
+  "location": "Istanbul, TR", // accent-yellow line under the credit
   "description": "…",         // meta description + link preview
   "published": true,          // false hides it from Next Essay
   "date": "2026-07-21",

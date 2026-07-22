@@ -23,7 +23,7 @@
  * essay.md format:
  *     ---
  *     title: How to Be Happy
- *     byline: By Michael Kilcoyne · Kyoto
+ *     location: Kyoto, JP
  *     description: One line for search results and link previews.
  *     ---
  *
@@ -274,8 +274,8 @@ function ingest(slug) {
     const essay = {
         slug,
         title: meta.title || prev?.title || slug,
-        kicker: meta.kicker || prev?.kicker || 'A Photo Essay',
-        byline: meta.byline || prev?.byline || 'By Michael Kilcoyne',
+        credit: meta.credit || prev?.credit || 'A Photo Essay. Original Photos by Michael Kilcoyne.',
+        location: meta.location || prev?.location || '',
         description: meta.description || prev?.description || '',
         published: prev ? prev.published !== false : true,
         date: meta.date || prev?.date || new Date().toISOString().slice(0, 10),
