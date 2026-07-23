@@ -827,9 +827,12 @@ body {
     .top-line { font-size: clamp(0.75rem, 4vw, 1.1rem); white-space: normal; }
     .bottom-line { font-size: clamp(1.4rem, 7vw, 3rem); height: 8vh; }
     .bottom-line.is-multiline { font-size: clamp(0.9rem, 4.5vw, 1.8rem); }
-    .main-flow-container { gap: 0.75rem; flex-wrap: wrap; }
-    .main-flow-link { font-size: clamp(0.75rem, 3.5vw, 1rem); }
-    .main-flow-arrow { font-size: clamp(0.9rem, 3vw, 1.2rem); }
+    /* Stack the flow as three separate buttons with a down-arrow between each */
+    .main-flow-container { flex-direction: column; gap: 0.5rem; }
+    .main-flow-link { font-size: clamp(1.05rem, 5vw, 1.4rem); padding: 0.35rem 0; }
+    .main-flow-arrow { font-size: clamp(1rem, 3.5vw, 1.3rem); transform: rotate(90deg); }
+    /* keep the hover nudge in the vertical orientation */
+    .main-flow-container:hover .main-flow-arrow { transform: rotate(90deg) scale(1.1); }
     .primary-buttons { flex-direction: column; width: 100%; gap: 1rem; }
     .social-buttons { width: 100%; justify-content: center; }
     .btn { width: 100%; }
