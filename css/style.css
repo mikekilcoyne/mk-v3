@@ -188,7 +188,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 2.5vh;
+    gap: 1.2vh;
     transform: translateY(5vh);
 }
 
@@ -217,7 +217,9 @@ body {
     height: 8vh; /* locked — CTAs never shift */
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
+    /* flex-end pulls the single line to the bottom of its reserved box so
+       the dead space sits above it, not as an awkward gap before the CTAs */
+    align-items: flex-end;
     justify-content: center;
     overflow: visible;
     opacity: 1;
