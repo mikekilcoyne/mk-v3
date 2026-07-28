@@ -11,12 +11,12 @@
     "DSC01315.jpg",
     "DSC01320.jpg",
     "DSC01321.jpg",
-    "DSC01326.jpg",
     "DSC01336.jpg",
     "DSC01342.jpg",
     "P1003370.jpg",
     "P1003376.jpg",
-    "P1003467.jpg",
+    "P1003426.jpg",
+    "P1003449.jpg",
     "P1003491.jpg",
     "P1003651.jpg",
     "P1014916.jpg",
@@ -92,7 +92,7 @@
     {
       "heading": "48 Hours Before the Incident",
       "label": "48 Hours Before",
-      "img": "P1003467.jpg",
+      "img": "P1003426.jpg",
       "pos": "50% 45%",
       "blocks": [
         [
@@ -109,8 +109,8 @@
     {
       "heading": "",
       "label": "48 Hours Before",
-      "img": "DSC01326.jpg",
-      "pos": "30% 45%",
+      "img": "P1003449.jpg",
+      "pos": "50% 45%",
       "blocks": [
         [
           "We finally arrive at the Kadikoy ferry terminal, I walk her to the bus nearby. We share our goodbyes."
