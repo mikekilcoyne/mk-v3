@@ -44,6 +44,18 @@
     const progress = document.createElement('div');
     progress.className = 'essay-progress';
 
+    /* Vertical read-progress rail — revealed only on essays tall enough to
+       warrant it (see updateRailVisibility). */
+    const rail = document.createElement('div');
+    rail.className = 'essay-rail';
+    rail.innerHTML =
+        '<div class="essay-rail-fill"></div>' +
+        '<div class="essay-rail-thumb"></div>' +
+        '<span class="essay-rail-pct">0%</span>';
+    const railFill = rail.querySelector('.essay-rail-fill');
+    const railThumb = rail.querySelector('.essay-rail-thumb');
+    const railPct = rail.querySelector('.essay-rail-pct');
+
     const topbar = document.createElement('div');
     topbar.className = 'essay-topbar';
     topbar.innerHTML = '<a href="/">Michael Kilcoyne</a><span class="essay-chapter-label" id="essay-chapter-label"></span>';
@@ -123,6 +135,7 @@
 
     root.appendChild(bg);
     root.appendChild(progress);
+    root.appendChild(rail);
     root.appendChild(topbar);
     root.appendChild(hero);
     root.appendChild(flow);
@@ -253,13 +266,31 @@
     stepper.appendChild(downBtn);
     root.appendChild(stepper);
 
-    /* ── Progress bar ── */
+    /* ── Progress (top bar + vertical rail) ── */
     function updateProgress() {
         const max = document.documentElement.scrollHeight - window.innerHeight;
-        progress.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+        const frac = max > 0 ? window.scrollY / max : 0;
+        const pct = (frac * 100).toFixed(1);
+        progress.style.width = pct + '%';
+        railFill.style.height = pct + '%';
+        railThumb.style.top = pct + '%';
+        railPct.style.top = pct + '%';
+        railPct.textContent = Math.round(frac * 100) + '%';
     }
+
+    /* The rail is a long-read aid — only show it once the page is tall enough
+       that a reader benefits from knowing how far they've come. */
+    function updateRailVisibility() {
+        const tall = document.documentElement.scrollHeight > window.innerHeight * 2.5;
+        rail.classList.toggle('is-visible', tall);
+    }
+
     window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', () => { updateProgress(); updateRailVisibility(); }, { passive: true });
+    /* Images load after first paint and grow the page — re-check once they're in. */
+    window.addEventListener('load', updateRailVisibility);
     updateProgress();
+    updateRailVisibility();
 
     /* First paint */
     showScene(hero);

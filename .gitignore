@@ -24,3 +24,14 @@ _inbox/**
 **/._*
 ._.git
 .claude/
+
+# Raw photo/asset drops for OutroSpective — originals are ~900MB.
+# Only the web-sized copies under photos_web/outrospective/ get committed.
+assets/_OutroSpective/
+
+# OutroSpective WIP imagery — only the assets the live page serves are
+# committed (hero-bg + the share card). The rest stay local until the
+# full deck ships.
+photos_web/outrospective/*
+!photos_web/outrospective/hero-bg.jpg
+!photos_web/outrospective/og-outrospective.jpg

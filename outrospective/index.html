@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <!-- Unlisted pitch page. Kept out of search while it's the live forwardable pitch. -->
+    <meta name="robots" content="noindex, nofollow">
+    <title>OutroSpective — An Interview Series</title>
+    <meta name="description" content="An interview series. The opposite of introspective. Presented by Michael Kilcoyne.">
+    <meta property="og:title" content="OutroSpective">
+    <meta property="og:description" content="An interview series. The opposite of introspective. Presented by Michael Kilcoyne.">
+    <meta property="og:type" content="video.other">
+    <meta property="og:url" content="https://mikekilcoyne.com/outrospective/">
+    <meta property="og:image" content="https://mikekilcoyne.com/photos_web/outrospective/og-outrospective.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="OutroSpective">
+    <meta name="twitter:description" content="An interview series. The opposite of introspective.">
+    <meta name="twitter:image" content="https://mikekilcoyne.com/photos_web/outrospective/og-outrospective.jpg">
+    <!-- Title = Paquito (Fontshare); sub-header = Clash Display. -->
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f%5B%5D=paquito@400,700&f%5B%5D=clash-display@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/outrospective.css?v=14">
+</head>
+<body class="outro-body">
+
+<!-- Single-page mode: only the title slide is reachable. The remaining
+     slides stay in the markup (work in progress) but nav is disabled and
+     the deck chrome is hidden — remove `deck--single` to bring it back. -->
+<div class="deck deck--single" id="deck">
+    <div class="slides" id="slides">
+
+        <!-- ═══ 1 · TITLE CARD ═══════════════════════════════════════════
+             SWAP: opening backdrop below. A muted looping video reads more
+             premium than a still — drop it into .slide-media if you have one. -->
+        <section class="slide slide--title" data-label="Title"
+                 style="--bg:url('/photos_web/outrospective/hero-bg.jpg?v=3')">
+            <div class="slide-scrim slide-scrim--title"></div>
+            <div class="slide-inner">
+                <!-- Stacked wordmark. textLength forces OUTRO + SPECTIVE to the
+                     exact same width (fashion-logo style) at every breakpoint. -->
+                <div class="outro-wordmark">
+                    <svg class="wm-svg" viewBox="0 0 300 122" role="img"
+                         aria-label="Outrospective" preserveAspectRatio="xMidYMid meet">
+                        <text class="wm-svg-line wm-svg-outro" x="150" y="46" textLength="184"
+                              lengthAdjust="spacing" text-anchor="middle">OUTRO</text>
+                        <rect class="wm-svg-rule" x="90" y="57" width="120" height="3"></rect>
+                        <text class="wm-svg-line wm-svg-spective" x="150" y="104" text-anchor="middle">SPECTIVE</text>
+                    </svg>
+                </div>
+                <!-- Two stacked kicker lines, both width-matched to the lockup. -->
+                <svg class="wm-kicker" viewBox="0 0 300 40" preserveAspectRatio="xMidYMid meet"
+                     role="img" aria-label="An interview series. The opposite of introspective.">
+                    <text x="150" y="14" textLength="184" lengthAdjust="spacing"
+                          text-anchor="middle">AN INTERVIEW SERIES.</text>
+                    <text class="wm-kicker-2" x="150" y="31" textLength="184" lengthAdjust="spacing"
+                          text-anchor="middle">THE OPPOSITE OF INTROSPECTIVE.</text>
+                </svg>
+                <div class="outro-credit">
+                    <span class="outro-credit-label">Created by</span>
+                    <img class="outro-credit-sig" src="/assets/logo/mk-neon-pink.png" alt="Michael Kilcoyne">
+                </div>
+                <button class="teaser-trigger teaser-trigger--title" id="teaser-trigger-title"
+                        aria-label="Play the vibe edit">
+                    <span class="teaser-play">&#9658;</span>
+                    <span class="teaser-trigger-label">Play Vibe Edit</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ═══ 2 · THE SERIES + TEASER ══════════════════════════════════ -->
+        <section class="slide slide--chat" data-label="The Series"
+                 style="--bg:url('/photos_web/outrospective/hero-parents.jpg')">
+            <div class="slide-scrim slide-scrim--chat"></div>
+            <div class="slide-inner">
+                <!-- Rudimentary scripted chat, no bot branding — the box blends
+                     into the Kyoto river backdrop rather than sitting on it.
+                     Vanilla JS, no backend — see js/outrospective-chat.js. -->
+                <div class="mikaile" id="mikaile">
+                    <p class="mikaile-device">The OutroSpective Life Meaning Delivery Device</p>
+                    <div class="mikaile-log" id="mikaileLog"></div>
+                    <form class="mikaile-row" id="mikaileForm" autocomplete="off">
+                        <input type="text" id="mikaileInput" class="mikaile-input"
+                               placeholder="Type here…" maxlength="40" aria-label="Your reply">
+                        <button type="submit" class="mikaile-send" aria-label="Send">&#8594;</button>
+                    </form>
+                </div>
+
+                <!-- Moved (not cloned) into the log as the final bubble once the
+                     script completes, so outrospective.js's existing #teaser-trigger
+                     listener — bound once at load — still fires normally. -->
+                <div id="teaserRevealTemplate" hidden>
+                    <p class="outro-lead outro-lead--chat">
+                        <strong>OutroSpective Goes to Breakfast</strong> is a travel series about
+                        asking interesting people the questions we can&rsquo;t stop asking
+                        ourselves. In the most incredible locations on Earth. <em>Over breakfast.</em>
+                    </p>
+                    <button class="teaser-trigger" id="teaser-trigger" aria-label="Play the vibe edit">
+                        <span class="teaser-play">&#9658;</span>
+                        <span class="teaser-trigger-label">Play Vibe Edit</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ 3 · THE PREMISE ══════════════════════════════════════════ -->
+        <section class="slide" data-label="Why Breakfast?"
+                 style="--bg:url('/photos_web/outrospective/breakfast_club/P1002843.jpg')">
+            <div class="slide-scrim"></div>
+            <div class="slide-inner slide-inner--wide">
+                <h2 class="outro-statement">Why Breakfast?</h2>
+                <p class="outro-lead outro-lead--body">
+                    Started by <strong>Ben Dietz</strong>, former VP at Vice Media,
+                    <strong>Breakfast Club International</strong> has grown into a global movement.
+                    I started one in the Hamptons &mdash; and there are now
+                    <em>60+ clubs around the world</em>, including brand leaders from some of the
+                    most influential brands on the planet: Vice Media, Supreme, Yves Saint Laurent,
+                    and more.
+                </p>
+            </div>
+        </section>
+
+        <!-- ═══ 4 · BREAKFAST CLUBS — the access engine ══════════════════ -->
+        <section class="slide" data-label="The Room"
+                 style="--bg:url('/photos_web/outrospective/breakfast_club/P1002503.jpg')">
+            <div class="slide-scrim"></div>
+            <div class="slide-inner slide-inner--wide">
+                <p class="outro-eyebrow">Breakfast Club International</p>
+                <p class="outro-lead outro-lead--body">
+                    There are <strong>60+ Breakfast Clubs</strong> around the world, and
+                    <strong>dozens across the US</strong>. Starting in the Northeast, continuing
+                    down the east coast, into the mid-west and south, then over to the west
+                    coast &mdash; these clubs include some of the people behind influential
+                    brands like <em>Supreme</em> and <em>Vice</em>.
+                </p>
+            </div>
+        </section>
+
+        <!-- ═══ 5 · MEET THE MOMENT — matching game ══════════════════════
+             4x4 board, 8 pairs. Each pair = one MOMENT + the PLACE it
+             happened. Cards, backdrop and pairings all come from PAIRS in
+             js/outrospective-match.js — swap photos/places there. -->
+        <section class="slide slide--dark slide--match" data-label="Meet the Moment">
+            <div class="slide-inner slide-inner--wide">
+                <p class="outro-eyebrow">Meet the Moment</p>
+                <h2 class="outro-statement">Where did this moment, moment?</h2>
+                <div class="match-meta">
+                    <span class="match-stat">Matched <b id="matchFound">0</b>/<b id="matchTotal">0</b></span>
+                    <span class="match-stat">Moves <b id="matchMoves">0</b></span>
+                    <button type="button" class="match-reset" id="matchReset">New game</button>
+                </div>
+                <div class="match-grid" id="matchGrid" aria-label="Meet the Moment matching game"></div>
+                <p class="match-win" id="matchWin" hidden>
+                    Every one of these is a morning we shot. <em>And that&rsquo;s one trip.</em>
+                </p>
+            </div>
+
+            <!-- Full-screen reveal on a successful match -->
+            <div class="match-reveal" id="matchReveal" hidden>
+                <div class="match-reveal-inner">
+                    <figure class="match-reveal-moment"><img src="" alt=""></figure>
+                    <figure class="match-reveal-place">
+                        <img src="" alt="">
+                        <figcaption class="match-reveal-label"></figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ 6 · WHO IT'S FOR — taste signal ══════════════════════════ -->
+        <section class="slide" data-label="Who It's For"
+                 style="--bg:url('/photos_web/outrospective/people/P1003007.jpg')">
+            <div class="slide-scrim"></div>
+            <div class="slide-inner">
+                <h2 class="outro-statement outro-statement--lg">
+                    A show for adventurers,<br>by adventurers.
+                </h2>
+                <p class="outro-sub">
+                    Made for the people behind some of the most influential media
+                    and fashion brands on the planet.
+                </p>
+                <p class="outro-brands">Vice&ensp;&middot;&ensp;Supreme&ensp;&middot;&ensp;Diesel</p>
+            </div>
+        </section>
+
+        <!-- ═══ 6 · THE JOURNEY ══════════════════════════════════════════ -->
+        <section class="slide" data-label="The Route"
+                 style="--bg:url('/photos_web/outrospective/locations/DSC01267.jpg')">
+            <div class="slide-scrim"></div>
+            <div class="slide-inner slide-inner--wide">
+                <p class="outro-eyebrow">The Route</p>
+                <p class="outro-route">
+                    Start in <strong>New York</strong>. Go south. Go south some more.
+                    Go west. End up in <strong>Santa Fe</strong>. <strong>California</strong>.
+                    <strong>Wyoming</strong>.
+                </p>
+                <h2 class="outro-statement outro-statement--lg">The journey is the product.</h2>
+            </div>
+        </section>
+
+        <!-- ═══ 7 · THE MODEL — buyer-facing close ═══════════════════════
+             DRAFT: reframed for agency CDs/producers as the commercial logic.
+             Restrained on purpose. Your voice welcome; keep it short. -->
+        <section class="slide slide--last" data-label="The Model"
+                 style="--bg:url('/photos_web/outrospective/locations/P1003640.jpg')">
+            <div class="slide-scrim"></div>
+            <div class="slide-inner slide-inner--wide">
+                <p class="outro-eyebrow">Why It Works</p>
+                <h2 class="outro-statement">What a place gets by hosting us.</h2>
+                <div class="outro-cols outro-cols--three">
+                    <div>
+                        <p class="outro-col-label">The Audience</p>
+                        <p class="outro-col-body">A younger, culturally-credible audience most places can&rsquo;t reach on their own.</p>
+                    </div>
+                    <div>
+                        <p class="outro-col-label">A Character, Not a Backdrop</p>
+                        <p class="outro-col-body">The location is cast in the story &mdash; not pinned behind it.</p>
+                    </div>
+                    <div>
+                        <p class="outro-col-label">An Evergreen Asset</p>
+                        <p class="outro-col-body">A film that keeps working long after the campaign window closes.</p>
+                    </div>
+                </div>
+                <a href="/" class="outro-footer-link">michaelkilcoyne.com</a>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ═══ Deck chrome ═══════════════════════════════════════════════ -->
+    <button class="deck-arrow deck-arrow--prev" id="deck-prev" aria-label="Previous">&#10094;</button>
+    <button class="deck-arrow deck-arrow--next" id="deck-next" aria-label="Next">&#10095;</button>
+
+    <div class="deck-progress" id="deck-progress" aria-hidden="true"></div>
+    <span class="deck-swipe-hint" id="deck-swipe-hint">Swipe &rarr;</span>
+</div>
+
+<!-- Fullscreen teaser stage. Vimeo id 1211374502, hash e66bb8576b. -->
+<div class="teaser-stage" id="teaser-stage" hidden
+     data-embed="https://player.vimeo.com/video/1211374502?h=e66bb8576b&autoplay=1&title=0&byline=0&portrait=0&dnt=1">
+    <div class="teaser-frame" id="teaser-frame"></div>
+    <div class="teaser-unrotate-cue" id="unrotate-cue">
+        <p>That&rsquo;s the taste of it. You can turn back now.</p>
+    </div>
+
+    <!-- End-of-film CTA lives in js/outrospective.js (showOutro) and the
+         .teaser-outro styles — re-add this block to switch it back on:
+         eyebrow "Want to get involved?", the brand-fit line, and a mailto
+         to outrospective@yellowsatinjacket.com. Off for now. -->
+
+    <div class="teaser-controls">
+        <button type="button" class="teaser-ctrl" id="teaserFullscreen">Fullscreen</button>
+        <button type="button" class="teaser-ctrl teaser-ctrl--icon" id="teaser-close"
+                aria-label="Close teaser">&times;</button>
+    </div>
+</div>
+
+<script src="/js/outrospective.js"></script>
+<script src="/js/outrospective-chat.js"></script>
+<script src="/js/outrospective-match.js"></script>
+</body>
+</html>

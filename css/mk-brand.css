@@ -1,0 +1,216 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   MK / OUTROSPECTIVE — BRAND TOKENS
+   Drop-in stylesheet. Every value matches the live production CSS in
+   css/outrospective.css. Import this first, then override nothing that
+   isn't listed under "Safe to extend" at the bottom.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Typefaces ──────────────────────────────────────────────────────────
+   Paquito + Clash Display are free from Fontshare. Either link the CDN
+   (below) or self-host the woff2 files.                                  */
+@import url('https://api.fontshare.com/v2/css?f%5B%5D=paquito@400,700&f%5B%5D=clash-display@700&display=swap');
+
+:root {
+    /* ── Type stacks ── */
+    --font-display: 'Paquito', Georgia, serif;              /* the wordmark */
+    --font-kicker:  'Clash Display', 'Helvetica Neue', sans-serif;
+    --font-ui:      'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-body:    Georgia, 'Times New Roman', serif;      /* editorial voice */
+
+    /* ── Type metrics ── */
+    --ls-ui:    2px;    /* standard UI letter-spacing */
+    --ls-label: 3px;    /* small uppercase labels */
+    --fw-ui:    700;    /* single UI weight */
+
+    /* ── Colour ── */
+    --c-text:     #ffffff;                  /* primary text over imagery */
+    --c-text-dim: rgba(255,255,255,0.5);    /* resting / inactive */
+    --c-accent:   #FFDD66;                  /* THE accent. One job only. */
+    --c-neon:     #FF1D9C;                  /* signature mark only */
+    --c-ground:   #060606;                  /* page ground */
+    --c-scrim:    rgba(0,0,0,0.45);         /* behind type over photos */
+
+    /* ── Effects ── */
+    --glow-accent: 0 0 12px rgba(255,221,102,0.55),
+                   0 0 26px rgba(255,221,102,0.25);
+    --ease-brand:  cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* ═══ THE WORDMARK ══════════════════════════════════════════════════════
+   Built as inline SVG so both lines can be forced to identical width.
+
+   ┌─ CRITICAL ────────────────────────────────────────────────────────┐
+   │ Equal width uses textLength + lengthAdjust="spacing", which        │
+   │ stretches the GAPS between letters. Never "spacingAndGlyphs" —     │
+   │ that distorts the letterforms themselves.                          │
+   │                                                                    │
+   │ textLength is an absolute value, so ANY change to the typeface,    │
+   │ weight, case or wording requires re-measuring:                     │
+   │   1. Render SPECTIVE with no textLength                            │
+   │   2. Read el.getComputedTextLength()                               │
+   │   3. Set that number as textLength on OUTRO *and* the kicker       │
+   └────────────────────────────────────────────────────────────────────┘
+
+   Markup:
+   <div class="mk-wordmark">
+     <svg class="mk-wm" viewBox="0 0 300 122" role="img"
+          aria-label="OutroSpective" preserveAspectRatio="xMidYMid meet">
+       <text class="mk-wm-line mk-wm-outro" x="150" y="46"
+             textLength="184" lengthAdjust="spacing"
+             text-anchor="middle">OUTRO</text>
+       <rect class="mk-wm-rule" x="90" y="57" width="120" height="3"></rect>
+       <text class="mk-wm-line mk-wm-spective" x="150" y="104"
+             text-anchor="middle">SPECTIVE</text>
+     </svg>
+   </div>
+   <svg class="mk-kicker" viewBox="0 0 300 22"
+        preserveAspectRatio="xMidYMid meet" role="img"
+        aria-label="Goes to Breakfast">
+     <text x="150" y="17" textLength="184" lengthAdjust="spacing"
+           text-anchor="middle">GOES TO BREAKFAST</text>
+   </svg>
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.mk-wordmark { display: flex; justify-content: center; }
+
+.mk-wm {
+    width: min(74vw, 440px);
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 4px 20px rgba(0,0,0,0.55));
+}
+
+.mk-wm-line {
+    fill: var(--c-text);
+    font-family: var(--font-display);
+    font-size: 48px;              /* SVG user units — textLength governs width */
+}
+.mk-wm-outro    { font-weight: 700; }   /* Bold — the dominant half */
+.mk-wm-spective { font-weight: 400; }   /* Regular — the counterweight */
+
+.mk-wm-rule {
+    fill: var(--c-accent);
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+/* Kicker — width-matched to the lockup above it */
+.mk-kicker {
+    display: block;
+    width: min(74vw, 440px);
+    height: auto;
+    margin: 1.15rem auto 0;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.95))
+            drop-shadow(0 2px 7px rgba(0,0,0,0.75));
+}
+.mk-kicker text {
+    fill: var(--c-accent);
+    font-family: var(--font-kicker);
+    font-weight: 700;
+    font-size: 15px;
+}
+
+/* ═══ ENTRANCE MOTION ═══════════════════════════════════════════════════
+   The mark assembles: lockup fades up, then the rule lands last.
+   Add .is-active to an ancestor to trigger.                             */
+.mk-wm { opacity: 0; }
+.mk-wm-rule { transform: scaleX(0); }
+
+.is-active .mk-wm {
+    animation: mk-fade-up 0.9s var(--ease-brand) 0.15s forwards;
+}
+.is-active .mk-wm-rule {
+    animation: mk-rule-grow 0.8s var(--ease-brand) 0.8s forwards;
+}
+
+@keyframes mk-fade-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: none; }
+}
+@keyframes mk-rule-grow {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mk-wm { opacity: 1; animation: none; }
+    .mk-wm-rule { transform: scaleX(1); animation: none; }
+}
+
+/* ═══ SIGNATURE CREDIT ══════════════════════════════════════════════════
+   Authorship mark. Appears ONCE, at the end of a lockup.
+   Never as a nav logo, never as a UI accent.                            */
+.mk-credit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 2rem;
+}
+.mk-credit-label {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--ls-label);
+    font-size: 0.6rem;
+    color: rgba(255,255,255,0.6);
+}
+.mk-credit-sig {
+    width: min(41vw, 200px);
+    height: auto;
+    opacity: 0.9;                 /* sits IN the image, not on top of it */
+    filter: drop-shadow(0 3px 18px rgba(0,0,0,0.55));
+}
+
+/* ═══ SUPPORTING TYPE ═══════════════════════════════════════════════════ */
+
+/* Small uppercase label above a heading */
+.mk-eyebrow {
+    font-family: var(--font-ui);
+    font-weight: var(--fw-ui);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-label);
+    font-size: 0.72rem;
+    color: var(--c-accent);
+    text-shadow: 0 1px 10px rgba(0,0,0,0.8);
+}
+
+/* Section heading */
+.mk-statement {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--ls-ui);
+    font-size: clamp(1.4rem, 3.6vw, 2.2rem);
+    line-height: 1.18;
+    text-shadow: 0 2px 22px rgba(0,0,0,0.8);
+}
+.mk-statement--lg { font-size: clamp(1.7rem, 5vw, 3rem); }
+
+/* Editorial body — the reflective register */
+.mk-lead {
+    font-family: var(--font-body);
+    font-size: clamp(1.25rem, 3.2vw, 1.9rem);
+    line-height: 1.5;
+    color: rgba(255,255,255,0.96);
+    text-shadow: 0 2px 22px rgba(0,0,0,0.85);
+}
+.mk-lead em { color: var(--c-accent); font-style: italic; }
+
+/* Scrim — put behind type over photography so white always survives */
+.mk-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+        rgba(0,0,0,0.50) 0%,
+        rgba(0,0,0,0.32) 45%,
+        rgba(0,0,0,0.62) 100%);
+}
+
+/* ═══ SAFE TO EXTEND ════════════════════════════════════════════════════
+   Add new components using the tokens above. Do NOT:
+   · introduce a second accent colour
+   · set both wordmark lines at the same weight
+   · scale glyphs to force a width match
+   · use --c-neon anywhere but the signature
+   ═══════════════════════════════════════════════════════════════════════ */
