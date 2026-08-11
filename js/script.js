@@ -228,8 +228,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function startKaraoke() { if (karaokeTimer) return; karaokeIdx = 0; karaokeStep(); }
     function stopKaraoke()  { clearTimeout(karaokeTimer); karaokeTimer = null; karaokeWords.forEach(w => w.classList.remove('active')); }
 
-    btnLetsplay.addEventListener('click', (e) => { e.preventDefault(); letsplayOverlay.classList.add('active'); startKaraoke(); });
-    closeLetsplay.addEventListener('click', () => { letsplayOverlay.classList.remove('active'); stopKaraoke(); });
+    /* "What I'm Up To" now navigates straight to the OutroSpective page, so
+       nothing intercepts its click. The overlay and its karaoke are left
+       wired up below — re-add a click handler here to bring them back. */
+    if (closeLetsplay) {
+        closeLetsplay.addEventListener('click', () => { letsplayOverlay.classList.remove('active'); stopKaraoke(); });
+    }
 
     // ── Cory overlay karaoke (plays once, then stops) ─────────────────────────
     const coryOverlay    = document.getElementById('cory-overlay');
