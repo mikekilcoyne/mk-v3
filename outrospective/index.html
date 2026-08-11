@@ -22,7 +22,7 @@
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
     <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
     <link href="https://api.fontshare.com/v2/css?f%5B%5D=paquito@400,700&f%5B%5D=clash-display@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/outrospective.css?v=14">
+    <link rel="stylesheet" href="/css/outrospective.css?v=20">
 </head>
 <body class="outro-body">
 
@@ -35,8 +35,21 @@
         <!-- ═══ 1 · TITLE CARD ═══════════════════════════════════════════
              SWAP: opening backdrop below. A muted looping video reads more
              premium than a still — drop it into .slide-media if you have one. -->
-        <section class="slide slide--title" data-label="Title"
-                 style="--bg:url('/photos_web/outrospective/hero-bg.jpg?v=3')">
+        <section class="slide slide--title" data-label="Title">
+            <!-- Six locked-off plates from the same setup, stacked in order.
+                 step-0 is the empty beach; each later plate adds one more
+                 figure, so dissolving up the stack builds the group up a
+                 person at a time — full frames, no cutouts, no artifacts. -->
+            <div class="hero-stage" aria-hidden="true">
+                <div class="hero-stage-inner">
+                    <img class="hero-plate" src="/photos_web/outrospective/hero-build/step-0.jpg" alt="" fetchpriority="high">
+                    <img class="hero-plate hero-plate--step" style="--i:1" src="/photos_web/outrospective/hero-build/step-1.jpg" alt="">
+                    <img class="hero-plate hero-plate--step" style="--i:2" src="/photos_web/outrospective/hero-build/step-2.jpg" alt="">
+                    <img class="hero-plate hero-plate--step" style="--i:3" src="/photos_web/outrospective/hero-build/step-3.jpg" alt="">
+                    <img class="hero-plate hero-plate--step" style="--i:4" src="/photos_web/outrospective/hero-build/step-4.jpg" alt="">
+                    <img class="hero-plate hero-plate--step" style="--i:5" src="/photos_web/outrospective/hero-build/step-5.jpg" alt="">
+                </div>
+            </div>
             <div class="slide-scrim slide-scrim--title"></div>
             <div class="slide-inner">
                 <!-- Stacked wordmark. textLength forces OUTRO + SPECTIVE to the
@@ -63,9 +76,9 @@
                     <img class="outro-credit-sig" src="/assets/logo/mk-neon-pink.png" alt="Michael Kilcoyne">
                 </div>
                 <button class="teaser-trigger teaser-trigger--title" id="teaser-trigger-title"
-                        aria-label="Play the vibe edit">
+                        aria-label="Play the teaser">
                     <span class="teaser-play">&#9658;</span>
-                    <span class="teaser-trigger-label">Play Vibe Edit</span>
+                    <span class="teaser-trigger-label">Play Teaser</span>
                 </button>
             </div>
         </section>
@@ -97,9 +110,9 @@
                         asking interesting people the questions we can&rsquo;t stop asking
                         ourselves. In the most incredible locations on Earth. <em>Over breakfast.</em>
                     </p>
-                    <button class="teaser-trigger" id="teaser-trigger" aria-label="Play the vibe edit">
+                    <button class="teaser-trigger" id="teaser-trigger" aria-label="Play the teaser">
                         <span class="teaser-play">&#9658;</span>
-                        <span class="teaser-trigger-label">Play Vibe Edit</span>
+                        <span class="teaser-trigger-label">Play Teaser</span>
                     </button>
                 </div>
             </div>
@@ -237,9 +250,10 @@
     <span class="deck-swipe-hint" id="deck-swipe-hint">Swipe &rarr;</span>
 </div>
 
-<!-- Fullscreen teaser stage. Vimeo id 1211374502, hash e66bb8576b. -->
+<!-- Fullscreen teaser stage. Livid video 3jc-URun4Azo (embed URL from
+     livid.com's oEmbed endpoint). -->
 <div class="teaser-stage" id="teaser-stage" hidden
-     data-embed="https://player.vimeo.com/video/1211374502?h=e66bb8576b&autoplay=1&title=0&byline=0&portrait=0&dnt=1">
+     data-embed="https://livid.com/embed/3jc-URun4Azo?autoplay=1">
     <div class="teaser-frame" id="teaser-frame"></div>
     <div class="teaser-unrotate-cue" id="unrotate-cue">
         <p>That&rsquo;s the taste of it. You can turn back now.</p>
@@ -258,6 +272,7 @@
 </div>
 
 <script src="/js/outrospective.js"></script>
+<script src="/js/outrospective-title.js?v=4"></script>
 <script src="/js/outrospective-chat.js"></script>
 <script src="/js/outrospective-match.js"></script>
 </body>

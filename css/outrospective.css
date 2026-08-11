@@ -101,9 +101,7 @@ body.outro-body {
 .deck--single .slide:not(.slide--title) { display: none; }
 
 /* Portrait crops tighten hard — favour the upper half so faces survive. */
-@media (max-aspect-ratio: 1/1) {
-    .slide--title[style*="--bg"]::before { background-position: 50% 38%; }
-}
+
 .slide-scrim--title {
     background:
         radial-gradient(120% 90% at 50% 42%, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.6) 100%),
@@ -132,6 +130,41 @@ body.outro-body {
 /* The title wordmark runs its own choreography, always visible */
 .slide--title .slide-inner > * { opacity: 1; transform: none; }
 
+
+/* ═══ Hero stage — six-plate build-up ═══════════════════════════════
+   The camera never moved, so the six source plates differ only by who
+   is standing in frame (step-0 empty → step-5 all five). Stacking them
+   and dissolving up the ladder makes each figure appear in turn with no
+   cutouts involved — earlier attempts at per-figure mattes punched holes
+   through the shirts wherever they matched the water's tone. */
+.hero-stage { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.hero-stage-inner {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    aspect-ratio: 16 / 9;
+    min-width: 100%;
+    min-height: 100%;
+}
+.hero-plate {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+}
+/* step-0 is the base and always painted; the rest dissolve in over it */
+.hero-plate--step { opacity: 0; will-change: opacity; }
+.slide.is-active .hero-plate--step {
+    animation: hero-dissolve 620ms ease-out both;
+    animation-delay: calc(220ms + (var(--i) - 1) * 340ms);
+}
+@keyframes hero-dissolve {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .hero-plate--step { opacity: 1; animation: none; }
+}
+
 /* ═══ Title wordmark (SVG — equal-width stacked lockup) ═════════════ */
 .outro-wordmark { display: flex; justify-content: center; }
 .wm-svg {
@@ -155,10 +188,33 @@ body.outro-body {
     transform-box: fill-box;
     transform-origin: center;
 }
+/* Before the split runs, the whole lockup fades up as one block. Once
+   js/outrospective-title.js has re-emitted each glyph, .is-exploded hands
+   the animation over to the per-letter pop below. */
 .slide.is-active .wm-svg { animation: outro-fade-up 0.9s var(--ease-slide) 0.15s forwards; }
+.slide.is-active .wm-svg.is-exploded { animation: none; opacity: 1; }
 .slide.is-active .wm-svg-rule { animation: wm-rule-grow 0.8s var(--ease-slide) 0.8s forwards; }
 @keyframes outro-fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 @keyframes wm-rule-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* Per-letter pop — scale overshoots past 1 then settles ("bubble pop"). */
+.wm-glyph {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+.slide.is-active .wm-svg.is-exploded .wm-glyph {
+    animation: wm-pop 460ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes wm-pop {
+    from { opacity: 0; transform: scale(0.35); }
+    60%  { opacity: 1; }
+    to   { opacity: 1; transform: scale(1); }
+}
+/* The rule lands after the last letter rather than mid-word. */
+.slide.is-active .wm-svg.is-exploded .wm-svg-rule {
+    animation: wm-rule-grow 0.7s var(--ease-slide) 1.05s forwards;
+}
 
 /* Kicker under the wordmark — Helvetica Neue, width-matched to the lockup. */
 .wm-kicker {
