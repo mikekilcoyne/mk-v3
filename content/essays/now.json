@@ -1,0 +1,168 @@
+{
+  "slug": "now",
+  "title": "Now & Then",
+  "credit": "Photos by me.",
+  "location": "2020 → Now",
+  "description": "Where I've been, what I've made, and what I'm up to now.",
+  "published": false,
+  "date": "2026-08-14",
+  "photoDir": "photos_web",
+  "cover": {
+    "img": "photos_web/now/P1003478.jpg",
+    "pos": "50% 45%"
+  },
+  "indexTitle": "Where I've Been. Where I'm Going.",
+  "index": [
+    {
+      "label": "Now",
+      "target": "now"
+    },
+    {
+      "year": "2020",
+      "label": "Japan → Turkey",
+      "target": "y2020"
+    },
+    {
+      "year": "2021",
+      "label": "Turkey → LA",
+      "target": "y2021"
+    },
+    {
+      "year": "2022–2026",
+      "label": "East Hampton",
+      "target": "easthampton"
+    },
+    {
+      "year": "2026",
+      "label": "A Bunch of Places",
+      "target": "y2026"
+    }
+  ],
+  "chapters": [
+    {
+      "id": "now",
+      "heading": "Now",
+      "label": "Now",
+      "img": "photos_web/now/P1002890.jpg",
+      "pos": "50% 45%",
+      "blocks": [
+        [
+          "Two things, currently: I'm in the middle of moving to Lisbon. And I'm developing a travel series called <a href=\"/outrospective/\"><em>OutroSpective</em></a> &mdash; asking interesting people the questions we can't stop asking ourselves. Over breakfast. In incredible places."
+        ]
+      ]
+    },
+    {
+      "id": "y2020",
+      "heading": "2020",
+      "label": "2020 · Japan → Turkey",
+      "img": "photos_web/14_JAPAN/P1012490.jpg",
+      "pos": "50% 50%",
+      "blocks": [
+        [
+          "Japan, then Turkey. More soon."
+        ]
+      ]
+    },
+    {
+      "id": "y2021",
+      "heading": "2021",
+      "label": "2021 · Turkey → LA",
+      "img": "photos_web/12_LOS_ANGELES_CA/P1019460.jpg",
+      "pos": "50% 50%",
+      "blocks": [
+        [
+          "Turkey to Los Angeles. Filmed <em>How to Meet People</em> &mdash; the first real swing at the format: point a camera at the questions everyone's too polite to ask out loud."
+        ],
+        [{ "embed": "https://livid.com/embed/1dhHXy-ujVRa", "title": "How to Meet People [pre-release]" }]
+      ]
+    },
+    {
+      "id": "easthampton",
+      "heading": "East Hampton",
+      "label": "East Hampton",
+      "img": "photos_web/04_EAST_HAMPTON_NY/P1010253.jpg",
+      "pos": "50% 50%",
+      "blocks": [
+        [
+          "The East Hampton years &mdash; Breakfast Club vibes, a house full of people asking each other good questions before 9am. With a smattering of travels stitched through it: Amsterdam, London, Maastricht."
+        ]
+      ]
+    },
+    {
+      "heading": "2022",
+      "label": "2022 · BITN, INC",
+      "img": "photos_web/04_EAST_HAMPTON_NY/P1010235.jpg",
+      "pos": "50% 50%",
+      "blocks": [
+        [
+          "Filmed and cut the rough of <em>BITN, INC</em>."
+        ],
+        [{ "embed": "https://livid.com/embed/YLliZswas0oK", "title": "BITN, INC — First Look" }]
+      ]
+    },
+    {
+      "heading": "2023",
+      "label": "2023 · How to Life",
+      "img": "photos_web/04_EAST_HAMPTON_NY/P1013995.jpg",
+      "pos": "50% 50%",
+      "blocks": [
+        [
+          "<em>How to Life</em>, the docu-series. Teaser cut, episodes in motion."
+        ],
+        [{ "embed": "https://livid.com/embed/0BDhHkVfdKXw", "title": "How to Life — Trailer" }]
+      ]
+    },
+    {
+      "heading": "2024 – 2025",
+      "label": "2024–25 · Porsche Parlor",
+      "img": "photos_web/outrospective/premise/car-2871.jpg",
+      "pos": "50% 50%",
+      "blocks": [
+        [
+          "The Porsche Parlor Series."
+        ],
+        [{ "embed": "https://livid.com/embed/x38rIvQr2Bq7", "title": "Porsche Parlor — Teaser" }]
+        ]
+      ]
+    },
+    {
+      "heading": "2025",
+      "label": "2025 · The Quiet Build",
+      "img": "photos_web/01_DENVER_CO/P1007588.jpg",
+      "pos": "50% 50%",
+      "blocks": [
+        [
+          "A chiller, more tranquil chapter — on purpose. The focus was Good Couch: building the thing, doing the work, landing real clients (including the Colorado Department of Public Health & Environment)."
+        ],
+        [
+          "Not every year needs a montage. Some years are the foundation the montage sits on."
+        ]
+      ]
+    },
+    {
+      "id": "y2026",
+      "heading": "2026",
+      "label": "2026 · A Bunch of Places",
+      "img": "photos_web/24_ROTTERDAM_NL/P1002627.jpg",
+      "pos": "50% 50%",
+      "blocks": [
+        [
+          "The year the map got big. Rotterdam. Paris. Biarritz. Istanbul. Japan with my parents &mdash; Kyoto, Osaka, Kobe. A fall down a staircase in Istanbul airport that became <a href=\"/the-incident/\">its own essay</a>."
+        ],
+        [
+          "I'm also building <a href=\"https://yellowsatinjacket.com\" target=\"_blank\" rel=\"noopener\"><em>Yellow Satin Jacket</em></a>."
+        ],
+        [{ "embed": "https://livid.com/embed/GZ5lpdRsOoCn", "title": "Yellow Satin Jacket" }]
+        ]
+      ]
+    }
+  ],
+  "end": {
+    "title": "That's the story so far.",
+    "img": "photos_web/25_BIARRITZ_FR/P1002488.jpg",
+    "pos": "50% 50%",
+    "shareSubject": "Now & Then — Michael Kilcoyne",
+    "shareBody": "Thought of you — a timeline of adventures from Michael Kilcoyne.\n\n{url}"
+  },
+  "layout": "pages"
+}

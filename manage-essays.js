@@ -169,7 +169,10 @@ function optimize(src, dest) {
 function esc(s) { return String(s || '').replace(/"/g, '&quot;'); }
 
 function pageHtml(essay) {
-    const ogImg = `${SITE}/${essay.photoDir}/${essay.cover.img}`;
+    /* Mirrors essay.js imgPath: names with a slash are already full paths. */
+    const ogImg = essay.cover.img.includes('/')
+        ? `${SITE}/${essay.cover.img}`
+        : `${SITE}/${essay.photoDir}/${essay.cover.img}`;
     const desc = esc(essay.description);
     return `<!DOCTYPE html>
 <html lang="en">
@@ -187,11 +190,14 @@ function pageHtml(essay) {
     <meta property="og:type" content="article">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="${ogImg}">
-    <link rel="stylesheet" href="/css/essay.css">
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f%5B%5D=clash-display@700&f%5B%5D=gambetta@400,500,401&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/essay.css?v=14">
 </head>
 <body class="essay-body" data-essay="${essay.slug}">
     <main id="essay-root"></main>
-    <script src="/js/essay.js"></script>
+    <script src="/js/essay.js?v=14"></script>
 </body>
 </html>
 `;
@@ -232,6 +238,34 @@ function rebuildIndex() {
 
     log(`    → content/essays/index.json (${essays.length} essays)`);
     if (!DRY) fs.writeFileSync(INDEX_FILE, JSON.stringify({ essays }, null, 2) + '\n');
+}
+
+/* Every photo under photos_web, grouped by folder. The admin panel reads
+   this to offer photos from the whole library, not just one essay's
+   folder — timeline pages like /now pull from many cities at once. */
+function rebuildPhotoManifest() {
+    const root = path.join(ROOT, 'photos_web');
+    if (!fs.existsSync(root)) return;
+    const manifest = {};
+    const walk = dir => {
+        const entries = fs.readdirSync(dir, { withFileTypes: true });
+        const imgs = entries.filter(e => e.isFile() && IMG_RE.test(e.name))
+                            .map(e => e.name).sort();
+        if (imgs.length) manifest[path.relative(root, dir)] = imgs;
+        entries.filter(e => e.isDirectory())
+               .forEach(e => walk(path.join(dir, e.name)));
+    };
+    fs.readdirSync(root, { withFileTypes: true })
+      .filter(e => e.isDirectory())
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .forEach(e => walk(path.join(root, e.name)));
+
+    const total = Object.values(manifest).reduce((n, v) => n + v.length, 0);
+    /* Lives beside content/essays/, not inside it — the rebuild loop
+       treats every JSON in that folder as an essay. */
+    log(`    → content/photos.json (${total} photos in ${Object.keys(manifest).length} folders)`);
+    if (!DRY) fs.writeFileSync(path.join(ROOT, 'content', 'photos.json'),
+        JSON.stringify(manifest, null, 1) + '\n');
 }
 
 /* ── Ingest one inbox folder ────────────────────────────────────────── */
@@ -315,6 +349,7 @@ if (REBUILD) {
     const files = fs.readdirSync(CONTENT).filter(f => f.endsWith('.json') && f !== 'index.json');
     files.forEach(f => writeEssay(JSON.parse(fs.readFileSync(path.join(CONTENT, f), 'utf8'))));
     rebuildIndex();
+    rebuildPhotoManifest();
 } else {
     if (!fs.existsSync(INBOX)) {
         fs.mkdirSync(INBOX, { recursive: true });
@@ -332,7 +367,7 @@ if (REBUILD) {
     }
     let n = 0;
     slugs.forEach(s => { if (ingest(s)) n++; });
-    if (n) rebuildIndex();
+    if (n) { rebuildIndex(); rebuildPhotoManifest(); }
 }
 
 log(`\n  Done.${DRY ? ' (dry run — nothing written)' : ''}`);

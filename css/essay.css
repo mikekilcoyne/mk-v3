@@ -3,7 +3,9 @@
    essay pages don't inherit the home page's overflow:hidden hero rules. */
 :root {
     --font-ui: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    --font-body: Georgia, 'Times New Roman', serif;
+    /* Gambetta keeps the Times-ish bones but with calligraphic quirk;
+       Georgia stands in until the Fontshare sheet lands. */
+    --font-body: 'Gambetta', Georgia, 'Times New Roman', serif;
     --ls-ui: 2px;
     --ls-label: 3px;
     --fw-ui: 700;
@@ -149,32 +151,169 @@ body.essay-body {
     max-width: 34ch;
 }
 /* Location sits below the credit and carries the accent so it reads first. */
+/* Hero subheader — the OutroSpective kicker voice: Clash Display Bold,
+   site yellow, hard black drop-shadow. Falls back to Helvetica when the
+   Fontshare stylesheet isn't linked. */
 .essay-location {
     margin-top: 16px;
-    font-size: 0.9rem;
-    font-weight: var(--fw-ui);
+    font-family: 'Clash Display', var(--font-ui);
+    font-weight: 700;
+    font-size: 1rem;
     letter-spacing: 5px;
     text-transform: uppercase;
     color: var(--c-accent);
-    text-shadow: 0 1px 10px rgba(0,0,0,0.85), 0 0 18px rgba(255,221,102,0.35);
+    text-shadow: 0 1px 1px rgba(0,0,0,0.95), 0 2px 7px rgba(0,0,0,0.75);
 }
+/* Scroll cue. The container only centres — the chevron alone animates, so
+   the label never jitters, and being an <a> it must not pick up default
+   link styling. */
 .essay-scroll-hint {
     position: absolute;
-    bottom: 34px;
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 0.68rem;
-    letter-spacing: var(--ls-label);
-    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px 6px;
+    text-decoration: none;
     color: var(--c-text-dim);
-    animation: essay-bob 2.2s ease-in-out infinite;
+    transition: color 0.25s ease;
 }
+.essay-scroll-hint:hover,
+.essay-scroll-hint:focus-visible { color: var(--c-accent); }
+.essay-scroll-word {
+    font-family: var(--font-ui);
+    font-weight: var(--fw-ui);
+    font-size: 0.62rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.9);
+}
+/* Word comes from a data attribute so the touch wording swaps in CSS. */
+.essay-scroll-word::after { content: attr(data-desktop); }
+@media (max-width: 600px), (pointer: coarse) {
+    .essay-scroll-word::after { content: attr(data-mobile); }
+}
+.essay-scroll-arrow {
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    filter: drop-shadow(0 1px 6px rgba(0,0,0,0.9));
+    animation: essay-bob 2s ease-in-out infinite;
+}
+/* Rotating first means the equal x/y offset reads as straight down. */
 @keyframes essay-bob {
-    0%, 100% { transform: translate(-50%, 0); opacity: 0.55; }
-    50%      { transform: translate(-50%, 8px); opacity: 1; }
+    0%, 100% { transform: rotate(45deg) translate(0, 0);     opacity: 0.5; }
+    50%      { transform: rotate(45deg) translate(3px, 3px); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .essay-scroll-arrow { animation: none; transform: rotate(45deg); opacity: 0.8; }
 }
 
+/* With an index, the hero and index are snap points so the first scroll
+   lands cleanly on the index. Chapters declare none, so reading scrolls
+   freely once you're past it. */
+html.essay-snap { scroll-snap-type: y proximity; }
+html.essay-snap .essay-hero,
+html.essay-snap .essay-index { scroll-snap-align: start; }
+
 /* ── Chapters ── */
+/* ── Index — full-screen jump list after the hero (timeline pages) ── */
+.essay-index {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 96px 8vw;
+}
+/* The section's headline — a full sentence, so it gets real size and
+   normal tracking rather than the tight label treatment. */
+.essay-index-kicker {
+    font-family: 'Clash Display', var(--font-ui);
+    font-weight: 700;
+    font-size: clamp(1.45rem, min(5vw, 4.6vh), 3rem);
+    letter-spacing: 0.5px;
+    line-height: 1.16;
+    max-width: 16ch;
+    text-transform: uppercase;
+    color: var(--c-accent);
+    text-shadow: 0 1px 1px rgba(0,0,0,0.95), 0 2px 10px rgba(0,0,0,0.8);
+    margin-bottom: clamp(22px, 5.5vh, 58px);
+}
+.essay-index-list {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(14px, 3vh, 32px);
+    width: 100%;
+}
+.essay-index-link {
+    text-decoration: none;
+    display: block;
+    max-width: 100%;
+}
+/* Year sits in a fixed-width column to the left, so every place name
+   starts on the same edge. Baselines align across the size jump. */
+.essay-index-link h1 {
+    display: grid;
+    grid-template-columns: clamp(3.1rem, 6vw, 4.2rem) minmax(0, 1fr);
+    align-items: baseline;
+    gap: clamp(10px, 1.6vw, 22px);
+}
+.essay-index-year {
+    font-family: 'Clash Display', var(--font-ui);
+    font-weight: 700;
+    font-size: clamp(0.62rem, 1.4vw, 0.78rem);
+    letter-spacing: 2px;
+    /* A span like "2022–2026" breaks after the en-dash rather than
+       forcing a wide column on every other row. Centring it against the
+       much taller place name keeps every row the same height — on a
+       baseline, the second line would push the row open. */
+    line-height: 1.3;
+    align-self: center;
+    color: var(--c-accent);
+    text-shadow: 0 1px 1px rgba(0,0,0,0.95), 0 2px 7px rgba(0,0,0,0.75);
+    transition: opacity 0.2s ease;
+}
+.essay-index-place {
+    font-family: var(--font-ui);
+    font-weight: var(--fw-ui);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-ui);
+    /* Scales off whichever axis is tighter so the headline plus five
+       entries always land on one screen. */
+    font-size: clamp(1.35rem, min(4.6vw, 4.4vh), 2.9rem);
+    line-height: 1.05;
+    color: var(--c-text);
+    text-shadow: 0 2px 18px rgba(0,0,0,0.8);
+    transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+/* Phones: claw back width from the gutter and the year column so the
+   place names don't shrink to caption size. */
+@media (max-width: 600px) {
+    .essay-index { padding: 88px 6vw; }
+    .essay-index-link h1 {
+        grid-template-columns: 2.9rem minmax(0, 1fr);
+        gap: 10px;
+    }
+    /* Tight enough that a wrapped year stays shorter than the place name
+       beside it, so every row keeps the same height. */
+    .essay-index-year { letter-spacing: 1px; line-height: 1.12; }
+}
+/* Colour-only hover — shifting the row sideways read as a layout glitch. */
+.essay-index-link:hover .essay-index-place,
+.essay-index-link:focus-visible .essay-index-place {
+    color: var(--c-accent);
+    text-shadow: 0 2px 18px rgba(0,0,0,0.8), var(--glow-accent);
+}
+.essay-index-link:hover .essay-index-year { opacity: 0.65; }
+
 .essay-chapter {
     position: relative;
     z-index: 10;
@@ -201,18 +340,89 @@ body.essay-body {
     box-shadow: var(--glow-accent);
 }
 
+/* ── Video embeds ── */
+.essay-embed {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin: 1.2rem 0;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #000;
+}
+.essay-embed iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* ── Paged chapters — one composed screen per section ──────────────── */
+.essay-chapter--page {
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 96px 8vw;
+    scroll-snap-align: start;
+}
+.essay-page-card { max-width: 640px; width: 100%; }
+/* Heading matches the index title: Clash Display, same scale, in white. */
+.essay-chapter--page .essay-chapter-heading {
+    margin: 0 0 clamp(18px, 3.4vh, 34px);
+    max-width: none;
+    padding: 0;
+    text-align: left;
+    font-family: 'Clash Display', var(--font-ui);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: clamp(1.45rem, min(5vw, 4.6vh), 3rem);
+    line-height: 1.16;
+    color: var(--c-text);
+    text-shadow: 0 1px 1px rgba(0,0,0,0.95), 0 2px 10px rgba(0,0,0,0.8);
+}
+.essay-chapter--page .essay-chapter-heading .rule { display: none; }
+/* One card per section, so no stacked gaps between text blocks. */
+.essay-chapter--page .essay-block {
+    max-width: none;
+    margin: 0 0 14px;
+}
+.essay-chapter--page .essay-block:last-child { margin-bottom: 0; }
+.essay-paged .essay-flow { padding: 0; }
+@media (max-width: 600px) {
+    .essay-chapter--page { padding: 88px 6vw; }
+}
+
 /* Text cards that float over the photo */
+/* Frosted-glass card: squared corners, a hairline top highlight and a
+   saturated blur so the photo reads through it rather than being hidden. */
 .essay-block {
     max-width: 620px;
     margin: 0 auto 55vh;
-    padding: 26px 28px;
-    background: var(--c-scrim);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 14px;
+    padding: 28px 30px;
+    background: rgba(16,16,18,0.42);
+    backdrop-filter: blur(22px) saturate(150%);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-top-color: rgba(255,255,255,0.2);
+    border-radius: 2px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
     opacity: 0;
     transform: translateY(26px);
     transition: opacity 0.7s ease, transform 0.7s ease;
+}
+/* Button-only block: the button is its own surface. */
+.essay-block--bare {
+    background: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
 }
 .essay-block.in-view {
     opacity: 1;
@@ -222,11 +432,20 @@ body.essay-body {
 .essay-block p {
     font-family: var(--font-body);
     font-size: 1.08rem;
-    line-height: 1.75;
+    line-height: 1.72;
     color: rgba(255,255,255,0.94);
 }
 .essay-block p + p { margin-top: 1.1em; }
 .essay-block em { color: var(--c-accent); font-style: italic; }
+/* Inline links inside body copy — the browser default reads as a bug
+   against this palette. Buttons opt out via .essay-cta. */
+.essay-block p a:not(.essay-cta) {
+    color: var(--c-accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,221,102,0.4);
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+.essay-block p a:not(.essay-cta):hover { border-bottom-color: var(--c-accent); }
 
 /* Wrapper adds side gutters on small screens */
 .essay-flow { padding: 0 18px; }
@@ -253,26 +472,55 @@ body.essay-body {
     max-width: 24ch;
     text-shadow: 0 2px 24px rgba(0,0,0,0.8);
 }
+/* Inline CTA inside a chapter block (e.g. the /now page's "See what I'm
+   building" link) — same look as the end-card links below. */
+.essay-block a.essay-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--c-text);
+    text-decoration: none;
+    padding: 16px 34px;
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 4px;
+    background: var(--c-scrim);
+    font-family: var(--font-ui);
+    font-weight: var(--fw-ui);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.essay-block a.essay-cta:hover {
+    color: var(--c-accent);
+    border-color: var(--c-accent);
+    box-shadow: var(--glow-accent);
+}
 .essay-end-links {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 14px 28px;
 }
+/* Buttons follow the OutroSpective teaser-trigger: squared corner,
+   uppercase Helvetica, yellow glow on hover. One button language
+   site-wide; the deck itself is allowed to go further. */
 .essay-end-links a {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    font-family: var(--font-body);
-    font-style: italic;
-    font-weight: 400;
-    font-size: 1.02rem;
-    letter-spacing: 0.5px;
-    color: rgba(255,255,255,0.88);
+    gap: 12px;
+    font-family: var(--font-ui);
+    font-weight: var(--fw-ui);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: var(--ls-label);
+    color: var(--c-text);
     text-decoration: none;
-    padding: 11px 24px;
-    border: 1px solid rgba(255,255,255,0.28);
-    border-radius: 999px;
+    padding: 16px 34px;
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 4px;
     background: var(--c-scrim);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);

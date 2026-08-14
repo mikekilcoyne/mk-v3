@@ -60,38 +60,108 @@
     topbar.className = 'essay-topbar';
     topbar.innerHTML = '<a href="/">Michael Kilcoyne</a><span class="essay-chapter-label" id="essay-chapter-label"></span>';
 
+    const hasIndex = Array.isArray(essay.index) && essay.index.length;
+
     const hero = document.createElement('section');
     hero.className = 'essay-hero essay-scene';
     hero.dataset.img = imgPath(essay.cover.img);
     hero.dataset.pos = essay.cover.pos || '50% 50%';
     const credit = essay.credit || 'A photo essay. Original photos by Michael Kilcoyne.';
+    /* With an index below, the scroll cue becomes the way into it. */
+    const hintInner =
+        '<span class="essay-scroll-word" data-desktop="Scroll" data-mobile="Swipe"></span>' +
+        '<span class="essay-scroll-arrow" aria-hidden="true"></span>';
+    const scrollHint = hasIndex
+        ? `<a class="essay-scroll-hint" href="#essay-index" aria-label="Skip to the index">${hintInner}</a>`
+        : `<span class="essay-scroll-hint">${hintInner}</span>`;
     hero.innerHTML =
         `<h1 class="essay-title">${essay.title}</h1>` +
         `<p class="essay-credit">${credit}</p>` +
         (essay.location ? `<p class="essay-location">${essay.location}</p>` : '') +
-        '<span class="essay-scroll-hint">Scroll &darr;</span>';
+        scrollHint;
+
+    /* Optional index — a full-screen jump list right after the hero.
+       Opt-in via an "index" array of {year, label, target} where target is
+       a chapter id; used by timeline pages like /now. The year rides above
+       the label so long entries never wrap mid-phrase. */
+    let indexSec = null;
+    if (hasIndex) {
+        document.documentElement.classList.add('essay-snap');
+        indexSec = document.createElement('section');
+        indexSec.id = 'essay-index';
+        indexSec.className = 'essay-index essay-scene';
+        indexSec.dataset.img = imgPath(essay.indexImg || essay.cover.img);
+        indexSec.dataset.pos = essay.indexPos || essay.cover.pos || '50% 50%';
+        const indexTitle = essay.indexTitle || 'Index';
+        indexSec.dataset.label = indexTitle;
+        indexSec.innerHTML =
+            `<p class="essay-index-kicker">${indexTitle}</p>` +
+            '<nav class="essay-index-list">' +
+            essay.index.map(e =>
+                /* The year span renders even when empty so every place
+                   name starts on the same left edge. */
+                `<a class="essay-index-link" href="#${e.target}"><h1>` +
+                `<span class="essay-index-year">${e.year || ''}</span>` +
+                `<span class="essay-index-place">${e.label}</span>` +
+                '</h1></a>'
+            ).join('') +
+            '</nav>';
+    }
 
     const flow = document.createElement('div');
     flow.className = 'essay-flow';
 
+    /* "pages" layout: every chapter is one full screen with its heading
+       and text in a single card, instead of text drifting past a photo
+       over several screens. Timeline pages like /now use it. */
+    const paged = essay.layout === 'pages';
+    if (paged) document.body.classList.add('essay-paged');
+
     essay.chapters.forEach(ch => {
         const section = document.createElement('section');
-        section.className = 'essay-chapter essay-scene';
+        section.className = 'essay-chapter essay-scene' + (paged ? ' essay-chapter--page' : '');
+        if (ch.id) section.id = ch.id;
         section.dataset.img = imgPath(ch.img);
         section.dataset.pos = ch.pos || '50% 50%';
         section.dataset.label = ch.label || ch.heading || '';
+        /* Paged chapters gather heading + text into one card so the whole
+           section reads as a single composed screen. */
+        const host = paged ? document.createElement('div') : section;
+        if (paged) host.className = 'essay-page-card';
         if (ch.heading) {
             const h = document.createElement('h2');
             h.className = 'essay-chapter-heading';
             h.innerHTML = ch.heading + '<span class="rule"></span>';
-            section.appendChild(h);
+            host.appendChild(h);
         }
         (ch.blocks || []).forEach(paras => {
+            /* An embed block is a single-item array whose only entry is an
+               object with an "embed" key — renders as a responsive iframe
+               instead of a text card. */
+            if (paras.length === 1 && paras[0] && typeof paras[0] === 'object' && paras[0].embed) {
+                const wrap = document.createElement('div');
+                wrap.className = 'essay-embed';
+                const iframe = document.createElement('iframe');
+                iframe.src = paras[0].embed;
+                iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+                iframe.allowFullscreen = true;
+                iframe.loading = 'lazy';
+                iframe.title = paras[0].title || 'Video';
+                wrap.appendChild(iframe);
+                host.appendChild(wrap);
+                return;
+            }
             const block = document.createElement('div');
             block.className = 'essay-block';
             block.innerHTML = paras.map(p => `<p>${p}</p>`).join('');
-            section.appendChild(block);
+            /* A block that is nothing but a button shouldn't get the glass
+               plate too — that reads as a box inside a box. */
+            if (block.querySelector(':scope > p:only-child > a.essay-cta:only-child')) {
+                block.classList.add('essay-block--bare');
+            }
+            host.appendChild(block);
         });
+        if (paged) section.appendChild(host);
         flow.appendChild(section);
     });
 
@@ -138,6 +208,7 @@
     root.appendChild(rail);
     root.appendChild(topbar);
     root.appendChild(hero);
+    if (indexSec) root.appendChild(indexSec);
     root.appendChild(flow);
     root.appendChild(end);
 

@@ -19,23 +19,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Bottom Line Phrase Typewriter (per-word styling) ---
     // Each phrase is an array of segments: { text, cls }
+    // Three faces, one system: a white Clash Display lead-in hands off to
+    // the yellow Paquito word that carries the phrase. Breakfast Club is
+    // Helvetica Neue on its own.
     const bottomPhrases = [
-        // ADVENTURES — NCL Outline glow
-        [{ text: "ADVENTURES", cls: "font-adventures" }],
+        // ADVENTURES — the accent face, standing alone
+        [{ text: "ADVENTURES", cls: "ph-paquito" }],
 
-        // MAKING (pink outline) MOVIES (NCL regular, blue glow)
+        // MAKING (white Clash) MOVIES (yellow Paquito)
         [
-            { text: "MAKING ", cls: "font-adventures" },
-            { text: "MOVIES",  cls: "font-blue-glow" }
+            { text: "MAKING ", cls: "ph-clash" },
+            { text: "MOVIES",  cls: "ph-paquito" }
         ],
 
-        // BREAKFAST CLUB — Helvetica Neue Bold, white glow
-        [{ text: "BREAKFAST CLUB", cls: "font-breakfast" }],
+        // BREAKFAST CLUB — Helvetica Neue Bold, white
+        [{ text: "BREAKFAST CLUB", cls: "ph-helv" }],
 
-        // DREAMIN' BIG — BIG highlighted in yellow glow
+        // DREAMIN' (white Clash) BIG (yellow Paquito)
         [
-            { text: "DREAMIN' ", cls: "font-adventures" },
-            { text: "BIG",       cls: "font-yellow-glow" }
+            { text: "DREAMIN' ", cls: "ph-clash" },
+            { text: "BIG",       cls: "ph-paquito" }
         ]
     ];
 
@@ -46,7 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let phraseIndex = 0;
     const bottomLine = document.getElementById('bottom-line');
 
-    // Type segments one by one, each as its own <span> before the cursor
+    // Type segments one by one, each as its own <span> inside #bottom-text.
+    // They live in that one wrapper rather than directly in the flex row so
+    // mixed faces share a text baseline instead of bottom-aligning as
+    // separate flex items.
     // Segments with { br: true } insert a line break with no typing delay
     function typeSegments(segments, segIdx, charIdx) {
         if (segIdx >= segments.length) {
@@ -58,17 +64,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (seg.br) {
             const br = document.createElement('br');
             br.dataset.seg = segIdx;
-            bottomLine.insertBefore(br, cursorBot);
+            bottomTextEl.appendChild(br);
             setTimeout(() => typeSegments(segments, segIdx + 1, 0), PHRASE_TYPE_SPEED);
             return;
         }
 
-        let span = bottomLine.querySelector(`[data-seg="${segIdx}"]`);
+        let span = bottomTextEl.querySelector(`[data-seg="${segIdx}"]`);
         if (!span) {
             span = document.createElement('span');
             span.className = seg.cls || '';
             span.dataset.seg = segIdx;
-            bottomLine.insertBefore(span, cursorBot);
+            bottomTextEl.appendChild(span);
         }
 
         if (charIdx <= seg.text.length) {
@@ -81,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Realistic backspace: char-by-char within each segment, with human-like pauses
     function deleteSegments() {
-        const spans = [...bottomLine.querySelectorAll('[data-seg]')];
+        const spans = [...bottomTextEl.querySelectorAll('[data-seg]')];
         if (spans.length === 0) {
             bottomLine.classList.remove('is-multiline');
             phraseIndex = (phraseIndex + 1) % bottomPhrases.length;
@@ -137,7 +143,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const qwestOverlay = document.getElementById('qwest-overlay');
 
     btnStory.addEventListener('click', (e) => { e.preventDefault(); videoOverlay.classList.add('active'); });
-    document.getElementById('close-video').addEventListener('click', () => videoOverlay.classList.remove('active'));
+
+    /* The film loads only once the poster is clicked, and unloads on close
+       so it can't keep playing behind the overlay. */
+    const storyVideo  = document.getElementById('story-video');
+    const videoPoster = document.getElementById('video-poster');
+    if (videoPoster && storyVideo) {
+        videoPoster.addEventListener('click', () => {
+            if (!storyVideo.src) storyVideo.src = storyVideo.dataset.src;
+            videoPoster.classList.add('is-hidden');
+        });
+    }
+    document.getElementById('close-video').addEventListener('click', () => {
+        videoOverlay.classList.remove('active');
+        if (storyVideo) storyVideo.removeAttribute('src');
+        if (videoPoster) videoPoster.classList.remove('is-hidden');
+    });
 
     btnQwest.addEventListener('click', (e) => {
         e.preventDefault();

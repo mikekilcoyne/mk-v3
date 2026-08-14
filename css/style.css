@@ -202,15 +202,20 @@ body {
 }
 
 /* Typography styles */
+/* Intro line above the type-out — Helvetica Neue, site yellow. */
 .top-line {
     font-weight: var(--fw-ui);
     font-size: clamp(0.9rem, 2.2vw, 2rem);
     letter-spacing: var(--ls-ui);
     margin-bottom: 0.6vh;
     text-transform: uppercase;
-    text-shadow: 0 2px 15px rgba(0,0,0,0.8);
+    color: #FFDD22;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.95),
+                 0 2px 12px rgba(0,0,0,0.8),
+                 0 0 16px rgba(255,221,34,0.35);
     white-space: nowrap;
 }
+.top-line .cursor { color: #FFDD22; }
 
 .bottom-line {
     font-size: clamp(1.6rem, 4.8vw, 4.8rem);
@@ -274,6 +279,57 @@ body {
 }
 
 /* Font Classes for Swapping Text */
+
+/* ── Type-out phrases ───────────────────────────────────────────────
+   Three faces, one system. White is the voice, yellow is the emphasis.
+   Shadows stay tight and dark for contrast against the video rather than
+   wide neon blooms, so the letterforms read sharp at any size. */
+.ph-paquito,
+.ph-clash,
+.ph-helv {
+    font-weight: 700;
+    text-transform: uppercase;
+    -webkit-text-stroke: 0;
+    background: transparent;
+    mix-blend-mode: normal;
+    line-height: 1;
+}
+/* Accent face — the word that carries the phrase. */
+.ph-paquito {
+    font-family: 'Paquito', Georgia, serif;
+    letter-spacing: 1px;
+    color: #FFDD22;
+    text-shadow: 0 0 18px rgba(255,221,34,0.45),
+                 0 0 44px rgba(255,221,34,0.2),
+                 0 2px 14px rgba(0,0,0,0.85);
+}
+/* Lead-in face. */
+.ph-clash {
+    font-family: 'Clash Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    letter-spacing: 2px;
+    color: #fff;
+    text-shadow: 0 0 16px rgba(255,255,255,0.35),
+                 0 2px 14px rgba(0,0,0,0.85);
+}
+/* "BREAKFAST CLUB" keeps Helvetica Neue. */
+.ph-helv {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    letter-spacing: 4px;
+    color: #fff;
+    text-shadow: 0 0 16px rgba(255,255,255,0.35),
+                 0 2px 14px rgba(0,0,0,0.85);
+}
+/* Cap-height normalisation. Measured ratios of cap height to font-size:
+   Clash Display 0.680, Paquito 0.717, Helvetica Neue 0.731. Left at the
+   same font-size the three faces render visibly different heights, which
+   shows up badly where two of them sit side by side in one phrase. Each
+   is scaled to Clash Display's cap height (the smallest, so nothing grows
+   into the fixed-height row):
+       Paquito   0.680 / 0.717 = 0.948
+       Helvetica 0.680 / 0.731 = 0.930  */
+.bottom-line .ph-clash   { font-size: 1em; }
+.bottom-line .ph-paquito { font-size: 0.948em; }
+.bottom-line .ph-helv    { font-size: 0.930em; }
 
 /* "BREAKFAST CLUB" — Helvetica Neue Bold, white glow, fully transparent bg */
 .font-breakfast {
@@ -391,7 +447,10 @@ body {
     letter-spacing: 3px;
     text-transform: uppercase;
     text-decoration: none;
-    color: rgba(255, 255, 255, 0.6);
+    color: #fff;
+    text-shadow: 0 0 14px rgba(255,255,255,0.55),
+                 0 0 34px rgba(255,255,255,0.28),
+                 0 2px 10px rgba(0,0,0,0.75);
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     padding: 0.5rem 0;
@@ -410,7 +469,9 @@ body {
 
 .main-flow-link:hover {
     color: #fff;
-    text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+    text-shadow: 0 0 20px rgba(255,255,255,0.95),
+                 0 0 50px rgba(255,255,255,0.5),
+                 0 2px 10px rgba(0,0,0,0.75);
 }
 
 .main-flow-link:hover::after {
@@ -518,6 +579,51 @@ body {
     width: 100%;
     height: 100%;
 }
+
+/* On-brand cover over the embed — a still, dark plate with our own play
+   mark, so the player's default chrome never greets you first. */
+.video-poster {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    border: 0;
+    background: #07070a;
+    cursor: pointer;
+    z-index: 2;
+    transition: opacity 0.45s ease;
+}
+.video-poster.is-hidden { opacity: 0; pointer-events: none; }
+.video-play-mark {
+    display: grid;
+    place-items: center;
+    width: clamp(58px, 7vw, 80px);
+    aspect-ratio: 1;
+    color: #0a0a0a;
+    background: #FFDD22;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgba(255,221,34,0.5), 0 0 34px rgba(255,221,34,0.32);
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease;
+}
+.video-play-mark svg { width: 44%; height: 44%; margin-left: 6%; display: block; }
+.video-poster:hover .video-play-mark,
+.video-poster:focus-visible .video-play-mark {
+    transform: scale(1.07);
+    box-shadow: 0 0 0 1px rgba(255,221,34,0.8), 0 0 48px rgba(255,221,34,0.5);
+}
+.video-poster-label {
+    font-family: 'Clash Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    font-size: 0.68rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.62);
+    transition: color 0.28s ease;
+}
+.video-poster:hover .video-poster-label { color: #FFDD22; }
 
 .close-btn {
     position: absolute;
@@ -1333,18 +1439,10 @@ body {
    Let's Play Overlay
    ========================================================================== */
 
-.main-flow-link--play {
-    color: #FFDD66;
-    text-shadow: 0 0 12px rgba(255, 221, 102, 0.7), 0 0 30px rgba(255, 221, 102, 0.3);
-}
-
+/* Was the lone yellow highlight — now matches its siblings, so the row
+   reads as one set of glowing white links. */
 .main-flow-link--play::after {
-    background: #FFDD66;
-}
-
-.main-flow-link--play:hover {
-    color: #FFDD66;
-    text-shadow: 0 0 20px rgba(255, 221, 102, 1), 0 0 50px rgba(255, 221, 102, 0.5);
+    background: #fff;
 }
 
 /* Overlay reuses .overlay base — just add inner layout */

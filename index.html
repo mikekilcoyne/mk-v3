@@ -14,9 +14,13 @@
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://mikekilcoyne.com/assets/og-image.png">
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f%5B%5D=paquito@400,700&f%5B%5D=clash-display@700&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="css/style.css">
+    <!-- ?v= bumps on every CSS edit; this page is aggressively cached. -->
+    <link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
     <!-- Background Placeholder for GIF/Video -->
@@ -53,7 +57,17 @@
         <div class="overlay-content">
             <button class="close-btn" id="close-video">&times;</button>
             <div class="video-container">
-                <iframe src="https://player.vimeo.com/video/839812275" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                <!-- "This is my story | How to Life Trailer" on LIVID. The
+                     looping hero behind the page is still the Vimeo cut.
+                     src is set on play so the embed's own controls never
+                     flash before our poster. -->
+                <iframe id="story-video" data-src="https://livid.com/embed/0BDhHkVfdKXw" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                <button class="video-poster" id="video-poster" aria-label="Play the film">
+                    <span class="video-play-mark" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M8 5.2v13.6L19 12z" fill="currentColor"/></svg>
+                    </span>
+                    <span class="video-poster-label">Play the Film</span>
+                </button>
             </div>
         </div>
     </div>
@@ -255,6 +269,6 @@
 
 
     <script src="https://player.vimeo.com/api/player.js"></script>
-    <script src="js/script.js"></script>
+    <script src="js/script.js?v=4"></script>
 </body>
 </html>

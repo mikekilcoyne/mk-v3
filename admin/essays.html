@@ -120,6 +120,32 @@ body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: 
 }
 .strip img:hover { opacity: 1; }
 .strip img.current { border-color: #FFDD66; opacity: 1; }
+/* Folder picker — lets a scene pull from anywhere in photos_web, not just
+   the essay's own folder. Timeline pages draw on many cities at once. */
+.folder-row { display: flex; align-items: center; gap: 0.5rem; padding-top: 0.5rem; }
+.folder-row label { font-size: 0.55rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+.folder-row select {
+    flex: 1; background: #111; color: #fff; border: 1px solid rgba(255,255,255,0.15);
+    padding: 0.35rem 0.5rem; font-size: 0.7rem; font-family: inherit;
+}
+/* Dictation notes. These ride along in the JSON so Claude can read them
+   straight out of the repo and action them. */
+.note-wrap { padding-top: 0.9rem; }
+.note-wrap label {
+    display: block; font-size: 0.55rem; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: #FFDD66; margin-bottom: 0.4rem;
+}
+.note-wrap textarea {
+    width: 100%; min-height: 72px; resize: vertical; background: #14130f;
+    border: 1px solid rgba(255,221,102,0.28); color: #fff; padding: 0.6rem 0.7rem;
+    font-family: inherit; font-size: 0.82rem; line-height: 1.5; outline: none;
+}
+.note-wrap textarea:focus { border-color: #FFDD66; }
+.note-wrap textarea.has-note { background: #1b1809; }
+.note-count {
+    font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase;
+    color: #FFDD66; margin-left: 0.5rem;
+}
 .empty-state { padding: 3rem; text-align: center; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.25); line-height: 2; }
 
 /* Laptops and split-screen windows: stack the photo over its text preview
@@ -169,6 +195,7 @@ let indexSha = null;
 let essays = {};               /* slug -> { data, sha, dirty } */
 let activeSlug = null;
 let indexDirty = false;
+let photoManifest = {};        /* content/photos.json — folder -> filenames */
 
 /* ── Auth ─────────────────────────────────────────────────────────── */
 document.getElementById('pw-btn').addEventListener('click', tryAuth);
@@ -209,6 +236,14 @@ async function loadAll() {
         const idx = await readFile('content/essays/index.json');
         index = JSON.parse(idx.content);
         indexSha = idx.sha;
+        /* Served as a static file — it's read-only here, so it doesn't
+           need to go through the GitHub-backed read action. */
+        try {
+            const pm = await fetch('/content/photos.json', { cache: 'no-cache' });
+            if (pm.ok) photoManifest = await pm.json();
+        } catch (err) {
+            /* Picker just falls back to the essay's own folder. */
+        }
         for (const entry of index.essays) {
             const f = await readFile(`content/essays/${entry.slug}.json`);
             if (f.content) essays[entry.slug] = { data: JSON.parse(f.content), sha: f.sha, dirty: false };
@@ -282,7 +317,12 @@ function renderEssay(slug) {
             <div class="meta">${data.chapters.length} chapters ·
                 ${data.chapters.reduce((n, c) => n + (c.blocks || []).length, 0)} text cards ·
                 ${(data.photos || []).length} photos ·
-                <a href="/${slug}/" target="_blank">view live →</a></div>
+                <a href="/${slug}/" target="_blank">view live →</a>
+                ${(() => {
+                    const n = [data.cover, ...data.chapters, data.end]
+                        .filter(s => s && s.note && s.note.trim()).length;
+                    return n ? `<span class="note-count">${n} note${n > 1 ? 's' : ''} for Claude</span>` : '';
+                })()}</div>
         </div>
         <div id="scenes"></div>`;
 
@@ -321,11 +361,23 @@ function sceneCard(kind, obj, data, dir) {
                 <label>X</label><input type="number" class="x-input" value="${Math.round(px)}" min="0" max="100">
                 <label>Y</label><input type="number" class="y-input" value="${Math.round(py)}" min="0" max="100">
             </div>
+            <div class="folder-row">
+                <label>Photos from</label>
+                <select class="folder-select">
+                    <option value="">This essay's folder</option>
+                    ${Object.keys(photoManifest).sort().map(f =>
+                        `<option value="${f}">${f} (${photoManifest[f].length})</option>`).join('')}
+                </select>
+            </div>
             <div class="strip"></div>
         </div>
         <div>
             ${isChapter ? `<div class="field-row"><label>Label</label><input type="text" class="label-input" value="${(obj.label || '').replace(/"/g, '&quot;')}" placeholder="shown top-right while reading"></div>` : ''}
             <div class="scene-text">${textPreview(obj, kind)}</div>
+            <div class="note-wrap">
+                <label>Note for Claude — say what you want changed here</label>
+                <textarea class="note-input" placeholder="e.g. “swap this for a Lisbon shot, rewrite the copy to be funnier, cut the last line”">${(obj.note || '').replace(/</g, '&lt;')}</textarea>
+            </div>
         </div>`;
 
     /* Focal point: click/drag on the photo, or type exact numbers. */
@@ -363,21 +415,61 @@ function sceneCard(kind, obj, data, dir) {
     const labelInput = card.querySelector('.label-input');
     if (labelInput) labelInput.addEventListener('input', () => { obj.label = labelInput.value; markEssayDirty(); });
 
-    /* Photo swap strip */
-    const strip = card.querySelector('.strip');
-    (data.photos || []).forEach(name => {
-        const t = document.createElement('img');
-        t.src = `${dir}/${name}`;
-        t.alt = name;
-        t.title = name;
-        if (name === obj.img) t.className = 'current';
-        t.addEventListener('click', () => {
-            obj.img = name;
+    const noteInput = card.querySelector('.note-input');
+    if (noteInput) {
+        const syncNoteStyle = () => noteInput.classList.toggle('has-note', !!noteInput.value.trim());
+        syncNoteStyle();
+        noteInput.addEventListener('input', () => {
+            const v = noteInput.value.trim();
+            if (v) obj.note = noteInput.value; else delete obj.note;
+            syncNoteStyle();
             markEssayDirty();
-            renderEssay(activeSlug);
         });
-        strip.appendChild(t);
-    });
+    }
+
+    /* Photo picker. The essay's own photos come first; the folder select
+       opens the rest of photos_web for scenes that pull from anywhere. */
+    const strip = card.querySelector('.strip');
+    const folderSel = card.querySelector('.folder-select');
+
+    /* prefix is the repo-relative folder, e.g. "photos_web/05_PARIS_FR".
+       Stored values keep that prefix so essay.js treats them as paths
+       rather than names inside the essay's own photoDir. */
+    function fillStrip(names, prefix) {
+        strip.innerHTML = '';
+        names.forEach(name => {
+            const value = prefix ? `${prefix}/${name}` : name;
+            const t = document.createElement('img');
+            t.src = prefix ? `/${value}` : `${dir}/${name}`;
+            t.loading = 'lazy';
+            t.alt = name;
+            t.title = value;
+            if (value === obj.img) t.className = 'current';
+            t.addEventListener('click', () => {
+                obj.img = value;
+                markEssayDirty();
+                renderEssay(activeSlug);
+            });
+            strip.appendChild(t);
+        });
+    }
+
+    if (folderSel) {
+        /* Default the picker to the folder the current photo lives in. */
+        const current = obj.img && obj.img.includes('/')
+            ? obj.img.replace(/^photos_web\//, '').split('/').slice(0, -1).join('/')
+            : '';
+        folderSel.value = current;
+        const refresh = () => {
+            const f = folderSel.value;
+            if (!f) fillStrip(data.photos || [], '');
+            else fillStrip(photoManifest[f] || [], `photos_web/${f}`);
+        };
+        folderSel.addEventListener('change', refresh);
+        refresh();
+    } else {
+        fillStrip(data.photos || [], '');
+    }
 
     return card;
 }
