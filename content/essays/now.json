@@ -4,7 +4,7 @@
   "credit": "Photos by me.",
   "location": "2020 → Now",
   "description": "Where I've been, what I've made, and what I'm up to now.",
-  "published": false,
+  "published": true,
   "date": "2026-08-14",
   "photoDir": "photos_web",
   "cover": {
@@ -16,6 +16,10 @@
     {
       "label": "Now",
       "target": "now"
+    },
+    {
+      "label": "Working On",
+      "target": "working-on"
     },
     {
       "year": "2020",
@@ -52,6 +56,45 @@
       ]
     },
     {
+      "id": "working-on",
+      "heading": "What I'm Working On",
+      "label": "Working On",
+      "img": "photos_web/now/P1013323.jpg",
+      "pos": "50% 45%",
+      "blocks": [
+        [
+          {
+            "projects": [
+              {
+                "name": "Original Travel Series",
+                "note": "Three swings at one idea. <a href=\"/outrospective/\"><em>OutroSpective</em></a> is the one in development.",
+                "pct": 35,
+                "status": "In development"
+              },
+              {
+                "name": "Moving to Lisbon",
+                "note": "After four years out of East Hampton, picking one place again.",
+                "pct": 60,
+                "status": "In motion"
+              },
+              {
+                "name": "Breakfast Club International",
+                "note": "Good questions before 9am — the East Hampton thing, exported.",
+                "pct": 20,
+                "status": "Taking shape"
+              },
+              {
+                "name": "Landscape Photography Practice",
+                "note": "Six years of shooting, turned into prints and commissions.",
+                "pct": 15,
+                "status": "Just started"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
       "id": "y2020",
       "heading": "2020",
       "label": "2020 · Japan → Turkey",
@@ -73,7 +116,12 @@
         [
           "Turkey to Los Angeles. Filmed <em>How to Meet People</em> &mdash; the first real swing at the format: point a camera at the questions everyone's too polite to ask out loud."
         ],
-        [{ "embed": "https://livid.com/embed/1dhHXy-ujVRa", "title": "How to Meet People [pre-release]" }]
+        [
+          {
+            "embed": "https://livid.com/embed/1dhHXy-ujVRa",
+            "title": "How to Meet People [pre-release]"
+          }
+        ]
       ]
     },
     {
@@ -97,7 +145,12 @@
         [
           "Filmed and cut the rough of <em>BITN, INC</em>."
         ],
-        [{ "embed": "https://livid.com/embed/YLliZswas0oK", "title": "BITN, INC — First Look" }]
+        [
+          {
+            "embed": "https://livid.com/embed/YLliZswas0oK",
+            "title": "BITN, INC — First Look"
+          }
+        ]
       ]
     },
     {
@@ -109,7 +162,12 @@
         [
           "<em>How to Life</em>, the docu-series. Teaser cut, episodes in motion."
         ],
-        [{ "embed": "https://livid.com/embed/0BDhHkVfdKXw", "title": "How to Life — Trailer" }]
+        [
+          {
+            "embed": "https://livid.com/embed/0BDhHkVfdKXw",
+            "title": "How to Life — Trailer"
+          }
+        ]
       ]
     },
     {
@@ -121,7 +179,11 @@
         [
           "The Porsche Parlor Series."
         ],
-        [{ "embed": "https://livid.com/embed/x38rIvQr2Bq7", "title": "Porsche Parlor — Teaser" }]
+        [
+          {
+            "embed": "https://livid.com/embed/x38rIvQr2Bq7",
+            "title": "Porsche Parlor — Teaser"
+          }
         ]
       ]
     },
@@ -147,12 +209,16 @@
       "pos": "50% 50%",
       "blocks": [
         [
-          "The year the map got big. Rotterdam. Paris. Biarritz. Istanbul. Japan with my parents &mdash; Kyoto, Osaka, Kobe. A fall down a staircase in Istanbul airport that became <a href=\"/the-incident/\">its own essay</a>."
+          "The year the map got big. Rotterdam. Paris. Biarritz. Istanbul. Japan with my parents &mdash; Kyoto, Osaka, Kobe. Two of them turned into essays: <a href=\"/the-incident/\">a fall down a staircase in Istanbul airport</a>, and <a href=\"/how-to-be-happy/\">three easy steps, worked out in Kyoto</a>."
         ],
         [
           "I'm also building <a href=\"https://yellowsatinjacket.com\" target=\"_blank\" rel=\"noopener\"><em>Yellow Satin Jacket</em></a>."
         ],
-        [{ "embed": "https://livid.com/embed/GZ5lpdRsOoCn", "title": "Yellow Satin Jacket" }]
+        [
+          {
+            "embed": "https://livid.com/embed/GZ5lpdRsOoCn",
+            "title": "Yellow Satin Jacket"
+          }
         ]
       ]
     }

@@ -193,11 +193,11 @@ function pageHtml(essay) {
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
     <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
     <link href="https://api.fontshare.com/v2/css?f%5B%5D=clash-display@700&f%5B%5D=gambetta@400,500,401&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/essay.css?v=14">
+    <link rel="stylesheet" href="/css/essay.css?v=18">
 </head>
 <body class="essay-body" data-essay="${essay.slug}">
     <main id="essay-root"></main>
-    <script src="/js/essay.js?v=14"></script>
+    <script src="/js/essay.js?v=18"></script>
 </body>
 </html>
 `;
@@ -368,6 +368,22 @@ if (REBUILD) {
     let n = 0;
     slugs.forEach(s => { if (ingest(s)) n++; });
     if (n) { rebuildIndex(); rebuildPhotoManifest(); }
+}
+
+/* Regenerating an essay page overwrites its <head>, which drops the canonical
+   tag and noindex marker that build-seo.js injects. Chaining it here means a
+   rebuild can't silently strip them — build-seo.js is idempotent, so running
+   it every time is safe. */
+if (!DRY) {
+    try {
+        require('child_process').execFileSync(
+            process.execPath, [require('path').join(__dirname, 'build-seo.js')],
+            { stdio: 'inherit' }
+        );
+    } catch (err) {
+        log('\n  ! build-seo.js failed — canonical tags may be missing.');
+        log('    Run `node build-seo.js` manually.\n');
+    }
 }
 
 log(`\n  Done.${DRY ? ' (dry run — nothing written)' : ''}`);

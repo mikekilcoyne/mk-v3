@@ -1880,3 +1880,25 @@ body {
         height: 18px;
     }
 }
+
+/* ── Credential line ──────────────────────────────────────────────────
+   Sits between the type-out and the doors: the eye is already there, and
+   it's the last thing read before choosing where to go. Deliberately
+   quiet — it's proof, not a headline, and it must not compete with the
+   type-out above it. */
+.credential-line {
+    max-width: 46ch;
+    margin: 2.2vh auto 0;
+    padding: 0 18px;
+    text-align: center;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    font-size: clamp(0.78rem, 1.7vw, 0.98rem);
+    line-height: 1.5;
+    letter-spacing: 0.2px;
+    color: rgba(255,255,255,0.82);
+    text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 0 30px rgba(0,0,0,0.6);
+}
+@media (max-width: 600px) {
+    .credential-line { margin-top: 1.6vh; max-width: 34ch; }
+}

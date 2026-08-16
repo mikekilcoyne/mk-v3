@@ -151,6 +151,26 @@
                 host.appendChild(wrap);
                 return;
             }
+            /* A projects block renders the "what I'm working on" meters.
+               Bars are sized with a plain inline width and never animated —
+               a reveal animation is frozen at its first keyframe in a
+               background tab, which renders every project at 0%. */
+            if (paras.length === 1 && paras[0] && typeof paras[0] === 'object' && paras[0].projects) {
+                const block = document.createElement('div');
+                block.className = 'essay-block essay-projects';
+                block.innerHTML = paras[0].projects.map(p => {
+                    const pct = Math.max(0, Math.min(100, Number(p.pct) || 0));
+                    return '<div class="essay-project">' +
+                        `<h3 class="essay-project-name">${p.name}</h3>` +
+                        (p.note ? `<p class="essay-project-note">${p.note}</p>` : '') +
+                        `<div class="essay-meter-track"><span class="essay-meter-fill" style="width:${pct}%"></span></div>` +
+                        `<p class="essay-meter-label"><span class="essay-pct">${pct}%</span>` +
+                        (p.status ? ` &middot; ${p.status}` : '') + '</p>' +
+                    '</div>';
+                }).join('');
+                host.appendChild(block);
+                return;
+            }
             const block = document.createElement('div');
             block.className = 'essay-block';
             block.innerHTML = paras.map(p => `<p>${p}</p>`).join('');

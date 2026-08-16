@@ -4,7 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const cursorTop   = document.getElementById('cursor-top');
     const cursorBot   = document.getElementById('cursor-bottom');
     const bottomTextEl = document.getElementById('bottom-text');
-    const topLineText  = "Hi, I'm Michael Kilcoyne, and I love...";
+    /* Names the role up front so the page confirms what the link preview
+       promised, without spending the cycling accent slot below on a
+       credential — that slot is the voice, and the credential line under it
+       is the proof. */
+    const topLineText  = "Hi, I'm Michael Kilcoyne. I'm a producer, and I love...";
     const TYPE_SPEED   = 55;
 
     function typeTopLine(text, i, cb) {
@@ -127,13 +131,32 @@ document.addEventListener('DOMContentLoaded', () => {
         typeSegments(segs, 0, 0);
     }
 
-    // Boot sequence
-    setTimeout(() => {
-        typeTopLine(topLineText, 0, () => {
-            cursorBot.classList.remove('hidden');
-            startPhrase();
-        });
-    }, 800);
+    // Boot sequence.
+    // The phrase cycler must not start until Paquito and Clash Display have
+    // actually arrived. They load from Fontshare with display=swap, so on a
+    // cold load they land well after DOMContentLoaded — typing before then
+    // renders the first phrase in the Georgia/Helvetica fallback and snaps
+    // it mid-word once the real face swaps in. fonts.ready is raced against
+    // a timeout so a slow or blocked CDN degrades to the old behaviour
+    // instead of leaving the hero permanently blank.
+    function fontsSettled() {
+        if (!document.fonts) return Promise.resolve();
+        const faces = Promise.all([
+            document.fonts.load('700 1em Paquito'),
+            document.fonts.load("700 1em 'Clash Display'")
+        ]).then(() => document.fonts.ready);
+        const cap = new Promise(res => setTimeout(res, 2500));
+        return Promise.race([faces, cap]);
+    }
+
+    fontsSettled().then(() => {
+        setTimeout(() => {
+            typeTopLine(topLineText, 0, () => {
+                cursorBot.classList.remove('hidden');
+                startPhrase();
+            });
+        }, 400);
+    });
 
 
     // --- UI Interactions ---

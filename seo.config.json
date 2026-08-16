@@ -1,0 +1,22 @@
+{
+  "site": "https://mikekilcoyne.com",
+  "name": "Michael Kilcoyne",
+
+  "_comment": "Portable across sites. To reuse on breakfastclubbing.com, copy this file plus build-seo.js, change `site`/`name`, and adjust `noindex` if that site has different private areas. Everything else is discovered from the filesystem.",
+
+  "noindex": ["admin", "_inbox", "notes", "docs", "netlify"],
+
+  "priority": {
+    "/": "1.0",
+    "/now/": "0.9",
+    "/outrospective/": "0.9"
+  },
+  "defaultPriority": "0.7",
+  "changefreq": "monthly",
+
+  "analytics": {
+    "provider": null,
+    "id": null,
+    "_options": "null | 'plausible' | 'ga4'. Set provider + id and re-run build-seo.js to inject the snippet into every indexable page."
+  }
+}

@@ -375,7 +375,8 @@ html.essay-snap .essay-index { scroll-snap-align: start; }
     margin: 0 0 clamp(18px, 3.4vh, 34px);
     max-width: none;
     padding: 0;
-    text-align: left;
+    /* Centred per CLAUDE.md §4 — body copy below stays left-aligned. */
+    text-align: center;
     font-family: 'Clash Display', var(--font-ui);
     font-weight: 700;
     text-transform: uppercase;
@@ -660,3 +661,57 @@ html.essay-snap .essay-index { scroll-snap-align: start; }
     .essay-block { transition: none; opacity: 1; transform: none; }
     .essay-scroll-hint { animation: none; }
 }
+
+/* ── Working-on projects (a `projects` block inside a chapter) ──
+   Meters are data, not decoration: sized with an inline width and never
+   animated, so a page opened in a background tab still paints the real
+   number instead of freezing every bar at 0%. */
+.essay-projects { display: flex; flex-direction: column; gap: 22px; }
+.essay-project + .essay-project {
+    padding-top: 22px;
+    border-top: 1px solid rgba(255,255,255,0.10);
+}
+.essay-project-name {
+    margin: 0 0 6px;
+    text-align: center;
+    font-family: 'Clash Display', var(--font-ui);
+    font-weight: 700;
+    font-size: clamp(1rem, 2.8vw, 1.2rem);
+    line-height: 1.2;
+    text-wrap: balance;
+}
+.essay-project-note {
+    margin: 0 0 14px;
+    font-family: var(--font-body);
+    font-size: 0.97rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.88);
+}
+.essay-project-note a { color: var(--c-accent); text-decoration: none;
+    border-bottom: 1px solid rgba(255,221,102,0.4); }
+.essay-project-note a:hover { border-bottom-color: var(--c-accent); }
+.essay-project-note em { color: var(--c-accent); font-style: italic; }
+.essay-project-note a em { color: inherit; }
+.essay-meter-track {
+    height: 5px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.14);
+    overflow: hidden;
+}
+.essay-meter-fill {
+    display: block;
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, rgba(255,221,102,0.55), var(--c-accent));
+    box-shadow: 0 0 10px rgba(255,221,102,0.4);
+}
+.essay-meter-label {
+    margin: 9px 0 0;
+    font-family: var(--font-ui);
+    font-weight: var(--fw-ui);
+    font-size: 0.58rem;
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+}
+.essay-pct { color: var(--c-accent); font-variant-numeric: tabular-nums; }
