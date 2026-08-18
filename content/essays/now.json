@@ -292,7 +292,7 @@
           }
         ],
         [
-          "<a class=\"essay-cta\" href=\"mailto:mike@mikekilcoyne.com?subject=Lets%20work%20together\">Let&rsquo;s Work Together</a>"
+          "Want a page like this for your travels and projects? I&rsquo;ll build you one &mdash; <a href=\"mailto:mike@mikekilcoyne.com?subject=Build%20me%20a%20page%20like%20this\">email me</a>."
         ]
       ]
     }
@@ -302,8 +302,7 @@
     "img": "photos_web/25_BIARRITZ_FR/P1002488.jpg",
     "pos": "50% 50%",
     "shareSubject": "Now & Then — Michael Kilcoyne",
-    "shareBody": "Thought of you — a timeline of adventures from Michael Kilcoyne.\n\n{url}",
-    "ask": "Want an interactive timeline like this one? <a href=\"mailto:mike@mikekilcoyne.com?subject=Build%20me%20a%20timeline\">Email me</a> &mdash; I&rsquo;ll build you one."
+    "shareBody": "Thought of you — a timeline of adventures from Michael Kilcoyne.\n\n{url}"
   },
   "layout": "pages",
   "indexImg": "photos_web/now/index-bosphorus.jpg",

@@ -227,6 +227,11 @@
             if (block.querySelector(':scope > p:only-child > a.essay-cta:only-child')) {
                 block.classList.add('essay-block--bare');
             }
+            /* A single short sentence whose only job is the ask — centre it
+               under whatever it follows. */
+            if (paras.length === 1 && typeof paras[0] === 'string' && /mailto:/.test(paras[0])) {
+                block.classList.add('essay-block--ask');
+            }
             host.appendChild(block);
         });
         if (paged) section.appendChild(host);

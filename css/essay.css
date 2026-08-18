@@ -433,6 +433,10 @@ html.essay-snap .essay-index { scroll-snap-stop: always; }
 }
 /* Button-only block: the button is its own surface. */
 .essay-block--bare {
+    /* A button-only block is a deliberate moment — centre it under whatever
+       it follows (the YSJ embed) rather than letting it hang off the left
+       edge of the card. */
+    text-align: center;
     background: none;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
@@ -921,3 +925,10 @@ body.essay-lb-open { overflow: hidden; }
     border-bottom: 1px solid rgba(255,221,102,0.45);
 }
 .essay-end-ask a:hover { border-bottom-color: var(--c-accent); }
+
+
+/* The closing ask on a chapter — a one-line CTA under an embed, so it
+   centres. (Ordinary body copy stays left-aligned; this is short enough
+   that centring reads as deliberate rather than hostile.) */
+.essay-block--ask { text-align: center; }
+.essay-block--ask p { text-align: center; }
