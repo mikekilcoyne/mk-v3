@@ -4,11 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const cursorTop   = document.getElementById('cursor-top');
     const cursorBot   = document.getElementById('cursor-bottom');
     const bottomTextEl = document.getElementById('bottom-text');
-    /* Names the role up front so the page confirms what the link preview
-       promised, without spending the cycling accent slot below on a
-       credential — that slot is the voice, and the credential line under it
-       is the proof. */
-    const topLineText  = "Hi, I'm Michael Kilcoyne. I'm a producer, and I love...";
+    /* The type-out now carries the credential itself, so the static line
+       that used to sit under it was deleted — it repeated these three
+       phrases word for word. */
+    const topLineText  = "Hi, I'm Michael Kilcoyne. Producer. And I've...";
     const TYPE_SPEED   = 55;
 
     function typeTopLine(text, i, cb) {
@@ -23,27 +22,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Bottom Line Phrase Typewriter (per-word styling) ---
     // Each phrase is an array of segments: { text, cls }
-    // Three faces, one system: a white Clash Display lead-in hands off to
-    // the yellow Paquito word that carries the phrase. Breakfast Club is
-    // Helvetica Neue on its own.
+    // The credential, delivered in three beats. The first two are the claim
+    // and stay white so the yellow top line keeps the accent; the third is
+    // the deflation, and it gets the Paquito wink — one yellow thing per
+    // screen, landing on the joke.
     const bottomPhrases = [
-        // ADVENTURES — the accent face, standing alone
-        [{ text: "ADVENTURES", cls: "ph-paquito" }],
+        [{ text: "Traveled to 30+ countries and lived on 4 continents.", cls: "ph-clash" }],
 
-        // MAKING (white Clash) MOVIES (yellow Paquito)
-        [
-            { text: "MAKING ", cls: "ph-clash" },
-            { text: "MOVIES",  cls: "ph-paquito" }
-        ],
+        [{ text: "Worked with some of the best directors alive.", cls: "ph-clash" }],
 
-        // BREAKFAST CLUB — Helvetica Neue Bold, white
-        [{ text: "BREAKFAST CLUB", cls: "ph-helv" }],
-
-        // DREAMIN' (white Clash) BIG (yellow Paquito)
-        [
-            { text: "DREAMIN' ", cls: "ph-clash" },
-            { text: "BIG",       cls: "ph-paquito" }
-        ]
+        [{ text: "…and, uh, filmed some of it.", cls: "ph-paquito" }]
     ];
 
     const PHRASE_TYPE_SPEED  = 70;

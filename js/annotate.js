@@ -59,8 +59,10 @@
     .mkn-read{white-space:pre-wrap}
     .mkn-meta{font:400 10px/1.4 'Helvetica Neue',sans-serif;color:rgba(255,255,255,.45);
       margin-top:7px}
-    .mkn-dock{position:fixed;right:14px;bottom:14px;z-index:2147483003;display:flex;
-      gap:6px;align-items:center}
+    /* Bottom-LEFT: the essay pages park the stepper arrows and the read rail
+       against the right edge, and a dock there sits on top of them. */
+    .mkn-dock{position:fixed;left:14px;bottom:14px;z-index:2147483003;display:flex;
+      gap:6px;align-items:center;flex-direction:row-reverse}
     .mkn-toggle{width:40px;height:40px;border-radius:50%;border:1px solid
       rgba(255,255,255,.22);background:rgba(18,18,18,.9);color:#fff;font-size:16px;
       cursor:pointer;backdrop-filter:blur(10px);box-shadow:0 4px 16px rgba(0,0,0,.5)}

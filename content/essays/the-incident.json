@@ -159,7 +159,7 @@
     {
       "heading": "",
       "label": "24 Hours Before",
-      "img": "P1003376.jpg",
+      "img": "photos_web/essays/the-incident/DSC01315.jpg",
       "pos": "35% 45%",
       "blocks": [
         [
@@ -215,8 +215,8 @@
   ],
   "end": {
     "title": "That&rsquo;s what I talk about when I talk about traveling.",
-    "img": "P1003651.jpg",
-    "pos": "50% 60%",
+    "img": "photos_web/essays/the-incident/DSC01342.jpg",
+    "pos": "50% 45%",
     "shareSubject": "A photo essay from Istanbul",
     "shareBody": "Hey, recently read this photo essay from Michael Kilcoyne about travel in Istanbul, thought of you.\n\nHere's the link:\n{url}"
   }

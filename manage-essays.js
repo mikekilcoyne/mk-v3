@@ -193,11 +193,11 @@ function pageHtml(essay) {
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
     <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
     <link href="https://api.fontshare.com/v2/css?f%5B%5D=clash-display@700&f%5B%5D=gambetta@400,500,401&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/essay.css?v=18">
+    <link rel="stylesheet" href="/css/essay.css?v=29">
 </head>
 <body class="essay-body" data-essay="${essay.slug}">
     <main id="essay-root"></main>
-    <script src="/js/essay.js?v=18"></script>
+    <script src="/js/essay.js?v=29"></script>
 </body>
 </html>
 `;

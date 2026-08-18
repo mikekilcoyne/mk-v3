@@ -20,7 +20,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- ?v= bumps on every CSS edit; this page is aggressively cached. -->
-    <link rel="stylesheet" href="css/style.css?v=8">
+    <link rel="stylesheet" href="css/style.css?v=10">
     <!-- seo:start -->
     <link rel="canonical" href="https://mikekilcoyne.com/">
     <!-- seo:end -->
@@ -38,16 +38,13 @@
         <div class="center-block">
             <div class="text-section">
                 <h1 class="top-line" id="top-line"><span class="typing-text"></span><span class="cursor" id="cursor-top">|</span></h1>
-                <h2 class="bottom-line" id="bottom-line"><span id="bottom-text"></span><span class="cursor" id="cursor-bottom">|</span></h2>
+                <!-- text + cursor share one inline box: as separate flex items
+                     the cursor wrapped onto a line of its own. -->
+                <h2 class="bottom-line" id="bottom-line"><span class="bottom-line-inner"><span id="bottom-text"></span><span class="cursor" id="cursor-bottom">|</span></span></h2>
             </div>
-            <!-- The credential line. Lives on the first screen on purpose: it is
-                 the highest-value sentence on the site for a producer or creative
-                 director, and it used to be buried inside the Let's Play overlay
-                 where they would never open it. -->
-            <p class="credential-line">I've been to 30+ countries, worked with some of the best directors alive, and filmed some of it.</p>
             <div class="buttons-section">
                 <div class="main-flow-container">
-                    <a href="#" id="btn-story" class="main-flow-link">Start Here</a>
+                    <a href="#" id="btn-story" class="main-flow-link">Here's my story.</a>
                     <span class="main-flow-arrow">&rarr;</span>
                     <!-- Adventure Flipbook: hidden, not deleted — overlay + JS remain wired.
                          To bring it back, remove display:none below. -->
@@ -279,6 +276,6 @@
 
 
     <script src="https://player.vimeo.com/api/player.js"></script>
-    <script src="js/script.js?v=8"></script>
+    <script src="js/script.js?v=10"></script>
 </body>
 </html>

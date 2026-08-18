@@ -85,6 +85,7 @@
        a chapter id; used by timeline pages like /now. The year rides above
        the label so long entries never wrap mid-phrase. */
     let indexSec = null;
+    let indexPlaced = false;
     if (hasIndex) {
         document.documentElement.classList.add('essay-snap');
         indexSec = document.createElement('section');
@@ -111,11 +112,18 @@
     const flow = document.createElement('div');
     flow.className = 'essay-flow';
 
+    /* Every gallery block pushes its photo list here so the lightbox can
+       open the right set from a thumbnail's data-index. */
+    const galleries = [];
+
     /* "pages" layout: every chapter is one full screen with its heading
        and text in a single card, instead of text drifting past a photo
        over several screens. Timeline pages like /now use it. */
     const paged = essay.layout === 'pages';
     if (paged) document.body.classList.add('essay-paged');
+    /* Paged + indexed pages snap mandatorily so the index can't be scrolled
+       past — see the essay-snap-paged rule in essay.css. */
+    if (paged && hasIndex) document.documentElement.classList.add('essay-snap-paged');
 
     essay.chapters.forEach(ch => {
         const section = document.createElement('section');
@@ -151,6 +159,46 @@
                 host.appendChild(wrap);
                 return;
             }
+            /* A gallery block is a photo montage: a compact grid of stills
+               that has to fit inside the one screen its chapter owns, so
+               the images are thumbs rather than full-bleed frames. */
+            if (paras.length === 1 && paras[0] && typeof paras[0] === 'object' && paras[0].gallery) {
+                const grid = document.createElement('div');
+                grid.className = 'essay-gallery';
+                paras[0].gallery.forEach((g, gi) => {
+                    const src = typeof g === 'string' ? g : g.img;
+                    const label = (typeof g === 'object' && g.label) ? g.label : '';
+                    /* A button, not a bare figure: opening full screen is the
+                       point of the montage, so it has to be reachable by
+                       keyboard and announce itself as pressable. */
+                    const fig = document.createElement('figure');
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'essay-gallery-open';
+                    btn.dataset.index = gi;
+                    btn.setAttribute('aria-label',
+                        label ? `View ${label} full screen` : 'View photo full screen');
+                    const im = document.createElement('img');
+                    im.src = imgPath(src);
+                    im.loading = 'lazy';
+                    im.alt = (typeof g === 'object' && g.alt) ? g.alt : label;
+                    btn.appendChild(im);
+                    if (label) {
+                        const cap = document.createElement('figcaption');
+                        cap.textContent = label;
+                        btn.appendChild(cap);
+                    }
+                    fig.appendChild(btn);
+                    grid.appendChild(fig);
+                });
+                galleries.push(paras[0].gallery.map(g => ({
+                    src: imgPath(typeof g === 'string' ? g : g.img),
+                    label: (typeof g === 'object' && g.label) ? g.label : ''
+                })));
+                grid.dataset.gallery = galleries.length - 1;
+                host.appendChild(grid);
+                return;
+            }
             /* A projects block renders the "what I'm working on" meters.
                Bars are sized with a plain inline width and never animated —
                a reveal animation is frozen at its first keyframe in a
@@ -183,6 +231,17 @@
         });
         if (paged) section.appendChild(host);
         flow.appendChild(section);
+
+        /* `indexAfter` lets a chapter run before the jump list, so the page
+           can open on its most important screen and hand off to the index
+           immediately after. The chapter that precedes the index becomes a
+           snap target too, otherwise the run hero → chapter → index has a
+           gap in the middle and the scroll overshoots. */
+        if (indexSec && essay.indexAfter && ch.id === essay.indexAfter) {
+            section.classList.add('essay-scene--presnap');
+            flow.appendChild(indexSec);
+            indexPlaced = true;
+        }
     });
 
     /* ── End card: next essay + share ── */
@@ -221,14 +280,17 @@
         '<div class="essay-end-links">' +
         `<a href="${nextLink.href}"${nextLink.title ? ` title="${nextLink.title}"` : ''}>${nextLink.label}</a>` +
         `<a href="${shareHref}">Share With a Friend</a>` +
-        '</div>';
+        '</div>' +
+        /* The ask sits last, after they've read the whole thing — never
+           above the fold, per CLAUDE.md §2. */
+        (essay.end.ask ? `<p class="essay-end-ask">${essay.end.ask}</p>` : '');
 
     root.appendChild(bg);
     root.appendChild(progress);
     root.appendChild(rail);
     root.appendChild(topbar);
     root.appendChild(hero);
-    if (indexSec) root.appendChild(indexSec);
+    if (indexSec && !indexPlaced) root.appendChild(indexSec);
     root.appendChild(flow);
     root.appendChild(end);
 
@@ -290,10 +352,118 @@
     }, { rootMargin: '0px 0px -12% 0px' });
     document.querySelectorAll('.essay-block').forEach(b => blockObserver.observe(b));
 
+    /* ── Photo lightbox ──────────────────────────────────────────────
+       Opens a montage thumb full screen and lets you move through the set
+       with arrows, swipe, or the on-screen buttons. Every control is
+       visible — nothing here is hover-only or discovered by accident. */
+    const lightbox = (() => {
+        let set = [], at = 0, open = false, lastFocus = null;
+
+        const el = document.createElement('div');
+        el.className = 'essay-lb';
+        el.setAttribute('role', 'dialog');
+        el.setAttribute('aria-modal', 'true');
+        el.setAttribute('aria-label', 'Photo viewer');
+        el.hidden = true;
+        el.innerHTML =
+            '<button class="essay-lb-close" type="button" aria-label="Close (Esc)">&times;</button>' +
+            '<button class="essay-lb-nav essay-lb-prev" type="button" aria-label="Previous photo">&#8249;</button>' +
+            '<figure class="essay-lb-stage"><img alt=""><figcaption></figcaption></figure>' +
+            '<button class="essay-lb-nav essay-lb-next" type="button" aria-label="Next photo">&#8250;</button>';
+        const img = el.querySelector('img');
+        const cap = el.querySelector('figcaption');
+        const prevBtn = el.querySelector('.essay-lb-prev');
+        const nextBtn = el.querySelector('.essay-lb-next');
+
+        function draw() {
+            const item = set[at];
+            img.src = item.src;
+            img.alt = item.label || '';
+            /* Location plus position, so it's always clear where you are
+               in the set and how much is left. */
+            cap.textContent = (item.label ? item.label + '  ·  ' : '') + (at + 1) + ' / ' + set.length;
+            const many = set.length > 1;
+            prevBtn.hidden = !many;
+            nextBtn.hidden = !many;
+        }
+        function go(d) {
+            if (!set.length) return;
+            at = (at + d + set.length) % set.length;
+            draw();
+        }
+        function show(list, i) {
+            set = list; at = i; open = true;
+            lastFocus = document.activeElement;
+            el.hidden = false;
+            document.body.classList.add('essay-lb-open');
+            draw();
+            el.querySelector('.essay-lb-close').focus();
+        }
+        function hide() {
+            open = false;
+            el.hidden = true;
+            document.body.classList.remove('essay-lb-open');
+            img.src = '';
+            if (lastFocus && lastFocus.focus) lastFocus.focus();
+        }
+
+        el.querySelector('.essay-lb-close').addEventListener('click', hide);
+        prevBtn.addEventListener('click', () => go(-1));
+        nextBtn.addEventListener('click', () => go(1));
+        /* Clicking the backdrop closes; clicking the photo or a button
+           must not. */
+        el.addEventListener('click', e => { if (e.target === el) hide(); });
+
+        document.addEventListener('keydown', e => {
+            if (!open) return;
+            if (e.key === 'Escape') { e.preventDefault(); hide(); }
+            else if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+            else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+            else if (e.key === 'Tab') {
+                /* Keep focus inside the dialog. */
+                const f = [...el.querySelectorAll('button')].filter(b => !b.hidden);
+                const i = f.indexOf(document.activeElement);
+                const n = e.shiftKey ? (i - 1 + f.length) % f.length : (i + 1) % f.length;
+                e.preventDefault(); f[n].focus();
+            }
+        });
+
+        let sx = 0, sy = 0;
+        el.addEventListener('touchstart', e => {
+            sx = e.changedTouches[0].clientX; sy = e.changedTouches[0].clientY;
+        }, { passive: true });
+        el.addEventListener('touchend', e => {
+            const dx = e.changedTouches[0].clientX - sx;
+            const dy = e.changedTouches[0].clientY - sy;
+            if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.2) go(dx < 0 ? 1 : -1);
+            else if (dy > 80 && Math.abs(dy) > Math.abs(dx)) hide();  /* swipe down to dismiss */
+        }, { passive: true });
+
+        document.body.appendChild(el);
+        return { show, hide, isOpen: () => open };
+    })();
+
+    /* Delegated so it covers every gallery on the page. */
+    root.addEventListener('click', e => {
+        const btn = e.target.closest('.essay-gallery-open');
+        if (!btn) return;
+        const grid = btn.closest('.essay-gallery');
+        const list = galleries[Number(grid.dataset.gallery)];
+        if (list) lightbox.show(list, Number(btn.dataset.index) || 0);
+    });
+
     /* ── Paragraph stepper: swipe, arrow keys, and buttons jump card to card ── */
-    const stops = [hero,
-        ...flow.querySelectorAll('.essay-chapter-heading, .essay-block'),
-        end];
+    /* The index is a screen in its own right, and it matches neither
+       .essay-chapter-heading nor .essay-block — leaving it out of this list
+       is what let the stepper buttons, arrow keys and swipes jump straight
+       over it. Query from root so everything lands in document order.
+       On the paged layout each scene is one full screen, so step screen to
+       screen; scrolling essays still step card to card. */
+    const stops = paged
+        ? [...root.querySelectorAll('.essay-scene')]
+        : [hero,
+           ...root.querySelectorAll('.essay-index, .essay-chapter-heading, .essay-block'),
+           end];
 
     function nearestStop() {
         const mid = window.scrollY + window.innerHeight / 2;
@@ -317,10 +487,15 @@
         const i = Math.max(0, Math.min(stops.length - 1, base + dir));
         stepTarget = i;
         stepTime = Date.now();
-        stops[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        /* Full-screen scenes align to the top; cards inside a scrolling
+           essay read better centred. */
+        stops[i].scrollIntoView({ behavior: 'smooth', block: paged ? 'start' : 'center' });
     }
 
     window.addEventListener('keydown', e => {
+        /* The lightbox owns the arrow keys while it's open, or paging the
+           photo would also page the chapter behind it. */
+        if (lightbox.isOpen()) return;
         if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); step(1); }
         else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
     });
@@ -331,6 +506,7 @@
         touchStartY = e.changedTouches[0].clientY;
     }, { passive: true });
     document.addEventListener('touchend', e => {
+        if (lightbox.isOpen()) return;   /* same reason as the keydown guard */
         const dx = e.changedTouches[0].clientX - touchStartX;
         const dy = e.changedTouches[0].clientY - touchStartY;
         /* horizontal swipe = next/prev card; vertical stays native scroll */
@@ -359,8 +535,15 @@
 
     /* ── Progress (top bar + vertical rail) ── */
     function updateProgress() {
-        const max = document.documentElement.scrollHeight - window.innerHeight;
-        const frac = max > 0 ? window.scrollY / max : 0;
+        /* The timeline is finished once the last chapter fills the screen —
+           the end card that follows is the outro, so measuring against full
+           document height left the reader at ~90% on the final chapter. */
+        const lastChapter = flow.querySelector('.essay-chapter:last-of-type');
+        const readEnd = lastChapter
+            ? lastChapter.getBoundingClientRect().top + window.scrollY
+            : document.documentElement.scrollHeight - window.innerHeight;
+        const max = Math.max(1, readEnd);
+        const frac = Math.min(1, window.scrollY / max);
         const pct = (frac * 100).toFixed(1);
         progress.style.width = pct + '%';
         railFill.style.height = pct + '%';
