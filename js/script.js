@@ -1,23 +1,43 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Top Line Typing (types once, stays forever) ---
-    const topLineEl   = document.querySelector('#top-line .typing-text');
-    const cursorTop   = document.getElementById('cursor-top');
-    const cursorBot   = document.getElementById('cursor-bottom');
-    const bottomTextEl = document.getElementById('bottom-text');
-    /* The type-out now carries the credential itself, so the static line
-       that used to sit under it was deleted — it repeated these three
-       phrases word for word. */
-    const topLineText  = "Hi, I'm Michael Kilcoyne. Producer. And I've...";
-    const TYPE_SPEED   = 55;
+    // --- Top Line Reveal (fades in once, stays forever) ---
+    /* The headline is set type, not a type-out. It arrives as one composed
+       sentence — words staggered up out of a blur — and then holds. Only the
+       phrase below it still types, and that separation is the point: the
+       introduction is a fixed fact, the credential is the part that keeps
+       moving. Typing the name made the first two seconds of the site about
+       waiting for a machine to finish spelling it. */
+    const topLineEl    = document.getElementById('top-line');
+    const cursorBot     = document.getElementById('cursor-bottom');
+    const bottomTextEl  = document.getElementById('bottom-text');
+    const topLineText   = "Hi, Michael Kilcoyne, here. Producer, and I've…";
 
-    function typeTopLine(text, i, cb) {
-        if (i < text.length) {
-            topLineEl.innerHTML += text.charAt(i);
-            setTimeout(() => typeTopLine(text, i + 1, cb), TYPE_SPEED);
-        } else {
-            // Hide top cursor — top line stays permanently
-            setTimeout(() => { cursorTop.classList.add('hidden'); cb(); }, 400);
-        }
+    const WORD_STAGGER = 90;   /* gap between word reveals */
+    const WORD_SETTLE  = 260;  /* head start the phrase gets on the last word */
+
+    function revealTopLine(cb) {
+        const words = topLineText.split(' ').map(w => {
+            const span = document.createElement('span');
+            span.className = 'tl-word';
+            span.textContent = w;
+            return span;
+        });
+        words.forEach((span, i) => {
+            topLineEl.appendChild(span);
+            /* A real space text node between the words, not a margin, so the
+               line still wraps and balances the way ordinary text does. */
+            if (i < words.length - 1) topLineEl.appendChild(document.createTextNode(' '));
+        });
+
+        /* Two frames before the class flips: one for the spans to land in
+           layout, one for the browser to register the from-state. Flip it in
+           the same frame they are appended and the transition is skipped —
+           every word appears at once. */
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            words.forEach((span, i) => {
+                setTimeout(() => span.classList.add('is-in'), i * WORD_STAGGER);
+            });
+            setTimeout(cb, (words.length - 1) * WORD_STAGGER + WORD_SETTLE);
+        }));
     }
 
     // --- Bottom Line Phrase Typewriter (per-word styling) ---
@@ -27,16 +47,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // the deflation, and it gets the Paquito wink — one yellow thing per
     // screen, landing on the joke.
     const bottomPhrases = [
-        [{ text: "Traveled to 30+ countries and lived on 4 continents.", cls: "ph-clash" }],
+        [{ text: "Traveled to 30+ countries, lived in a few of them.", cls: "ph-clash" }],
 
-        [{ text: "Worked with some of the best directors alive.", cls: "ph-clash" }],
+        [{ text: "Worked with some of the coolest filmmakers alive.", cls: "ph-clash" }],
 
-        [{ text: "…and, uh, filmed some of it.", cls: "ph-paquito" }]
+        [{ text: "Filmed, uh, some of it.", cls: "ph-paquito" }]
     ];
 
-    const PHRASE_TYPE_SPEED  = 70;
-    const PHRASE_PAUSE       = 2600;
-    const INTER_PHRASE_PAUSE = 180;
+    /* Paced to be read, not skimmed past. The hold is where the reading
+       actually happens, so it gets the bulk of the time — roughly 6.5s with a
+       fully typed line on screen, inside the 5–10s that leaves a stranger
+       time to finish the sentence and register it. The typing itself is
+       unhurried rather than mechanical: at 24ms it read as a machine spitting
+       characters, which pulls attention to the effect instead of the words.
+       One phrase now runs ~10s and the three-phrase cycle ~31s. */
+    const PHRASE_TYPE_SPEED  = 45;
+    const PHRASE_PAUSE       = 6500;
+    const INTER_PHRASE_PAUSE = 320;
 
     let phraseIndex = 0;
     const bottomLine = document.getElementById('bottom-line');
@@ -101,14 +128,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const text = el.textContent;
         if (text.length > 1) {
             // Realistic: vary speed slightly, occasional tiny pause mid-delete
-            const baseSpeed = 55;
-            const jitter = Math.random() < 0.15 ? 180 : Math.floor(Math.random() * 30);
+            /* A little variance still reads as typed rather than scripted,
+               but the old 180ms stutter looked like a stall. Backspacing
+               stays quicker than typing — that is how people actually
+               delete — just no longer a blur. */
+            const baseSpeed = 28;
+            const jitter = Math.floor(Math.random() * 18);
             el.textContent = text.slice(0, -1);
             setTimeout(() => deleteCharsFrom(spans, spanIdx), baseSpeed + jitter);
         } else {
             // last char — remove element, brief pause before hitting previous segment
             el.remove();
-            const pauseBeforeNext = spanIdx > 0 ? 120 + Math.floor(Math.random() * 80) : 40;
+            const pauseBeforeNext = spanIdx > 0 ? 90 + Math.floor(Math.random() * 60) : 50;
             setTimeout(() => deleteCharsFrom(spans, spanIdx - 1), pauseBeforeNext);
         }
     }
@@ -117,6 +148,77 @@ document.addEventListener('DOMContentLoaded', () => {
         const segs = bottomPhrases[phraseIndex];
         bottomLine.classList.toggle('is-multiline', segs.some(s => s.br));
         typeSegments(segs, 0, 0);
+    }
+
+    /* Reserve exactly the height the longest phrase needs at the current
+       width, so the CTAs below never move as phrases swap and no dead space
+       opens under the headline.
+
+       A hard-coded em value can't do this job. These phrases wrap to one,
+       two or three lines depending on viewport, and the breakpoint where
+       each flips isn't where the media queries are — so any fixed reserve is
+       simultaneously too tall somewhere (a hole in the middle of the hero)
+       and too short somewhere else (the buttons jump). Measuring is the only
+       thing that holds at every width.
+
+       Measured on a hidden clone rather than the live element: the live one
+       may have a phrase mid-type, and overwriting it would fight the
+       in-flight timeouts. The clone carries the same classes and an explicit
+       pixel width, so it wraps identically. */
+    function reservePhraseHeight() {
+        const width = bottomLine.getBoundingClientRect().width;
+        if (!width) return;
+
+        const probe = bottomLine.cloneNode(false);
+        probe.removeAttribute('id');
+        probe.setAttribute('aria-hidden', 'true');
+        probe.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden;' +
+                              'pointer-events:none;width:' + width + 'px;min-height:0;height:auto;';
+        const inner = document.createElement('span');
+        inner.className = 'bottom-line-inner';
+        probe.appendChild(inner);
+        document.body.appendChild(probe);
+
+        let tallest = 0;
+        for (const segs of bottomPhrases) {
+            /* The cursor rides on the same line as the text, so it counts
+               toward the wrap point. */
+            inner.innerHTML = segs.map(seg => seg.br ? '<br>' :
+                '<span class="' + (seg.cls || '') + '">' + seg.text + '</span>'
+            ).join('') + '<span class="cursor">|</span>';
+            tallest = Math.max(tallest, inner.getBoundingClientRect().height);
+        }
+        probe.remove();
+
+        bottomLine.style.minHeight = Math.ceil(tallest) + 'px';
+    }
+
+    /* Re-measure whenever the available width actually changes.
+
+       A one-shot measurement on load is not enough and was actively wrong: if
+       the window is still settling when it runs — a pane being dragged open, a
+       phone rotating, devtools opening — it catches a narrow transient width,
+       computes a reserve for text wrapped into ten lines, and that bogus value
+       then sticks forever because nothing re-measures. A ResizeObserver makes
+       it self-correcting: whatever width the box ends up at, the reserve
+       follows.
+
+       Observed on the parent, and guarded on the last width seen, so setting
+       min-height on the box itself can't feed back into another measurement. */
+    let lastReserveWidth = 0;
+    let reserveTimer;
+    function scheduleReserve(width) {
+        if (Math.abs(width - lastReserveWidth) < 1) return;
+        lastReserveWidth = width;
+        clearTimeout(reserveTimer);
+        reserveTimer = setTimeout(reservePhraseHeight, 120);
+    }
+    if (window.ResizeObserver && bottomLine.parentElement) {
+        new ResizeObserver(entries => {
+            for (const entry of entries) scheduleReserve(entry.contentRect.width);
+        }).observe(bottomLine.parentElement);
+    } else {
+        window.addEventListener('resize', () => scheduleReserve(innerWidth));
     }
 
     // Boot sequence.
@@ -133,17 +235,27 @@ document.addEventListener('DOMContentLoaded', () => {
             document.fonts.load('700 1em Paquito'),
             document.fonts.load("700 1em 'Clash Display'")
         ]).then(() => document.fonts.ready);
-        const cap = new Promise(res => setTimeout(res, 2500));
+        const cap = new Promise(res => setTimeout(res, 3000));
         return Promise.race([faces, cap]);
     }
 
     fontsSettled().then(() => {
+        /* Reveals the reserved block. Until now it has been laid out but
+           invisible, so a slow connection shows composed silence instead of
+           a blinking cursor over fallback type that snaps when Fontshare
+           finally lands. */
+        document.body.classList.add('fonts-ready');
         setTimeout(() => {
-            typeTopLine(topLineText, 0, () => {
+            reservePhraseHeight();
+            revealTopLine(() => {
+                /* Brings in the two links — see body.hero-ready in
+                   css/style.css. They are the next action, so they land with
+                   the phrase rather than on a timer of their own. */
+                document.body.classList.add('hero-ready');
                 cursorBot.classList.remove('hidden');
                 startPhrase();
             });
-        }, 400);
+        }, 260);
     });
 
 
@@ -153,23 +265,51 @@ document.addEventListener('DOMContentLoaded', () => {
     const videoOverlay = document.getElementById('video-overlay');
     const qwestOverlay = document.getElementById('qwest-overlay');
 
-    btnStory.addEventListener('click', (e) => { e.preventDefault(); videoOverlay.classList.add('active'); });
-
-    /* The film loads only once the poster is clicked, and unloads on close
-       so it can't keep playing behind the overlay. */
     const storyVideo  = document.getElementById('story-video');
     const videoPoster = document.getElementById('video-poster');
-    if (videoPoster && storyVideo) {
-        videoPoster.addEventListener('click', () => {
-            if (!storyVideo.src) storyVideo.src = storyVideo.dataset.src;
-            videoPoster.classList.add('is-hidden');
-        });
+
+    /* One click, not two. "Here's my story." already says play, so the
+       overlay opens with the film loading and autoplaying. The poster used
+       to be a second gate — a door standing in front of a door — and now it
+       is only a cover, holding the brand plate over the embed until it has
+       finished assembling itself, then fading.
+
+       The film still loads on demand rather than with the page, so the
+       original reason the poster existed is intact.
+
+       It stays clickable for the case where the browser refuses to autoplay:
+       there the viewer sees our plate, clicks once, and the player takes
+       over — never a half-built embed. */
+    function revealFilm() {
+        if (videoPoster) videoPoster.classList.add('is-hidden');
     }
-    document.getElementById('close-video').addEventListener('click', () => {
+
+    function openStory() {
+        videoOverlay.classList.add('active');
+        if (!storyVideo) return;
+        if (!storyVideo.src) {
+            storyVideo.addEventListener('load', revealFilm, { once: true });
+            storyVideo.src = storyVideo.dataset.src;
+        } else {
+            revealFilm();
+        }
+        /* Backstop: `load` on a cross-origin iframe is reliable in practice
+           but not guaranteed, and a poster stuck over a playing film is a
+           dead end. */
+        setTimeout(revealFilm, 2200);
+    }
+
+    /* Unload on close so the film can't keep playing — with sound — behind a
+       dismissed overlay, and reset the cover for the next open. */
+    function closeStory() {
         videoOverlay.classList.remove('active');
         if (storyVideo) storyVideo.removeAttribute('src');
         if (videoPoster) videoPoster.classList.remove('is-hidden');
-    });
+    }
+
+    btnStory.addEventListener('click', (e) => { e.preventDefault(); openStory(); });
+    if (videoPoster) videoPoster.addEventListener('click', openStory);
+    document.getElementById('close-video').addEventListener('click', closeStory);
 
     btnQwest.addEventListener('click', (e) => {
         e.preventDefault();
@@ -333,7 +473,11 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {
                 overlay.classList.remove('active');
-                if (overlay === qwestOverlay)   stopQwestRotation();
+                /* The story overlay needs its iframe torn down, not just
+                   hidden — closing on the backdrop used to leave the film
+                   playing audio behind a dismissed overlay. */
+                if (overlay === videoOverlay)    closeStory();
+                if (overlay === qwestOverlay)    stopQwestRotation();
                 if (overlay === letsplayOverlay) stopKaraoke();
                 if (overlay === coryOverlay)     stopCoryKaraoke();
             }

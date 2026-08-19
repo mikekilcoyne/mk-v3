@@ -188,7 +188,11 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1.2vh;
+    /* Breathing room between the phrase and the two links. 1.2vh was ~10px on
+       a phone, which put the links almost against the descenders of a
+       two-line phrase. A floor in px keeps that from collapsing on short
+       viewports; the vh term still lets it open up on tall ones. */
+    gap: clamp(22px, 3.4vh, 40px);
     transform: translateY(5vh);
 }
 
@@ -199,7 +203,14 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
+    /* Laid out from the first paint so nothing shifts, but invisible until
+       Fontshare's faces land — body.fonts-ready is set by fontsSettled() in
+       js/script.js. Without this gate the headline reveal plays in Helvetica's
+       fallback metrics and re-snaps when the real face swaps in. A slow or
+       blocked CDN still shows the block: fontsSettled() races a 3s cap. */
+    opacity: 0;
 }
+body.fonts-ready .text-section { opacity: 1; }
 
 /* Typography styles */
 /* Intro line above the type-out — Helvetica Neue, site yellow. */
@@ -218,21 +229,70 @@ body {
     text-wrap: balance;
     padding: 0 14px;
 }
-.top-line .cursor { color: #FFDD22; }
+/* ── Headline reveal ────────────────────────────────────────────────
+   Words drift up out of a blur, one after the next, so the sentence
+   assembles as a single gesture rather than ticking out character by
+   character. Same easing and blur vocabulary as the .bottom-line phrase
+   swap below, so the two motions read as one system. Word spans are
+   injected by revealTopLine() in js/script.js. */
+.top-line .tl-word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.5em);
+    filter: blur(12px);
+}
+.top-line .tl-word.is-in {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    transition: opacity 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.72s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+    .top-line .tl-word {
+        opacity: 1;
+        transform: none;
+        filter: none;
+    }
+    .top-line .tl-word.is-in { transition: none; }
+}
 
 .bottom-line {
-    /* Sized for a sentence. The old ceiling (4.8rem) was tuned for one-word
-       phrases like "MOVIES" and wrapped these into the buttons below. */
-    font-size: clamp(1.15rem, 3.1vw, 2.5rem);
-    /* Reserve two lines so the longest phrase can't shift the CTAs. */
-    min-height: 4.4em;
+    /* One scale for every width, and no per-breakpoint override anywhere.
+       There used to be three competing rules — base, ≤768 and 769–1024 — and
+       they disagreed badly enough that the type got BIGGER as the screen got
+       SMALLER: 41.6px at 768px, 34.6px at 769px, 46px at 1024px, 31.8px at
+       1025px. That is what made the line look wonky on an iPad. A single
+       clamp is monotonic by construction, so this can't drift again. */
+    font-size: clamp(1.35rem, 4.2vw, 2.6rem);
+    /* Fallback floor only. The real reserve is measured from the longest
+       phrase at the current width by reservePhraseHeight() in
+       js/script.js, which sets min-height inline. This value is what shows
+       if that script never runs. It was 4.4em, which reserved nearly two
+       lines more than any phrase uses; with the old flex-end alignment all
+       that slack piled up between the headline and the phrase and read as a
+       hole in the middle of the hero. */
+    min-height: 2.5em;
     line-height: 1.22;
     display: flex;
+    /* Full width, explicitly. .text-section is a column flex container with
+       align-items:center, so its children are shrink-to-fit — which meant
+       this box's width tracked whatever was typed into it. Before the first
+       character it was 14px wide (the cursor), so the phrases wrapped at a
+       different width than they were measured at, and the whole line's wrap
+       point drifted as it typed. */
+    width: 100%;
     flex-wrap: nowrap;
-    /* flex-end pulls the single line to the bottom of its reserved box so
-       the dead space sits above it, not as an awkward gap before the CTAs */
-    align-items: flex-end;
+    /* Centred in the reserved box, so a short phrase — the one-line punchline
+       — sits optically in the middle of the space instead of hanging off the
+       top or bottom edge of it. With the reserve now only about a line taller
+       than the shortest phrase, the leftover air splits into two small even
+       margins rather than one conspicuous void. */
+    align-items: center;
     justify-content: center;
+    /* Even line lengths instead of a one-word orphan on the last line. */
+    text-wrap: balance;
     overflow: visible;
     opacity: 1;
     transform: translateY(0);
@@ -431,8 +491,16 @@ body {
     justify-content: flex-start;
     flex-shrink: 0;
     padding-top: 1.5vh;
-    animation: fadeInUp 1s ease 4s forwards;
     opacity: 0;
+}
+/* The links are the page's one next action, so they arrive as soon as the
+   headline has landed rather than on a fixed timer. This used to be
+   `animation: fadeInUp 1s ease 4s forwards`, a delay hand-tuned to a typing
+   sequence that no longer exists — it left the only way onward invisible for
+   four seconds. body.hero-ready is set by revealTopLine()'s callback in
+   js/script.js, so the two stay in step whatever the pacing becomes. */
+body.hero-ready .buttons-section {
+    animation: fadeInUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes fadeInUp {
@@ -937,7 +1005,9 @@ body {
 @media (max-width: 768px) {
     .center-block { transform: translateY(10vh); }
     .top-line { font-size: clamp(0.75rem, 4vw, 1.1rem); white-space: normal; }
-    .bottom-line { font-size: clamp(1.4rem, 7vw, 3rem); height: 8vh; }
+    /* No .bottom-line font-size here on purpose — the single clamp on the base
+       rule covers every width. The reserved height is measured at runtime;
+       see reservePhraseHeight() in js/script.js. */
     .bottom-line.is-multiline { font-size: clamp(0.9rem, 4.5vw, 1.8rem); }
     /* Stack the flow as three separate buttons with a down-arrow between each */
     .main-flow-container { flex-direction: column; gap: 0.5rem; }
@@ -964,7 +1034,7 @@ body {
 @media (min-width: 769px) and (max-width: 1024px) {
     .center-block { height: 33vh; }
     .top-line { font-size: clamp(1rem, 2.8vw, 1.6rem); }
-    .bottom-line { font-size: clamp(1.8rem, 4.5vw, 3.5rem); height: 8vh; }
+    /* No .bottom-line font-size override — see the base rule. */
     .bottom-line.is-multiline { font-size: clamp(1.2rem, 2.8vw, 2.2rem); }
 }
 

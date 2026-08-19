@@ -20,7 +20,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- ?v= bumps on every CSS edit; this page is aggressively cached. -->
-    <link rel="stylesheet" href="css/style.css?v=10">
+    <link rel="stylesheet" href="css/style.css?v=22">
     <!-- seo:start -->
     <link rel="canonical" href="https://mikekilcoyne.com/">
     <!-- seo:end -->
@@ -37,7 +37,10 @@
     <main class="content-container">
         <div class="center-block">
             <div class="text-section">
-                <h1 class="top-line" id="top-line"><span class="typing-text"></span><span class="cursor" id="cursor-top">|</span></h1>
+                <!-- The line is set, not typed. Words are injected by
+                     js/script.js so each one can be staggered; see
+                     revealTopLine(). No cursor here — nothing is typing. -->
+                <h1 class="top-line" id="top-line"></h1>
                 <!-- text + cursor share one inline box: as separate flex items
                      the cursor wrapped onto a line of its own. -->
                 <h2 class="bottom-line" id="bottom-line"><span class="bottom-line-inner"><span id="bottom-text"></span><span class="cursor" id="cursor-bottom">|</span></span></h2>
@@ -66,9 +69,10 @@
             <div class="video-container">
                 <!-- "This is my story | How to Life Trailer" on LIVID. The
                      looping hero behind the page is still the Vimeo cut.
-                     src is set on play so the embed's own controls never
-                     flash before our poster. -->
-                <iframe id="story-video" data-src="https://livid.com/embed/0BDhHkVfdKXw" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                     src is set on open, not with the page, so the film loads
+                     only on intent — and autoplays, because the click that
+                     opened the overlay was the play. -->
+                <iframe id="story-video" data-src="https://livid.com/embed/0BDhHkVfdKXw?autoplay=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
                 <button class="video-poster" id="video-poster" aria-label="Play the film">
                     <span class="video-play-mark" aria-hidden="true">
                         <svg viewBox="0 0 24 24"><path d="M8 5.2v13.6L19 12z" fill="currentColor"/></svg>
@@ -276,6 +280,6 @@
 
 
     <script src="https://player.vimeo.com/api/player.js"></script>
-    <script src="js/script.js?v=10"></script>
+    <script src="js/script.js?v=22"></script>
 </body>
 </html>
