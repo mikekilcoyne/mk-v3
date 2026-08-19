@@ -193,11 +193,11 @@ function pageHtml(essay) {
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
     <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
     <link href="https://api.fontshare.com/v2/css?f%5B%5D=clash-display@700&f%5B%5D=gambetta@400,500,401&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/essay.css?v=32">
+    <link rel="stylesheet" href="/css/essay.css?v=33">
 </head>
 <body class="essay-body" data-essay="${essay.slug}">
     <main id="essay-root"></main>
-    <script src="/js/essay.js?v=32"></script>
+    <script src="/js/essay.js?v=33"></script>
 </body>
 </html>
 `;
@@ -308,7 +308,7 @@ function ingest(slug) {
     const essay = {
         slug,
         title: meta.title || prev?.title || slug,
-        credit: meta.credit || prev?.credit || 'A photo essay. Original photos by Michael Kilcoyne.',
+        credit: meta.credit || prev?.credit || 'Words and photographs — Michael Kilcoyne',
         location: meta.location || prev?.location || '',
         description: meta.description || prev?.description || '',
         published: prev ? prev.published !== false : true,

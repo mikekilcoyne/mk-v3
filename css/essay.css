@@ -148,7 +148,10 @@ body.essay-body {
     line-height: 1.5;
     color: rgba(255,255,255,0.72);
     text-shadow: 0 1px 10px rgba(0,0,0,0.85);
-    max-width: 34ch;
+    /* Wide enough that the byline holds one line on a desktop — a byline that
+       wraps stops reading as a byline. Still a sane measure if this field ever
+       carries a full sentence again. */
+    max-width: 46ch;
 }
 /* Location sits below the credit and carries the accent so it reads first. */
 /* Hero subheader — the OutroSpective kicker voice: Clash Display Bold,

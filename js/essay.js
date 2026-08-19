@@ -67,7 +67,7 @@
     hero.className = 'essay-hero essay-scene';
     hero.dataset.img = imgPath(essay.cover.img);
     hero.dataset.pos = essay.cover.pos || '50% 50%';
-    const credit = essay.credit || 'A photo essay. Original photos by Michael Kilcoyne.';
+    const credit = essay.credit || 'Words and photographs — Michael Kilcoyne';
     /* With an index below, the scroll cue becomes the way into it. */
     const hintInner =
         '<span class="essay-scroll-word" data-desktop="Scroll" data-mobile="Swipe"></span>' +
