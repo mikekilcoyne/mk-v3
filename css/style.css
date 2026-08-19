@@ -360,13 +360,15 @@ body.fonts-ready .text-section { opacity: 1; }
     mix-blend-mode: normal;
     line-height: 1;
 }
-/* Accent face — the word that carries the phrase. */
+/* The closing line's face. White, not yellow: the headline above it already
+   owns the accent, and two yellow things on one screen fight each other —
+   see the one-accent-per-screen rule in CLAUDE.md §8. Paquito still carries
+   the wink through the letterforms rather than through colour. */
 .ph-paquito {
     font-family: 'Paquito', Georgia, serif;
     letter-spacing: 1px;
-    color: #FFDD22;
-    text-shadow: 0 0 18px rgba(255,221,34,0.45),
-                 0 0 44px rgba(255,221,34,0.2),
+    color: #fff;
+    text-shadow: 0 0 16px rgba(255,255,255,0.35),
                  0 2px 14px rgba(0,0,0,0.85);
 }
 /* Lead-in face. */
@@ -1645,15 +1647,8 @@ body.hero-ready .buttons-section {
 }
 
 /* On the main landing page — bottom left */
-.footer-ig {
-    position: fixed;
-    bottom: 2rem;
-    left: 2rem;
-    z-index: 95;
-}
 
 @media (max-width: 768px) {
-    .footer-ig { bottom: 1.5rem; left: 1.5rem; }
 }
 
 

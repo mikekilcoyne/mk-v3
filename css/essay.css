@@ -646,20 +646,6 @@ html.essay-snap .essay-index { scroll-snap-stop: always; }
     transform: translate(-50%, -50%);
     transition: top 0.15s linear;
 }
-.essay-rail-pct {
-    position: absolute;
-    right: 16px;
-    top: 0;
-    transform: translateY(-50%);
-    font-family: var(--font-ui);
-    font-weight: var(--fw-ui);
-    font-size: 0.68rem;
-    letter-spacing: var(--ls-label);
-    color: var(--c-text-dim);
-    text-shadow: 0 1px 8px rgba(0,0,0,0.8);
-    white-space: nowrap;
-    transition: top 0.15s linear;
-}
 
 /* ── Mobile tuning ── */
 @media (max-width: 600px) {

@@ -48,13 +48,14 @@
        warrant it (see updateRailVisibility). */
     const rail = document.createElement('div');
     rail.className = 'essay-rail';
+    /* Bar and thumb only — no percentage readout. A live number chasing the
+       reader down the edge of the page is something to watch instead of read,
+       and the fill already says how far along they are. */
     rail.innerHTML =
         '<div class="essay-rail-fill"></div>' +
-        '<div class="essay-rail-thumb"></div>' +
-        '<span class="essay-rail-pct">0%</span>';
+        '<div class="essay-rail-thumb"></div>';
     const railFill = rail.querySelector('.essay-rail-fill');
     const railThumb = rail.querySelector('.essay-rail-thumb');
-    const railPct = rail.querySelector('.essay-rail-pct');
 
     const topbar = document.createElement('div');
     topbar.className = 'essay-topbar';
@@ -553,8 +554,6 @@
         progress.style.width = pct + '%';
         railFill.style.height = pct + '%';
         railThumb.style.top = pct + '%';
-        railPct.style.top = pct + '%';
-        railPct.textContent = Math.round(frac * 100) + '%';
     }
 
     /* The rail is a long-read aid — only show it once the page is tall enough
