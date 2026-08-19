@@ -51,8 +51,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         [{ text: "Worked with some of the coolest filmmakers alive.", cls: "ph-clash" }],
 
-        [{ text: "Filmed, uh, some of it.", cls: "ph-paquito" }]
+        /* The closer. It lands, then trails off on two beats — the pauses are
+           the joke, so they are real waits rather than punctuation. This is
+           where the hero comes to rest; see isFinalPhrase(). */
+        [
+            { text: "Filmed, uh, some of it.", cls: "ph-paquito" },
+            { beat: 1200 },
+            { text: " Yeah.", cls: "ph-paquito" },
+            { beat: 1000 },
+            { text: " Mhm. So…", cls: "ph-paquito" }
+        ]
     ];
+
+    /* The cycle runs once and stops on the last phrase, cursor still ticking.
+       Looping it forever meant the line a visitor was reading could be
+       deleted out from under them, and the third phrase is written as an
+       ending — replaying it undoes the joke. A fresh load starts it again. */
+    const isFinalPhrase = () => phraseIndex === bottomPhrases.length - 1;
 
     /* Paced to be read, not skimmed past. The hold is where the reading
        actually happens, so it gets the bulk of the time — roughly 6.5s with a
@@ -75,10 +90,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Segments with { br: true } insert a line break with no typing delay
     function typeSegments(segments, segIdx, charIdx) {
         if (segIdx >= segments.length) {
+            /* Rest here — no delete, no advance. The cursor keeps blinking at
+               the end of the line. */
+            if (isFinalPhrase()) return;
             setTimeout(() => deleteSegments(), PHRASE_PAUSE);
             return;
         }
         const seg = segments[segIdx];
+
+        /* A beat is a held pause with nothing typed — no span, no text. */
+        if (seg.beat) {
+            setTimeout(() => typeSegments(segments, segIdx + 1, 0), seg.beat);
+            return;
+        }
 
         if (seg.br) {
             const br = document.createElement('br');
@@ -183,9 +207,11 @@ document.addEventListener('DOMContentLoaded', () => {
         for (const segs of bottomPhrases) {
             /* The cursor rides on the same line as the text, so it counts
                toward the wrap point. */
-            inner.innerHTML = segs.map(seg => seg.br ? '<br>' :
-                '<span class="' + (seg.cls || '') + '">' + seg.text + '</span>'
-            ).join('') + '<span class="cursor">|</span>';
+            inner.innerHTML = segs
+                .filter(seg => seg.br || seg.text)   /* beats carry no text */
+                .map(seg => seg.br ? '<br>' :
+                    '<span class="' + (seg.cls || '') + '">' + seg.text + '</span>'
+                ).join('') + '<span class="cursor">|</span>';
             tallest = Math.max(tallest, inner.getBoundingClientRect().height);
         }
         probe.remove();
