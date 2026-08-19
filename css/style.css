@@ -676,7 +676,7 @@ body.hero-ready .buttons-section {
 .video-play-mark {
     display: grid;
     place-items: center;
-    width: clamp(58px, 7vw, 80px);
+    width: clamp(64px, 7.4vw, 88px);
     aspect-ratio: 1;
     color: #0a0a0a;
     background: #FFDD22;
@@ -684,7 +684,10 @@ body.hero-ready .buttons-section {
     box-shadow: 0 0 0 1px rgba(255,221,34,0.5), 0 0 34px rgba(255,221,34,0.32);
     transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease;
 }
-.video-play-mark svg { width: 44%; height: 44%; margin-left: 6%; display: block; }
+/* Centred by the path's own geometry — see the note on .teaser-mark in
+   css/outrospective.css. The margin nudge it replaced pushed the triangle
+   off-centre rather than correcting it. */
+.video-play-mark svg { width: 46%; height: 46%; display: block; }
 .video-poster:hover .video-play-mark,
 .video-poster:focus-visible .video-play-mark {
     transform: scale(1.07);

@@ -779,26 +779,86 @@ body.outro-body {
 .teaser-outro-dismiss:hover { color: #fff; }
 
 /* ═══ Teaser trigger + stage ═══════════════════════════════════════ */
+/* A play mark on the photograph, not a worded button.
+   This used to be a bordered uppercase pill reading "PLAY TEASER", which
+   announced itself as website furniture sitting on top of a film. A filled
+   circle with a triangle in it is the most universally read control there
+   is — it says "video" without being told to, which is what makes it feel
+   native. The label stays, quiet, underneath: an icon alone would be the
+   mystery-meat CLAUDE.md §3 forbids, and this way the affordance is
+   instantly legible AND named.
+
+   Deliberately still a discrete control rather than a tap-anywhere target:
+   the deck owns swipe, drag and wheel for navigation, and a slide-sized hit
+   area would eat those gestures. */
 .teaser-trigger {
     display: inline-flex;
+    flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     margin-top: 2.2rem;
-    padding: 16px 34px;
-    border: 1px solid rgba(255,255,255,0.35);
-    border-radius: 4px;
-    background: var(--c-scrim);
+    padding: 0;
+    border: 0;
+    background: none;
     color: var(--c-text);
     font-family: var(--font-ui);
     font-weight: var(--fw-ui);
     letter-spacing: var(--ls-label);
     text-transform: uppercase;
-    font-size: 0.8rem;
+    font-size: 0.62rem;
     cursor: pointer;
-    transition: color .25s, border-color .25s, box-shadow .25s;
 }
-.teaser-trigger:hover { color: var(--c-accent); border-color: var(--c-accent); box-shadow: var(--glow-accent); }
-.teaser-play { font-size: 0.85rem; line-height: 1; }
+/* Glass, per the treatment in CLAUDE.md §5: a translucent panel that blurs and
+   saturates the photograph behind it, so the mark takes its colour from the
+   image instead of sitting on it as a foreign disc. saturate() is what pulls
+   that colour through — don't drop it.
+
+   The accent moved from the fill to the triangle. A solid yellow disc was the
+   loudest thing on a slide that already spends its yellow on the kicker and the
+   wordmark rule, and glass can't be tinted yellow and stay legible: the tint
+   lightens exactly where the triangle needs contrast. Bright yellow on dark
+   glass reads from across the room; white on yellow glass doesn't. */
+.teaser-mark {
+    display: grid;
+    place-items: center;
+    width: clamp(68px, 7.6vw, 92px);
+    aspect-ratio: 1;
+    color: var(--c-accent);
+    background: rgba(16,16,18,0.42);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+    backdrop-filter: blur(22px) saturate(150%);
+    border-radius: 50%;
+    /* One hairline highlight for the lit top edge, a whisper of rim to close
+       the shape, and a soft seat underneath. No heavy border. */
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.38),
+                inset 0 0 0 1px rgba(255,255,255,0.10),
+                0 6px 26px rgba(0,0,0,0.45);
+    transition: transform .28s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow .28s ease,
+                background .28s ease;
+}
+/* The triangle is centred by the path itself, not by a nudge. Its geometry
+   is base x=8, apex x=20, so the centroid lands at 8 + 12/3 = 12 — the exact
+   middle of the 24-unit box, on both axes. A margin hack here fought that and
+   pushed the mark visibly right of the circle. */
+.teaser-mark svg { width: 46%; height: 46%; display: block; }
+/* Hover thins the glass and lights the rim — the panel gets closer to the
+   image rather than brighter than it. */
+.teaser-trigger:hover .teaser-mark,
+.teaser-trigger:focus-visible .teaser-mark {
+    transform: scale(1.06);
+    background: rgba(16,16,18,0.30);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.55),
+                inset 0 0 0 1px rgba(255,221,102,0.40),
+                0 6px 30px rgba(0,0,0,0.5),
+                var(--glow-accent);
+}
+.teaser-trigger-label {
+    color: rgba(255,255,255,0.62);
+    transition: color .28s ease;
+}
+.teaser-trigger:hover .teaser-trigger-label,
+.teaser-trigger:focus-visible .teaser-trigger-label { color: var(--c-accent); }
 
 .teaser-stage {
     position: fixed;
