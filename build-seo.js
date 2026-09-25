@@ -23,6 +23,10 @@ const SKIP_ALWAYS = new Set([
     'content', 'docs', '_inbox', 'notes', 'netlify', '.claude'
 ]);
 const noindex = new Set(CONFIG.noindex || []);
+/* Unlisted: live pages meant for a direct link only. Out of the sitemap and
+   marked noindex, but not Disallowed — robots.txt is public, and listing a
+   path there advertises exactly what it's meant to keep quiet. */
+const unlisted = new Set(CONFIG.unlisted || []);
 
 /* ---- discover pages ---- */
 
@@ -42,8 +46,8 @@ function findPages(dir = ROOT, rel = '') {
 }
 
 const all = findPages();
-const pages = all.filter(p => !noindex.has(p.dir));
-const excluded = all.filter(p => noindex.has(p.dir));
+const pages = all.filter(p => !noindex.has(p.dir) && !unlisted.has(p.dir));
+const excluded = all.filter(p => noindex.has(p.dir) || unlisted.has(p.dir));
 
 /* Skip unpublished essays — a page Google indexes before it's ready is worse
    than one it hasn't found yet. */
@@ -157,7 +161,7 @@ if (draft.length) {
     draft.forEach(p => console.log(`      ${p.url}`));
 }
 if (excluded.length) {
-    console.log(`  → private (marked noindex):`);
+    console.log(`  → private / unlisted (marked noindex):`);
     excluded.forEach(p => console.log(`      ${p.url}`));
 }
 console.log(`  → robots.txt     ${noindex.size} disallowed path${noindex.size === 1 ? '' : 's'}`);

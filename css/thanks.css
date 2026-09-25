@@ -1,0 +1,130 @@
+/* ── Thank-you pages (/jim, /tara, /sam) ─────────────────────────────
+   One page, one outcome: watch the video. Nothing else on the screen.
+
+   The stage sits at 85% of the viewport, framed on black, holding the
+   name and a play mark. Pressing play loads the Livid embed in place and
+   the stage eases out to the full screen while the video starts.
+
+   The scale lives on .thanks-stage, never on the iframe: if the viewer
+   hits the player's own fullscreen, the iframe goes to the top layer and
+   ancestor transforms don't apply. Once the grow finishes, .is-full drops
+   the transform entirely so there's nothing left to interfere. */
+
+:root {
+    --c-accent: #FFDD22;
+    --font-ui: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --grow: 10s;   /* how long the 85% → 100% grow takes */
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    height: 100%;
+    background: #000;
+    color: #fff;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+.thanks-stage {
+    position: fixed;
+    inset: 0;
+    height: 100vh;
+    height: 100dvh;
+    background: #07070a;
+    border-radius: 2px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
+    overflow: hidden;
+    transform: scale(0.85);
+    transition: transform var(--grow) cubic-bezier(0.4, 0, 0.2, 1),
+                border-radius var(--grow) ease;
+}
+.thanks-stage.is-playing { transform: scale(1); border-radius: 0; }
+.thanks-stage.is-full { transform: none; box-shadow: none; transition: none; }
+
+.thanks-stage iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+}
+
+/* ── The cover: name + play, centred. The whole cover is the tap
+   target; the button inside is what keyboard and screen readers get. ── */
+.thanks-cover {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(22px, 4vh, 36px);
+    padding: 24px 16px;
+    background: #07070a;
+    cursor: pointer;
+    transition: opacity 0.6s ease;
+}
+.thanks-cover.is-hidden { opacity: 0; pointer-events: none; }
+
+.thanks-name {
+    margin: 0;
+    font-family: 'Clash Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    font-size: clamp(3rem, 11vw, 7.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    text-align: center;
+    text-shadow: 3px 3px 0 #000;
+}
+
+.thanks-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.thanks-play {
+    display: grid;
+    place-items: center;
+    width: clamp(64px, 7.4vw, 88px);
+    aspect-ratio: 1;
+    color: #0a0a0a;
+    background: var(--c-accent);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgba(255,221,34,0.5), 0 0 34px rgba(255,221,34,0.32);
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease;
+}
+.thanks-play svg { width: 46%; height: 46%; display: block; }
+.thanks-cover:hover .thanks-play,
+.thanks-btn:focus-visible .thanks-play {
+    transform: scale(1.07);
+    box-shadow: 0 0 0 1px rgba(255,221,34,0.8), 0 0 48px rgba(255,221,34,0.5);
+}
+.thanks-btn:focus-visible { outline: none; }
+.thanks-btn:focus-visible .thanks-play { outline: 2px solid #fff; outline-offset: 6px; }
+
+.thanks-label {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 0.68rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.62);
+    transition: color 0.28s ease;
+}
+.thanks-cover:hover .thanks-label,
+.thanks-btn:focus-visible .thanks-label { color: var(--c-accent); }
+
+@media (prefers-reduced-motion: reduce) {
+    .thanks-stage { transition: none; }
+}
