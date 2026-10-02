@@ -120,7 +120,7 @@ window.HOUSTON = {
         { id: 'ninfas', tab: 'eat', name: 'The Original Ninfa’s on Navigation', stamp: 'NINFA’S', hood: 'East End', why: 'Where Houston’s fajita obsession started.', icon: 'taco', shape: 'hex', ink: 'green', q: 'The Original Ninfa\'s on Navigation, Houston TX' },
         { id: 'uchi', tab: 'eat', name: 'Uchi', stamp: 'UCHI', hood: 'Montrose', why: 'Sushi. Sit at the bar and say yes to the specials.', icon: 'fork', shape: 'rect', ink: 'purple' },
         { id: 'tacos-tierra', tab: 'eat', name: 'Tacos Tierra Caliente', stamp: 'TIERRA CALIENTE', hood: 'Montrose', why: 'Truck tacos — al pastor — then cross the street to the Ice House.', icon: 'taco', shape: 'diamond', ink: 'orange' },
-        { id: 'nancys', tab: 'eat', name: 'Nancy’s Hustle', stamp: 'NANCY’S HUSTLE', hood: 'EaDo', why: 'Natural wine and the famous Nancy cakes. Book ahead.', icon: 'glass', shape: 'arch', ink: 'teal' },
+        { id: 'nancys', tab: 'eat', name: 'Nancy’s Hustle', stamp: 'NANCY’S HUSTLE', hood: 'East Downtown', why: 'Natural wine and the famous Nancy cakes. Book ahead.', icon: 'glass', shape: 'arch', ink: 'teal' },
         { id: 'mala', tab: 'eat', name: 'Mala Sichuan Bistro', stamp: 'MALA', hood: 'Chinatown', why: 'Real Sichuan heat out on Bellaire.', icon: 'flame', shape: 'circle', ink: 'red' },
         { id: 'blacksmith', tab: 'eat', name: 'Blacksmith', stamp: 'BLACKSMITH', hood: 'Montrose', why: 'Morning coffee, done right.', icon: 'coffee', shape: 'rect', ink: 'navy' },
         { id: 'anvil', tab: 'eat', name: 'Anvil Bar & Refuge', stamp: 'ANVIL', hood: 'Montrose', why: 'The cocktail bar that put Houston drinking on the map.', icon: 'glass', shape: 'hex', ink: 'maroon' },
