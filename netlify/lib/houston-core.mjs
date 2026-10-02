@@ -197,6 +197,65 @@ function decode(s) {
         .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n)).trim();
 }
 
+/* Places from coordinates or a typed name, via OpenStreetMap's Nominatim
+   (free, no key; asks for an identifying User-Agent and light use — two
+   people adding spots is very light). */
+const OSM_UA = 'mikekilcoyne.com/houston trip page (mike@mikekilcoyne.com)';
+const EAT = /restaurant|cafe|bar|pub|fast_food|food_court|ice_cream|biergarten|bakery|nightclub|winery|brewery/;
+const GO = /museum|gallery|attraction|viewpoint|artwork|park|garden|monument|memorial|place_of_worship|theatre|cinema|arts_centre|zoo|aquarium/;
+
+function fromOsm(d, lat, lng) {
+    const a = d.address || {};
+    const kind = `${d.category || d.class || ''} ${d.type || ''}`;
+    const title = d.name || (d.namedetails && d.namedetails.name) || [a.house_number, a.road].filter(Boolean).join(' ');
+    return {
+        kind: 'place',
+        title: str(title, 90),
+        hood: str(a.neighbourhood || a.suburb || a.quarter || a.city_district || a.city || '', 60),
+        description: '',
+        address: str(d.display_name || '', 200),
+        tab: EAT.test(kind) ? 'eat' : GO.test(kind) ? 'go' : '',
+        q: `${(+lat).toFixed(6)},${(+lng).toFixed(6)}`,
+        site: 'OpenStreetMap'
+    };
+}
+
+async function reverse(lat, lng) {
+    const r = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&namedetails=1&zoom=18&lat=${lat}&lon=${lng}`, {
+        headers: { 'User-Agent': OSM_UA, 'Accept-Language': 'en' }, signal: AbortSignal.timeout(7000)
+    });
+    if (!r.ok) throw new Error('lookup failed');
+    const d = await r.json();
+    if (d.error) return { kind: 'place', title: '', hood: '', q: `${lat},${lng}`, site: 'your location' };
+    return fromOsm(d, lat, lng);
+}
+
+async function search(text) {
+    // Bias to Houston; fall back to anywhere if that finds nothing.
+    for (const q of [`${text}, Houston, TX`, text]) {
+        const r = await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&namedetails=1&limit=1&countrycodes=us&q=${encodeURIComponent(q)}`, {
+            headers: { 'User-Agent': OSM_UA, 'Accept-Language': 'en' }, signal: AbortSignal.timeout(7000)
+        });
+        if (!r.ok) continue;
+        const [d] = await r.json();
+        if (d) return fromOsm(d, d.lat, d.lon);
+    }
+    return { kind: 'place', title: '', hood: '', site: 'a search', error: 'Couldn’t find that — type the name below.' };
+}
+
+const COORDS = /^\s*(-?\d{1,2}(?:\.\d+)?)\s*,\s*(-?\d{1,3}(?:\.\d+)?)\s*$/;
+
+async function lookup(raw) {
+    const text = str(raw, 600);
+    const c = text.match(COORDS);
+    if (c) {
+        try { return await reverse(c[1], c[2]); } catch { return { error: 'Couldn’t look up that spot — type the name below.' }; }
+    }
+    if (/^https?:\/\//i.test(text)) return unfurl(text);
+    if (text.length < 3) return { error: 'Type a bit more.' };
+    try { return await search(text); } catch { return { error: 'Couldn’t search right now — type the name below.' }; }
+}
+
 async function unfurl(raw) {
     const url = safeUrl(raw);
     if (!url) return { error: 'That doesn’t look like a link.' };
@@ -229,8 +288,17 @@ async function unfurl(raw) {
             out.kind = 'maps';
             const place = finalUrl.pathname.match(/\/maps\/place\/([^/]+)/);
             if (place) out.title = decodeURIComponent(place[1].replace(/\+/g, ' '));
-            else if (finalUrl.searchParams.get('q')) out.title = finalUrl.searchParams.get('q');
+            else if (finalUrl.searchParams.get('q') && !COORDS.test(finalUrl.searchParams.get('q'))) out.title = finalUrl.searchParams.get('q');
             out.site = 'Google Maps';
+            // A dropped pin: @lat,lng in the path, or ?q=lat,lng.
+            const at = finalUrl.pathname.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/) || (finalUrl.searchParams.get('q') || '').match(COORDS);
+            if (at) {
+                out.q = `${at[1]},${at[2]}`;
+                if (!out.title) {
+                    try { const p = await reverse(at[1], at[2]); out.title = p.title; out.hood = p.hood; out.tab = p.tab; } catch { /* fine */ }
+                }
+                return out;
+            }
         }
         if (/(^|\.)instagram\.com$/.test(finalUrl.hostname)) out.kind = 'instagram';
 
@@ -256,7 +324,7 @@ export async function handle(req, store) {
     const url = new URL(req.url);
     try {
         if (req.method === 'GET') {
-            if (url.searchParams.has('unfurl')) return json(await unfurl(url.searchParams.get('unfurl')));
+            if (url.searchParams.has('unfurl')) return json(await lookup(url.searchParams.get('unfurl')));
             const cur = await store.getWithMetadata(KEY, { type: 'json' });
             return json({ state: cur && cur.data ? cur.data : empty() });
         }

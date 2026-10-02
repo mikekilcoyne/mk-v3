@@ -1,9 +1,0 @@
-{
-  "name": "mikekilcoyne-com",
-  "private": true,
-  "description": "Static site. Dependencies here are for Netlify Functions only.",
-  "type": "commonjs",
-  "dependencies": {
-    "@netlify/blobs": "^11.1.3"
-  }
-}

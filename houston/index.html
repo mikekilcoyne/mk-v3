@@ -21,7 +21,7 @@
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
     <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
     <link href="https://api.fontshare.com/v2/css?f%5B%5D=clash-display@500,600,700&f%5B%5D=paquito@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/houston.css?v=3">
+    <link rel="stylesheet" href="/css/houston.css?v=4">
     <!-- seo:start -->
     <meta name="robots" content="noindex, nofollow">
     <!-- seo:end -->
@@ -51,13 +51,13 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 21V3c-2 1.5-3 4-3 7.5h3"/></svg>
             <span>Eat</span>
         </a>
-        <a href="#go" data-tab="go">
+        <button type="button" class="hx-tab-add" id="hx-fab" aria-label="Add a spot or a plan">
+            <span class="hx-tab-add-circle" aria-hidden="true">+</span>
+            <span>Add</span>
+        </button>
+        <a href="#explore" data-tab="explore">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
-            <span>Places</span>
-        </a>
-        <a href="#do" data-tab="do">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>
-            <span>Do</span>
+            <span>Explore</span>
         </a>
         <a href="#room" data-tab="room">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18v-6.5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2V18M3 15h18M3 18v2M21 18v2M6 9.5V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2.5"/></svg>
@@ -92,9 +92,8 @@
         <div class="hx-sheet-card" id="hx-form-card" data-style="white" role="dialog" aria-modal="true" aria-label="Add or edit"></div>
     </div>
 
-    <button type="button" class="hx-fab" id="hx-fab" aria-label="Add">+</button>
 
-    <script src="/js/houston-data.js?v=3"></script>
-    <script src="/js/houston.js?v=3"></script>
+    <script src="/js/houston-data.js?v=4"></script>
+    <script src="/js/houston.js?v=4"></script>
 </body>
 </html>

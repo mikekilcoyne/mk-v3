@@ -331,11 +331,12 @@
     }
 
     // ── Views ─────────────────────────────────────────────────────────
-    function viewStamps(tab) {
+    function stampSection(tab) {
         const t = H.tabs[tab];
         const list = spotList().filter((s) => s.tab === tab);
         const got = list.filter((s) => S.stamps[s.id]).length;
-        main.innerHTML = `
+        return `
+            <section id="sec-${tab}">
             <div class="hx-section-head"><h2>${esc(t.title)}</h2><span>${got} / ${list.length} been</span></div>
             <div class="hx-grid">
                 ${list.map((s) => `
@@ -348,8 +349,11 @@
                     <span class="hx-add-tile" aria-hidden="true">+</span>
                     <span class="hx-stamp-meta"><span>Add a spot</span></span>
                 </button>
-            </div>`;
+            </div>
+            </section>`;
     }
+    const viewEat = () => { main.innerHTML = stampSection('eat'); };
+    const viewExplore = () => { main.innerHTML = stampSection('go') + stampSection('do'); };
 
     function planRow(p) {
         const spot = p.spot && S.spots[p.spot];
@@ -430,8 +434,10 @@
     }
 
     // ── Routing ───────────────────────────────────────────────────────
-    const VIEWS = ['trip', 'eat', 'go', 'do', 'room'];
-    const currentView = () => (VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'trip');
+    // Places to Hit and Adventures share the Explore tab; #go / #do jump to their section.
+    const VIEWS = ['trip', 'eat', 'explore', 'room'];
+    const viewFor = (h) => (h === 'go' || h === 'do' ? 'explore' : VIEWS.includes(h) ? h : 'trip');
+    const currentView = () => viewFor(location.hash.slice(1));
     function render() {
         // Don't redraw under someone's thumbs mid-typing.
         if (document.activeElement && document.activeElement.id === 'hx-add-text' && document.activeElement.value) { renderHeader(); return; }
@@ -439,7 +445,8 @@
         const y = window.scrollY;
         if (v === 'trip') viewTrip();
         else if (v === 'room') viewRoom();
-        else viewStamps(v);
+        else if (v === 'eat') viewEat();
+        else viewExplore();
         document.querySelectorAll('#hx-tabs a').forEach((a) => {
             if (a.dataset.tab === v) a.setAttribute('aria-current', 'page');
             else a.removeAttribute('aria-current');
@@ -557,22 +564,42 @@
         return t.includes(' ') ? t.slice(0, t.lastIndexOf(' ')) : t;
     }
 
+    // Spot / Plan switch at the top of a new-item form.
+    const modeSwitch = (mode) => `
+        <div class="hx-seg" role="tablist" aria-label="What are you adding?">
+            <button type="button" role="tab" data-mode="spot" aria-selected="${mode === 'spot'}">A spot</button>
+            <button type="button" role="tab" data-mode="plan" aria-selected="${mode === 'plan'}">A plan</button>
+        </div>`;
+    function wireModeSwitch(defaults) {
+        formCard.querySelectorAll('[data-mode]').forEach((b) => b.addEventListener('click', () => {
+            if (b.getAttribute('aria-selected') === 'true') return;
+            closeForm();
+            if (b.dataset.mode === 'plan') openPlanForm({ date: defaults.date || defaultDay() });
+            else openSpotForm(null, defaults);
+        }));
+    }
+    const defaultDay = () => (todayISO >= H.trip.start ? todayISO : H.trip.start);
+    const isUrl = (t) => /^https?:\/\//i.test(t);
+
     function openSpotForm(spot, defaults = {}) {
-        const s = spot || { tab: defaults.tab || 'eat', from: load('hx-me', H.defaultFrom), name: '', hood: '', why: '', link: '' };
+        const s = spot || { tab: defaults.tab || 'eat', from: load('hx-me', H.defaultFrom), name: '', hood: '', why: '', link: '', q: '' };
         const editing = !!spot;
         openForm(`
             <button type="button" class="hx-sheet-x" data-close aria-label="Close">&times;</button>
-            <p class="hx-sheet-kicker">${editing ? 'Edit' : 'New'} · ${editing ? esc(H.tabs[s.tab].title) : 'Drop a link'}</p>
-            <h2>${editing ? esc(s.name) : 'Add a spot'}</h2>
+            ${editing ? `<p class="hx-sheet-kicker">Edit · ${esc(H.tabs[s.tab].title)}</p><h2>${esc(s.name)}</h2>` : modeSwitch('spot')}
             <form class="hx-fields" novalidate>
-                <label class="hx-field">
-                    <span>Link <em>Google Maps, TikTok, Instagram, a website…</em></span>
-                    <span class="hx-link-row">
-                        <input type="url" name="link" value="${esc(s.link)}" placeholder="Paste a link" inputmode="url" autocomplete="off">
+                <div class="hx-find">
+                    <label class="hx-field">
+                        <span>${editing ? 'Link' : 'Drop a link, a name, or an address'}</span>
+                        <input type="text" name="find" value="${esc(s.link)}" placeholder="Google Maps, TikTok, Instagram… or “Truth BBQ”" autocomplete="off" autocapitalize="off" enterkeyhint="search"${editing ? '' : ' autofocus'}>
+                    </label>
+                    <div class="hx-find-actions">
                         <button type="button" class="hx-mini" data-paste>Paste</button>
-                    </span>
-                    <small class="hx-hint" id="hx-unfurl-hint"></small>
-                </label>
+                        <button type="button" class="hx-mini hx-mini--here" data-here>📍 I’m here</button>
+                    </div>
+                    <small class="hx-hint" id="hx-unfurl-hint" aria-live="polite"></small>
+                </div>
+                <input type="hidden" name="q" value="${esc(s.q || '')}">
                 <label class="hx-field"><span>Name</span><input name="name" value="${esc(s.name)}" maxlength="90" placeholder="What’s it called?" required></label>
                 <div class="hx-field"><span>What is it?</span>${chips('tab', TAB_OPTS, s.tab)}</div>
                 <div class="hx-field"><span>Whose rec?</span>${chips('from', PEOPLE, s.from)}</div>
@@ -595,18 +622,20 @@
             const from = fd.get('from') || H.defaultFrom;
             save('hx-me', from);
             const why = String(fd.get('why') || '').trim();
+            const find = String(fd.get('find') || '').trim();
+            const q = String(fd.get('q') || '').trim();
             const next = {
                 ...(spot || {}),
                 id: spot ? spot.id : newId('s'),
                 tab, from, name,
                 hood: String(fd.get('hood') || '').trim(),
                 why,
-                link: String(fd.get('link') || '').trim(),
+                link: isUrl(find) ? find : '',
                 stamp: spot && spot.name === name ? spot.stamp : stampText(name),
                 icon: spot ? spot.icon : guessIcon(`${name} ${why}`, tab),
                 shape: spot ? spot.shape : SHAPE_LIST[hashOf(name) % SHAPE_LIST.length],
                 ink: spot ? spot.ink : INK_LIST[hashOf(name + '!') % INK_LIST.length],
-                q: spot ? spot.q : `${name}, Houston TX`,
+                q: q || (spot && spot.q) || `${name}, Houston TX`,
                 order: spot ? spot.order : Date.now()
             };
             commit({ op: 'spot.save', spot: next });
@@ -614,39 +643,62 @@
             if (!spot && date) commit({ op: 'plan.save', plan: { id: newId('p'), date, time: String(fd.get('time') || '').trim(), title: name, spot: next.id, idea: false, order: Date.now() } });
             closeForm();
             if (!spot) {
-                if (currentView() !== tab && !date) location.hash = tab;
+                if (!date && currentView() !== viewFor(tab)) location.hash = tab;
                 toast(date ? `Added “${name}” and put it on ${fmt(date, { weekday: 'short', month: 'short', day: 'numeric' })}.` : `Added “${name}”.`);
             }
         });
+        if (!editing) wireModeSwitch(defaults);
 
-        const linkInput = $('input[name="link"]', formCard);
+        const findInput = $('input[name="find"]', formCard);
         const hint = $('#hx-unfurl-hint', formCard);
-        let lastUnfurled = s.link;
-        async function unfurl() {
-            const url = linkInput.value.trim();
-            if (!url || url === lastUnfurled || !/^https?:\/\//i.test(url)) return;
-            lastUnfurled = url;
-            hint.textContent = 'Reading the link…';
+        const field = (n) => formCard.querySelector(`[name="${n}"]`);
+        let tabTouched = editing;
+        formCard.querySelectorAll('input[name="tab"]').forEach((r) => r.addEventListener('change', () => { tabTouched = true; }));
+        const auto = new Set();   // fields we filled, so a second lookup can replace them
+        const fill = (n, v) => { const el = field(n); if (v && (!el.value || auto.has(n))) { el.value = v; auto.add(n); } };
+
+        let last = editing ? s.link : '';
+        async function lookup(text, label) {
+            text = (text || '').trim();
+            if (!text || text === last) return;
+            last = text;
+            hint.textContent = label || (isUrl(text) ? 'Reading the link…' : 'Looking it up…');
             try {
-                const d = await api('GET', '?unfurl=' + encodeURIComponent(url));
-                if (d.error) { hint.textContent = d.error; return; }
-                const nameEl = $('input[name="name"]', formCard);
-                const whyEl = $('textarea[name="why"]', formCard);
-                if (d.title && !nameEl.value) nameEl.value = d.title;
-                if (d.description && !whyEl.value) whyEl.value = d.description.slice(0, 220);
-                hint.textContent = d.title || d.description ? `Got it from ${d.site}. Tweak anything.` : `Couldn’t read much from ${d.site || 'that link'} — fill in the name.`;
-                if (!nameEl.value) nameEl.focus();
+                const d = await api('GET', '?unfurl=' + encodeURIComponent(text));
+                if (d.q) field('q').value = d.q;
+                fill('name', d.title);
+                fill('why', d.description && d.description.slice(0, 220));
+                fill('hood', d.hood);
+                if (d.tab && !tabTouched) { const r = formCard.querySelector(`input[name="tab"][value="${d.tab}"]`); if (r) r.checked = true; }
+                if (d.error && !d.title) hint.textContent = d.error;
+                else hint.textContent = d.title || d.description ? `Got it${d.site ? ' from ' + d.site : ''} — tweak anything, then Add it.` : `Couldn’t read much from ${d.site || 'that'} — add the name below.`;
+                if (!field('name').value) field('name').focus();
             } catch {
-                hint.textContent = 'Couldn’t read the link right now — fill it in by hand; the link still saves.';
+                hint.textContent = 'Couldn’t look that up right now — fill in the name; the link still saves.';
+                if (!isUrl(text) && !field('name').value) field('name').value = text;
             }
         }
-        linkInput.addEventListener('change', unfurl);
-        linkInput.addEventListener('paste', () => setTimeout(unfurl, 0));
+        findInput.addEventListener('change', () => lookup(findInput.value));
+        findInput.addEventListener('paste', () => setTimeout(() => lookup(findInput.value), 0));
+        findInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); lookup(findInput.value); } });
         $('[data-paste]', formCard).addEventListener('click', async () => {
             try {
                 const text = await navigator.clipboard.readText();
-                if (text) { linkInput.value = text.trim(); unfurl(); }
-            } catch { linkInput.focus(); hint.textContent = 'Long-press the box and choose Paste.'; }
+                if (text) { findInput.value = text.trim(); lookup(findInput.value); }
+            } catch { findInput.focus(); hint.textContent = 'Long-press the box and choose Paste.'; }
+        });
+        $('[data-here]', formCard).addEventListener('click', () => {
+            if (!navigator.geolocation) { hint.textContent = 'This phone won’t share its location here.'; return; }
+            hint.textContent = 'Finding you…';
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const c = `${pos.coords.latitude.toFixed(6)},${pos.coords.longitude.toFixed(6)}`;
+                    field('q').value = c;
+                    lookup(c, 'Got your location — looking up what’s here…');
+                },
+                () => { hint.textContent = 'Couldn’t get your location — check location access for your browser.'; },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 }
+            );
         });
         const del = $('[data-delete]', formCard);
         if (del) del.addEventListener('click', () => {
@@ -655,7 +707,7 @@
             closeForm();
             toast(`Deleted “${spot.name}”.`);
         });
-        if (defaults.link) { linkInput.value = defaults.link; unfurl(); }
+        if (defaults.link) { findInput.value = defaults.link; lookup(defaults.link); }
     }
 
     function openPlanForm(plan = {}) {
@@ -663,8 +715,7 @@
         const spotOpts = [['', 'No place']].concat(spotList().map((s) => [s.id, s.name]));
         openForm(`
             <button type="button" class="hx-sheet-x" data-close aria-label="Close">&times;</button>
-            <p class="hx-sheet-kicker">${editing ? 'Edit plan' : 'New plan'}${plan.date ? ' · ' + fmt(plan.date, { weekday: 'long', month: 'short', day: 'numeric' }) : ''}</p>
-            <h2>${editing ? esc(plan.title) : 'Add to the calendar'}</h2>
+            ${editing ? `<p class="hx-sheet-kicker">Edit plan · ${fmt(plan.date, { weekday: 'long', month: 'short', day: 'numeric' })}</p><h2>${esc(plan.title)}</h2>` : modeSwitch('plan')}
             <form class="hx-fields" novalidate>
                 <label class="hx-field"><span>What</span><input name="title" value="${esc(plan.title || '')}" maxlength="90" placeholder="Dinner, a show, a road trip…" required${editing ? '' : ' autofocus'}></label>
                 <div class="hx-field hx-field--row">
@@ -703,6 +754,7 @@
             if (location.hash !== '#trip') location.hash = 'trip';
             if (!editing) toast(`On the calendar: ${fmt(date, { weekday: 'short', month: 'short', day: 'numeric' })}.`);
         });
+        if (!editing) wireModeSwitch({ date: plan.date });
         const del = $('[data-delete]', formCard);
         if (del) del.addEventListener('click', () => {
             if (!confirm(`Take “${plan.title}” off the calendar?`)) return;
@@ -718,9 +770,9 @@
     // The + button adds whatever fits the tab you're on.
     $('#hx-fab').addEventListener('click', () => {
         const v = currentView();
-        if (v === 'trip') openPlanForm({ date: todayISO >= H.trip.start ? todayISO : H.trip.start });
-        else if (v === 'room') { location.hash = 'room'; const i = $('#hx-add-text'); if (i) { i.scrollIntoView({ block: 'center' }); i.focus(); } }
-        else openSpotForm(null, { tab: v });
+        if (v === 'room') { const i = $('#hx-add-text'); if (i) { i.scrollIntoView({ block: 'center' }); i.focus(); } return; }
+        // Adding a spot is the common case; the form has a one-tap switch to a plan.
+        openSpotForm(null, { tab: v === 'explore' ? 'do' : 'eat' });
     });
 
     document.addEventListener('keydown', (e) => {
@@ -787,7 +839,9 @@
     // ── Go ────────────────────────────────────────────────────────────
     window.addEventListener('hashchange', () => {
         render();
-        window.scrollTo(0, 0);
+        const sec = document.getElementById('sec-' + location.hash.slice(1));
+        if (sec && location.hash !== '#eat') sec.scrollIntoView({ block: 'start' });
+        else window.scrollTo(0, 0);
         if (Date.now() - lastSync > 4000) sync();   // switching tabs is a good moment to catch up
     });
 
@@ -802,7 +856,7 @@
     sync().then(() => {
         if (addLink) {
             history.replaceState(null, '', location.pathname + location.hash);
-            openSpotForm(null, { tab: 'do', link: addLink });
+            openSpotForm(null, { tab: 'eat', link: addLink });
         }
     });
 
