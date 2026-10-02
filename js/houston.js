@@ -64,17 +64,39 @@
         star:   'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z'
     };
 
-    // Each frame: outer + inner outline, and where the icon / name / foot sit.
+    // Sticker colorways, in the MK / YSJ palette. Each spot's `ink` maps to one.
+    const STYLES = {
+        yellow: { fill: '#FFDD22', fg: '#060606' },
+        black:  { fill: '#060606', fg: '#FFDD22' },
+        pink:   { fill: '#FF1D9C', fg: '#ffffff' },
+        white:  { fill: '#ffffff', fg: '#060606' }
+    };
+    const INK_STYLE = { orange: 'yellow', green: 'yellow', navy: 'black', purple: 'black', teal: 'white', maroon: 'pink', red: 'pink' };
+    const styleOf = (spot) => INK_STYLE[spot.ink] || 'yellow';
+
+    function scallop(cx, cy, r, n) {
+        const pts = [];
+        for (let i = 0; i <= n; i++) {
+            const a = (i / n) * Math.PI * 2 - Math.PI / 2;
+            pts.push([cx + r * Math.cos(a), cy + r * Math.sin(a)]);
+        }
+        const chord = Math.hypot(pts[1][0] - pts[0][0], pts[1][1] - pts[0][1]);
+        const ra = (chord / 2) * 1.1;
+        return 'M' + pts[0].map((v) => v.toFixed(1)).join(' ') +
+            pts.slice(1).map((p) => `A${ra.toFixed(1)} ${ra.toFixed(1)} 0 0 1 ${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join('') + 'Z';
+    }
+
+    // Each sticker shape: its outline path, and where the icon and name sit.
     const SHAPES = {
-        rect:    { o: '<rect x="8" y="12" width="104" height="96" rx="5"/>', i: '<rect x="14" y="18" width="92" height="84" rx="2"/>', icon: [60, 44, 26], name: 76, nameW: 84, foot: 95 },
-        arch:    { o: '<path d="M12 110V56a48 48 0 0 1 96 0v54z"/>', i: '<path d="M18 104V56a42 42 0 0 1 84 0v48z"/>', icon: [60, 42, 26], name: 76, nameW: 80, foot: 96 },
-        circle:  { o: '<circle cx="60" cy="60" r="52"/>', i: '<circle cx="60" cy="60" r="46"/>', icon: [60, 38, 24], name: 70, nameW: 82, foot: 89 },
-        hex:     { o: '<path d="M60 6l50 27v54l-50 27-50-27V33z"/>', i: '<path d="M60 13l44 23.5v47L60 107 16 83.5v-47z"/>', icon: [60, 38, 24], name: 70, nameW: 82, foot: 89 },
-        diamond: { o: '<path d="M60 4l56 56-56 56L4 60z"/>', i: '<path d="M60 12l48 48-48 48-48-48z"/>', icon: [60, 36, 22], name: 66, nameW: 72, foot: 86 }
+        rect:    { d: 'M32 10h56a24 24 0 0 1 24 24v52a24 24 0 0 1-24 24H32A24 24 0 0 1 8 86V34a24 24 0 0 1 24-24z', icon: [60, 40, 26], name: 76, nameW: 86 },
+        arch:    { d: 'M12 104V58a48 48 0 0 1 96 0v46a6 6 0 0 1-6 6H18a6 6 0 0 1-6-6z', icon: [60, 44, 26], name: 80, nameW: 80 },
+        circle:  { d: 'M60 8a52 52 0 1 1 0 104A52 52 0 0 1 60 8z', icon: [60, 38, 24], name: 74, nameW: 84 },
+        hex:     { d: scallop(60, 60, 46, 12), icon: [60, 38, 24], name: 73, nameW: 74 },
+        diamond: { d: 'M62 8c24 1 46 14 48 38s-6 50-30 60-58 6-68-18S8 44 24 26 40 7 62 8z', icon: [60, 40, 24], name: 76, nameW: 80 }
     };
 
     function splitName(name) {
-        if (name.length <= 10 || !name.includes(' ')) return [name];
+        if (name.length <= 9 || !name.includes(' ')) return [name];
         const mid = name.length / 2;
         let best = -1;
         for (let i = 0; i < name.length; i++) {
@@ -85,23 +107,22 @@
 
     function stampSVG(spot) {
         const sh = SHAPES[spot.shape] || SHAPES.rect;
+        const st = STYLES[styleOf(spot)];
         const [cx, cy, size] = sh.icon;
         const lines = splitName(spot.stamp);
         const longest = Math.max(...lines.map((l) => l.length));
-        // Oswald caps run ~0.5em wide. Cap the size, then squeeze if needed.
-        const fs = Math.max(10, Math.min(lines.length > 1 ? 14 : 17, sh.nameW / (longest * 0.5)));
+        // Clash Display caps run ~0.62em wide. Cap the size; fitStamps squeezes the rest.
+        const fs = Math.max(9, Math.min(lines.length > 1 ? 14 : 17, sh.nameW / (longest * 0.62)));
         const text = lines.map((line, k) => {
-            const y = sh.name + (lines.length > 1 ? (k === 0 ? -7 : 9) : 2);
+            const y = sh.name + (lines.length > 1 ? (k === 0 ? -6 : 10) : 4);
             return `<text x="60" y="${y}" font-size="${fs.toFixed(1)}" data-max="${sh.nameW}">${esc(line)}</text>`;
         }).join('');
         const s = size / 24;
-        return `<svg viewBox="0 0 120 120" aria-hidden="true" class="ink-${spot.ink}">
-            <g fill="none" stroke="currentColor" stroke-linejoin="round">
-                <g stroke-width="3.4">${sh.o}</g><g stroke-width="1.2">${sh.i}</g>
-                <path transform="translate(${cx - size / 2} ${cy - size / 2}) scale(${s})" d="${ICONS[spot.icon] || ICONS.star}" stroke-width="${(1.8 / s).toFixed(2)}" stroke-linecap="round"/>
-            </g>
-            <g fill="currentColor" text-anchor="middle" font-family="Oswald, 'Arial Narrow', Impact, sans-serif" font-weight="600" letter-spacing=".5">${text}</g>
-            <text x="60" y="${sh.foot + (lines.length > 1 ? 3 : 0)}" fill="currentColor" text-anchor="middle" font-family="'DM Mono', monospace" font-size="6.5" letter-spacing="2">HOUSTON · TX</text>
+        return `<svg viewBox="-2 -2 126 126" aria-hidden="true">
+            <path d="${sh.d}" transform="translate(4 4)" fill="#060606"/>
+            <path d="${sh.d}" fill="${st.fill}" stroke="#060606" stroke-width="2.5"/>
+            <path transform="translate(${cx - size / 2} ${cy - size / 2}) scale(${s})" d="${ICONS[spot.icon] || ICONS.star}" fill="none" stroke="${st.fg}" stroke-width="${(2.1 / s).toFixed(2)}" stroke-linecap="round" stroke-linejoin="round"/>
+            <g fill="${st.fg}" text-anchor="middle" font-family="'Clash Display', 'Helvetica Neue', Arial, sans-serif" font-weight="700">${text}</g>
         </svg>`;
     }
 
@@ -129,8 +150,8 @@
 
     // ── Header + stats ────────────────────────────────────────────────
     function renderHeader() {
-        const range = `${fmt(H.trip.start, { month: 'short', day: 'numeric' })} – ${fmt(H.trip.end, { month: 'short', day: 'numeric' })}`;
-        $('#hx-sub').textContent = `${range} · ${H.spots.length} spots saved`;
+        const range = `${fmt(H.trip.start, { month: 'short', day: 'numeric' })}–${fmt(H.trip.end, { day: 'numeric' })}`;
+        $('#hx-sub').textContent = `${range} · Houston`;
 
         const got = H.spots.filter((s) => stamps[s.id]).length;
         const items = roomItems();
@@ -139,19 +160,19 @@
         const pct = (a, b) => (b ? Math.round((a / b) * 100) : 0);
 
         $('#hx-stats').innerHTML = `
-            <a class="hx-stat" href="#eat" style="text-decoration:none;color:inherit">
+            <a class="hx-stat hx-stat--yellow" href="#eat">
                 <p class="hx-stat-label">Stamped</p>
                 <p class="hx-stat-value">${got}<small> / ${H.spots.length}</small></p>
                 <div class="hx-bar"><i style="width:${pct(got, H.spots.length)}%"></i></div>
                 <p class="hx-stat-foot">${pct(got, H.spots.length)}% explored</p>
             </a>
-            <a class="hx-stat" href="#room" style="text-decoration:none;color:inherit">
+            <a class="hx-stat hx-stat--pink" href="#room">
                 <p class="hx-stat-label">Guest room</p>
                 <p class="hx-stat-value">${done}<small> / ${items.length}</small></p>
                 <div class="hx-bar"><i style="width:${pct(done, items.length)}%"></i></div>
                 <p class="hx-stat-foot">${done === items.length ? 'AWESOME.' : pct(done, items.length) + '% awesome'}</p>
             </a>
-            ${next ? `<a class="hx-stat" href="#trip" style="text-decoration:none;color:inherit">
+            ${next ? `<a class="hx-stat hx-stat--black" href="#trip">
                 <p class="hx-stat-label">Next up</p>
                 <p class="hx-stat-value hx-stat-value--sm">${esc(next.title)}</p>
                 <p class="hx-stat-foot" style="margin-top:10px">${next.date === todayISO ? 'Today' : fmt(next.date, { weekday: 'short', month: 'short', day: 'numeric' })} · ${esc(next.time)}</p>
@@ -164,17 +185,14 @@
         const list = H.spots.filter((s) => s.tab === tab);
         const got = list.filter((s) => stamps[s.id]).length;
         main.innerHTML = `
-            <div class="hx-section-head"><h2>${esc(t.title)}</h2><span>${got} of ${list.length} stamped</span></div>
-            <div class="hx-page">
-                <div class="hx-page-head"><span>${esc(t.blurb)}</span><span>Entry / Sortie</span></div>
-                <div class="hx-grid">
-                    ${list.map((s) => `
-                        <button type="button" class="hx-stamp${stamps[s.id] ? ' is-stamped' : ''}" data-spot="${s.id}" style="--tilt:${tilt(s.id)}" aria-label="${esc(s.name)}${stamps[s.id] ? ', stamped' : ''}">
-                            ${stampSVG(s)}
-                            <span class="hx-stamp-meta">${who(fromOf(s), '{name}')}${esc(s.hood)}${stamps[s.id] ? `<b>✓ ${fmt(stamps[s.id], { month: 'short', day: 'numeric' }).toUpperCase()}</b>` : ''}</span>
-                        </button>`).join('')}
-                </div>
-                <p class="hx-page-foot">Tap a stamp for the why, directions, and to stamp it once you’ve been.</p>
+            <div class="hx-section-head"><h2>${esc(t.title)}</h2><span>${got} / ${list.length} been</span></div>
+            <div class="hx-grid">
+                ${list.map((s) => `
+                    <button type="button" class="hx-stamp${stamps[s.id] ? ' is-stamped' : ''}" data-spot="${s.id}" style="--tilt:${tilt(s.id)}" aria-label="${esc(s.name)}${stamps[s.id] ? ', been there' : ''}">
+                        ${stamps[s.id] ? '<span class="hx-been" aria-hidden="true">BEEN ✓</span>' : ''}
+                        ${stampSVG(s)}
+                        <span class="hx-stamp-meta">${who(fromOf(s), '{name}')}<span>${esc(s.hood)}</span></span>
+                    </button>`).join('')}
             </div>`;
     }
 
@@ -186,7 +204,7 @@
         const inner = `
             <span class="hx-plan-time">${esc(p.time)}</span>
             <span><p class="hx-plan-title">${from ? who(from) : ''}${esc(p.title)}${spot && stamps[spot.id] ? ' ✓' : ''}</p>${p.note ? `<p class="hx-plan-note">${esc(p.note)}</p>` : spot ? `<p class="hx-plan-note">${esc(spot.hood)}</p>` : ''}</span>
-            <span class="hx-plan-tag">${tag}</span>`;
+            <span class="hx-plan-tag${tag === 'Plan' ? ' hx-plan-tag--plan' : ''}">${tag}</span>`;
         if (spot) return `<a class="${cls}" href="#${spot.tab}" data-spot="${spot.id}">${inner}</a>`;
         if (p.room) return `<a class="${cls}" href="#room">${inner}</a>`;
         return `<div class="${cls}">${inner}</div>`;
@@ -207,9 +225,9 @@
         const label = (d) => fmt(d, { weekday: 'long', month: 'short', day: 'numeric' });
         main.innerHTML = `
             <div class="hx-section-head"><h2>The Trip</h2><span>${tripDays.length} days</span></div>
-            <div class="hx-stats hx-days-scroll" style="margin-top:0;grid-auto-columns:64px">
+            <div class="hx-days">
                 ${tripDays.map((d) => `
-                    <a class="hx-day-chip${d === todayISO ? ' is-today' : ''}" href="#trip" data-day="${byDay[d] ? d : ''}" style="${byDay[d] ? '' : 'opacity:.45'}">
+                    <a class="hx-day-chip${d === todayISO ? ' is-today' : byDay[d] ? ' has-plans' : ' is-empty'}" href="#trip" data-day="${byDay[d] ? d : ''}">
                         <span>${fmt(d, { weekday: 'short' }).toUpperCase()}</span><strong>${fmt(d, { day: 'numeric' })}</strong>
                     </a>`).join('')}
             </div>
@@ -237,22 +255,20 @@
                 <label><input type="checkbox" data-tick="${esc(t)}"${ticks[t] ? ' checked' : ''}><span class="hx-box" aria-hidden="true"></span><span class="hx-check-text">${esc(t)}</span></label>
                 ${custom ? `<button type="button" class="hx-check-x" data-remove="${esc(t)}" aria-label="Remove ${esc(t)}">&times;</button>` : ''}
             </li>`;
+        const letter = (i) => String.fromCharCode(65 + i);
         main.innerHTML = `
-            <div class="hx-section-head"><h2>${esc(r.title)}</h2><span>${fmt(r.date, { weekday: 'long' })}</span></div>
-            <div class="hx-page">
-                <div class="hx-page-head"><span>Mission: awesome</span><span>${done} / ${items.length}</span></div>
-                <div class="hx-bar hx-bar--paper"><i style="width:${items.length ? Math.round((done / items.length) * 100) : 0}%"></i></div>
-                ${r.sections.map((s) => `
-                    <h3 class="hx-check-head">${esc(s.name)}</h3>
-                    <ul class="hx-checklist">${s.items.map((t) => row(t, false)).join('')}</ul>`).join('')}
-                <h3 class="hx-check-head">Our additions</h3>
-                <ul class="hx-checklist">${extras.map((t) => row(t, true)).join('')}</ul>
-                <form class="hx-add" id="hx-add">
-                    <input type="text" id="hx-add-text" placeholder="Add something to the list" maxlength="80" aria-label="New checklist item">
-                    <button type="submit">Add</button>
-                </form>
-                ${done === items.length && items.length ? '<p class="hx-page-foot hx-done-note">Guest room: certified AWESOME.</p>' : ''}
-            </div>`;
+            <div class="hx-section-head"><h2>${esc(r.title)}</h2><span>${fmt(r.date, { weekday: 'long' })} · ${done} / ${items.length}</span></div>
+            <div class="hx-room-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${items.length}" aria-valuenow="${done}"><i style="width:${items.length ? Math.round((done / items.length) * 100) : 0}%"></i></div>
+            ${r.sections.map((s, i) => `
+                <h3 class="hx-check-head"><span class="hx-letter">${letter(i)}</span>${esc(s.name)}</h3>
+                <ul class="hx-checklist">${s.items.map((t) => row(t, false)).join('')}</ul>`).join('')}
+            <h3 class="hx-check-head"><span class="hx-letter">+</span>Our additions</h3>
+            <ul class="hx-checklist">${extras.map((t) => row(t, true)).join('')}</ul>
+            <form class="hx-add" id="hx-add">
+                <input type="text" id="hx-add-text" placeholder="Add something to the list" maxlength="80" aria-label="New checklist item">
+                <button type="submit">Add</button>
+            </form>
+            ${done === items.length && items.length ? '<p class="hx-done-note">Guest room: certified AWESOME.</p>' : ''}`;
     }
 
     // ── Routing ───────────────────────────────────────────────────────
@@ -277,13 +293,17 @@
 
     function paintSheet() {
         const s = openSpot;
-        $('#hx-sheet-stamp').innerHTML = stampSVG(s);
-        $('#hx-sheet-hood').innerHTML = who(fromOf(s), 'From {name}') + `<span>${esc(s.hood)}</span>`;
+        const card = $('#hx-sheet-card');
+        card.dataset.style = styleOf(s);
+        $('#hx-sheet-hood').innerHTML = who(fromOf(s), 'From {name}') + `<span>· ${esc(H.tabs[s.tab].title)}</span>`;
         $('#hx-sheet-name').textContent = s.name;
-        $('#hx-sheet-why').textContent = s.why;
+        $('#hx-sheet-stamp').innerHTML = stampSVG(s);
+        const when = H.plans.filter((p) => p.spot === s.id).map((p) => `${fmt(p.date, { weekday: 'short', month: 'short', day: 'numeric' })} · ${p.time}${p.idea ? ' (idea)' : ''}`);
+        $('#hx-sheet-about').innerHTML = [s.why, `Where: ${s.hood}`].concat(when.length ? [`On the calendar: ${when.join(', ')}`] : [])
+            .map((t) => `<li>${esc(t)}</li>`).join('');
         $('#hx-sheet-map').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(s.q || s.name + ', Houston TX');
         const btn = $('#hx-sheet-stampit');
-        btn.textContent = stamps[s.id] ? `Stamped ${fmt(stamps[s.id], { month: 'short', day: 'numeric' })} ✓` : 'Stamp it';
+        btn.textContent = stamps[s.id] ? `Been ✓ ${fmt(stamps[s.id], { month: 'short', day: 'numeric' })}` : 'Stamp it';
         btn.classList.toggle('is-done', !!stamps[s.id]);
     }
 

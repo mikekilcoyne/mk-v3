@@ -15,7 +15,7 @@
      q      what to search in Maps (defaults to name + ", Houston TX")
      from   'lee' for Lee's recs; anything else is Mike's
 
-   Plans are Houston time. `idea: true` marks a suggestion rather than
+   Plan times are Houston time unless they say otherwise (e.g. "ET"). `idea: true` marks a suggestion rather than
    something decided; `spot` opens that stamp; `room: true` opens the
    guest-room checklist. */
 
@@ -24,8 +24,8 @@ window.HOUSTON = {
        square crops in photos_web/houston/; until a file is there, the
        initial shows on the person's color. */
     people: {
-        mike: { name: 'Mike', photo: '/photos_web/houston/mike.jpg', color: '#23899a' },
-        lee:  { name: 'Lee',  photo: '/photos_web/houston/lee.jpg',  color: '#f2782a' }
+        mike: { name: 'Mike', photo: '/photos_web/houston/mike.jpg', color: '#FFDD22' },
+        lee:  { name: 'Lee',  photo: '/photos_web/houston/lee.jpg',  color: '#FF1D9C' }
     },
     defaultFrom: 'mike',
 
@@ -35,8 +35,8 @@ window.HOUSTON = {
     },
 
     plans: [
-        { date: '2026-10-02', time: '2:10 PM', title: 'Mike takes off', note: 'Long Island → Baltimore → Houston' },
-        { date: '2026-10-02', time: '8:40 PM', title: 'Mike lands at Hobby', note: 'Southwest, via BWI', kind: 'flight' },
+        { date: '2026-10-02', time: '3:10 PM ET', title: 'Mike takes off from Long Island', note: 'ISP → Baltimore (6:25 PM ET) → Houston', kind: 'flight' },
+        { date: '2026-10-02', time: '8:40 PM', title: 'Mike lands at Hobby', note: 'Houston time · Southwest via BWI', kind: 'flight' },
 
         { date: '2026-10-03', time: 'Morning', title: 'Coffee at Blacksmith', spot: 'blacksmith', idea: true },
         { date: '2026-10-03', time: '12:30 PM', title: 'Houston Stories screening at MFAH', spot: 'houston-stories', idea: true, note: 'Local filmmakers, in person — a break from the room?' },
@@ -59,7 +59,7 @@ window.HOUSTON = {
     /* The guest-room checklist. Add or remove lines freely; ticks are
        remembered per phone, keyed on the item's text. */
     room: {
-        title: 'Guest Room Glow-Up',
+        title: 'Guest Room Glow‑Up',
         date: '2026-10-03',
         sections: [
             { name: 'Clear the decks', items: [
