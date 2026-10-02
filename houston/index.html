@@ -21,7 +21,7 @@
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
     <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
     <link href="https://api.fontshare.com/v2/css?f%5B%5D=clash-display@500,600,700&f%5B%5D=paquito@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/houston.css?v=2">
+    <link rel="stylesheet" href="/css/houston.css?v=4">
     <!-- seo:start -->
     <meta name="robots" content="noindex, nofollow">
     <!-- seo:end -->
@@ -29,7 +29,7 @@
 <body>
     <header class="hx-head">
         <div class="hx-head-row">
-            <p class="hx-kicker" id="hx-sub">Houston, TX</p>
+            <p class="hx-kicker"><span id="hx-sub">Houston, TX</span> <span class="hx-sync" id="hx-sync" data-state="off">Offline</span></p>
             <button type="button" class="hx-share" id="hx-share" aria-label="Share this page">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4M5 12v7h14v-7"/></svg>
                 <span class="hx-share-label">Share</span>
@@ -51,13 +51,13 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 21V3c-2 1.5-3 4-3 7.5h3"/></svg>
             <span>Eat</span>
         </a>
-        <a href="#go" data-tab="go">
+        <button type="button" class="hx-tab-add" id="hx-fab" aria-label="Add a spot or a plan">
+            <span class="hx-tab-add-circle" aria-hidden="true">+</span>
+            <span>Add</span>
+        </button>
+        <a href="#explore" data-tab="explore">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
-            <span>Places</span>
-        </a>
-        <a href="#do" data-tab="do">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>
-            <span>Do</span>
+            <span>Explore</span>
         </a>
         <a href="#room" data-tab="room">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18v-6.5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2V18M3 15h18M3 18v2M21 18v2M6 9.5V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2.5"/></svg>
@@ -74,14 +74,26 @@
             <h2 id="hx-sheet-name"></h2>
             <div class="hx-sheet-sticker" id="hx-sheet-stamp"></div>
             <ol class="hx-sheet-about" id="hx-sheet-about"></ol>
+            <a class="hx-sheet-ext" id="hx-sheet-link" target="_blank" rel="noopener" hidden></a>
             <div class="hx-sheet-actions">
                 <a class="hx-btn hx-btn--ghost" id="hx-sheet-map" target="_blank" rel="noopener">Directions ↗</a>
                 <button type="button" class="hx-btn" id="hx-sheet-stampit">Stamp it</button>
             </div>
+            <div class="hx-sheet-tools">
+                <button type="button" id="hx-sheet-plan">+ Put it on the calendar</button>
+                <button type="button" id="hx-sheet-edit">Edit</button>
+            </div>
         </div>
     </div>
 
-    <script src="/js/houston-data.js?v=2"></script>
-    <script src="/js/houston.js?v=2"></script>
+    <!-- Add / edit forms: places and calendar plans. Filled in by houston.js. -->
+    <div class="hx-sheet hx-sheet--form" id="hx-form" hidden>
+        <div class="hx-sheet-scrim" data-close></div>
+        <div class="hx-sheet-card" id="hx-form-card" data-style="white" role="dialog" aria-modal="true" aria-label="Add or edit"></div>
+    </div>
+
+
+    <script src="/js/houston-data.js?v=4"></script>
+    <script src="/js/houston.js?v=4"></script>
 </body>
 </html>
