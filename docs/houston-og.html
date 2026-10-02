@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<!--
+  Source for the /houston link-preview image (photos_web/houston/og-houston.png).
+  An illustrated map, not a real one — it only has to read as "Houston" at
+  thumbnail size. Same palette as the page: paper, ink, YSJ yellow, neon pink.
+
+  To re-render after changing it or adding the photos, screenshot this page
+  at exactly 1200×630 (Playwright, or a browser's device toolbar) and save
+  over og-houston.png. Faces load from photos_web/houston/{mike,lee}.jpg;
+  until they exist, initials show. Type is Clash Display; Archivo (stretched)
+  stands in wherever Fontshare can't load.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://api.fontshare.com/v2/css?f%5B%5D=clash-display@600,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&display=swap" rel="stylesheet">
+<style>
+    :root { --paper: #FFF8E6; --ink: #060606; --yellow: #FFDD22; --pink: #FF1D9C; }
+    html, body { margin: 0; }
+    body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+        background: var(--paper);
+        font-family: 'Clash Display', 'Archivo', sans-serif;
+        font-stretch: 100%;
+        color: var(--ink);
+    }
+    .stage { position: relative; width: 1200px; height: 630px; }
+    svg.map { position: absolute; inset: 0; }
+
+    .title { position: absolute; left: 56px; top: 64px; }
+    .kicker {
+        display: inline-block;
+        margin: 0;
+        font-weight: 700;
+        font-size: 22px;
+        letter-spacing: .14em;
+        text-decoration: underline;
+        text-decoration-thickness: 3px;
+        text-underline-offset: 6px;
+    }
+    h1 {
+        margin: 22px 0 0;
+        font-weight: 800;
+        font-size: 70px;
+        line-height: .92;
+        letter-spacing: -.01em;
+        text-transform: uppercase;
+    }
+    h1 mark {
+        background: none;
+        color: inherit;
+        background-image: linear-gradient(transparent 50%, var(--yellow) 50%, var(--yellow) 92%, transparent 92%);
+    }
+    .tagline {
+        display: inline-block;
+        margin-top: 26px;
+        padding: 10px 18px;
+        border: 3px solid var(--ink);
+        border-radius: 999px;
+        background: #fff;
+        box-shadow: 4px 4px 0 var(--ink);
+        font-weight: 700;
+        font-size: 20px;
+        letter-spacing: .12em;
+        transform: rotate(-2deg);
+    }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 16px 14px; max-width: 520px; margin-top: 56px; }
+    .chip {
+        padding: 14px 20px 12px;
+        border: 3px solid var(--ink);
+        border-radius: 18px;
+        box-shadow: 4px 4px 0 var(--ink);
+        font-weight: 800;
+        font-size: 24px;
+        letter-spacing: .04em;
+    }
+
+    .pin { position: absolute; transform: translate(-50%, -100%); }
+    .face {
+        position: relative;
+        width: 104px;
+        height: 104px;
+        border-radius: 50%;
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        font-size: 50px;
+        border: 5px solid var(--ink);
+        box-shadow: 6px 6px 0 var(--ink);
+    }
+    .face img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .pin::after {
+        content: '';
+        display: block;
+        width: 0;
+        height: 0;
+        margin: -2px auto 0;
+        border: 15px solid transparent;
+        border-top: 22px solid var(--ink);
+        border-bottom: 0;
+    }
+    .tag {
+        position: absolute;
+        left: 50%;
+        top: -22px;
+        z-index: 2;
+        padding: 6px 14px 5px;
+        border: 3px solid var(--ink);
+        border-radius: 999px;
+        background: #fff;
+        font-weight: 700;
+        font-size: 17px;
+        letter-spacing: .14em;
+        white-space: nowrap;
+        transform: translateX(-50%) rotate(-5deg);
+    }
+</style>
+</head>
+<body>
+<div class="stage">
+    <svg class="map" viewBox="0 0 1200 630" aria-hidden="true">
+        <defs>
+            <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse">
+                <circle cx="2" cy="2" r="1.6" fill="#e6dcc2"/>
+            </pattern>
+        </defs>
+        <rect width="1200" height="630" fill="url(#dots)"/>
+        <g transform="translate(90 30) scale(0.9)">
+
+        <!-- Galveston Bay -->
+        <path d="M1030 640 C1020 570 1060 525 1110 505 C1150 488 1180 482 1210 482 V640Z" fill="#060606" transform="translate(6 6)"/>
+        <path d="M1030 640 C1020 570 1060 525 1110 505 C1150 488 1180 482 1210 482 V640Z" fill="#FFDD22" stroke="#060606" stroke-width="4"/>
+        <path d="M1070 590c16 0 16-10 32-10s16 10 32 10M1095 552c16 0 16-10 32-10s16 10 32 10" fill="none" stroke="#060606" stroke-width="4" stroke-linecap="round"/>
+
+        <!-- Beltway 8 (dashed) and the 610 Loop -->
+        <rect x="560" y="40" width="560" height="520" rx="220" fill="none" stroke="#060606" stroke-width="4" stroke-dasharray="2 16" stroke-linecap="round"/>
+        <rect x="680" y="150" width="320" height="290" rx="120" fill="none" stroke="#060606" stroke-width="7"/>
+
+        <!-- Buffalo Bayou → the Ship Channel: a pink ribbon with an ink edge -->
+        <path d="M560 300 C630 270 670 330 740 300 S830 250 860 290 S950 330 1010 300 S1100 330 1130 390 S1170 460 1210 482" fill="none" stroke="#060606" stroke-width="18" stroke-linecap="round"/>
+        <path d="M560 300 C630 270 670 330 740 300 S830 250 860 290 S950 330 1010 300 S1100 330 1130 390 S1170 460 1210 482" fill="none" stroke="#FF1D9C" stroke-width="10" stroke-linecap="round"/>
+
+        <!-- Mike's flight path into Hobby -->
+        <path d="M1210 30 C1110 70 1000 150 950 320 S935 420 935 432" fill="none" stroke="#060606" stroke-width="4" stroke-dasharray="2 12" stroke-linecap="round"/>
+        <g transform="translate(1130 50) rotate(150) scale(1.4)">
+            <path d="M0-14 3-4 16 2v4L3 3 2 12l5 4v3l-7-2-7 2v-3l5-4-1-9-13 3v-4l13-6z" fill="#060606"/>
+        </g>
+
+        <!-- Neighborhood stickers -->
+        <g font-family="Clash Display, Archivo, sans-serif" font-weight="700" font-size="15" letter-spacing="1.5" text-anchor="middle">
+            <g transform="translate(975 196) rotate(-4)"><rect x="-62" y="-17" width="124" height="34" rx="17" fill="#060606"/><text y="6" fill="#FFDD22">DOWNTOWN</text></g>
+            <g transform="translate(690 200) rotate(3)"><rect x="-50" y="-17" width="100" height="34" rx="17" fill="#fff" stroke="#060606" stroke-width="3"/><text y="6" fill="#060606">HEIGHTS</text></g>
+            <g transform="translate(1118 352) rotate(5)"><rect x="-94" y="-17" width="188" height="34" rx="17" fill="#fff" stroke="#060606" stroke-width="3"/><text y="6" fill="#060606">EAST DOWNTOWN</text></g>
+            <g transform="translate(1078 448) rotate(-6)"><rect x="-66" y="-17" width="132" height="34" rx="17" fill="#060606"/><text y="6" fill="#FFDD22">CLEAR LAKE</text></g>
+            <g transform="translate(850 478) rotate(4)"><rect x="-50" y="-17" width="100" height="34" rx="17" fill="#FFDD22" stroke="#060606" stroke-width="3"/><text y="6" fill="#060606">HOBBY ✈</text></g>
+        </g>
+
+        <!-- Fun stickers -->
+        <g transform="translate(1110 180) rotate(12)">
+            <circle r="58" fill="#060606" transform="translate(5 5)"/>
+            <circle r="58" fill="#FF1D9C" stroke="#060606" stroke-width="4"/>
+            <text text-anchor="middle" y="-2" fill="#fff" font-family="Clash Display, Archivo, sans-serif" font-weight="800" font-size="19">HOUSTON</text>
+            <text text-anchor="middle" y="24" fill="#fff" font-family="Clash Display, Archivo, sans-serif" font-weight="700" font-size="13" letter-spacing="2">OCT 2026</text>
+        </g>
+        </g>
+    </svg>
+
+    <div class="title">
+        <p class="kicker">HOUSTON · OCT 2026</p>
+        <h1>Lee + Mike’s<br><mark>Adventures</mark></h1>
+        <div class="tagline">EAT · EXPLORE · STAMP IT ✓</div>
+        <div class="chips">
+            <span class="chip" style="background:#FFDD22; transform:rotate(-4deg)">31 SPOTS</span>
+            <span class="chip" style="background:#FF1D9C; color:#fff; transform:rotate(3deg)">1 GUEST ROOM</span>
+            <span class="chip" style="background:#060606; color:#FFDD22; transform:rotate(-3deg)">UNLIMITED FUN</span>
+        </div>
+    </div>
+
+    <!-- Lee in Montrose, Mike landing at Hobby -->
+    <div class="pin" style="left:801px; top:327px">
+        <span class="tag">LEE</span>
+        <div class="face" style="background:#FF1D9C; color:#fff">L<img src="../photos_web/houston/lee.jpg" alt="" onerror="this.remove()"></div>
+    </div>
+    <div class="pin" style="left:931px; top:419px">
+        <span class="tag">MIKE</span>
+        <div class="face" style="background:#FFDD22">M<img src="../photos_web/houston/mike.jpg" alt="" onerror="this.remove()"></div>
+    </div>
+</div>
+</body>
+</html>

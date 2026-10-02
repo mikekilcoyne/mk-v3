@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#FFF8E6">
+    <!-- Unlisted: direct link only. A personal trip page, not part of the
+         portfolio, so it carries its own look (see css/houston.css).
+         All content lives in js/houston-data.js. -->
+    <title>Lee + Mike’s Houston Adventures</title>
+    <meta name="description" content="Restaurant recs, places to hit, and adventures — Lee + Mike in Houston.">
+    <meta property="og:title" content="Lee + Mike’s Adventures">
+    <meta property="og:description" content="Restaurant recs, places to hit, and adventures.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mikekilcoyne.com/houston/">
+    <meta property="og:image" content="https://mikekilcoyne.com/photos_web/houston/og-houston.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://mikekilcoyne.com/photos_web/houston/og-houston.png">
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f%5B%5D=clash-display@500,600,700&f%5B%5D=paquito@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/houston.css?v=2">
+    <!-- seo:start -->
+    <meta name="robots" content="noindex, nofollow">
+    <!-- seo:end -->
+</head>
+<body>
+    <header class="hx-head">
+        <div class="hx-head-row">
+            <p class="hx-kicker" id="hx-sub">Houston, TX</p>
+            <button type="button" class="hx-share" id="hx-share" aria-label="Share this page">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4M5 12v7h14v-7"/></svg>
+                <span class="hx-share-label">Share</span>
+            </button>
+        </div>
+        <h1>Lee + Mike’s<br>Houston <mark>Adventures</mark></h1>
+    </header>
+
+    <section class="hx-stats" id="hx-stats" aria-label="Trip at a glance"></section>
+
+    <main id="hx-main"></main>
+
+    <nav class="hx-tabs" id="hx-tabs" aria-label="Sections">
+        <a href="#trip" data-tab="trip">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+            <span>Trip</span>
+        </a>
+        <a href="#eat" data-tab="eat">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 21V3c-2 1.5-3 4-3 7.5h3"/></svg>
+            <span>Eat</span>
+        </a>
+        <a href="#go" data-tab="go">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+            <span>Places</span>
+        </a>
+        <a href="#do" data-tab="do">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>
+            <span>Do</span>
+        </a>
+        <a href="#room" data-tab="room">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18v-6.5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2V18M3 15h18M3 18v2M21 18v2M6 9.5V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2.5"/></svg>
+            <span>Room</span>
+        </a>
+    </nav>
+
+    <!-- Detail sheet: opens from a sticker, in that sticker's colors. -->
+    <div class="hx-sheet" id="hx-sheet" hidden>
+        <div class="hx-sheet-scrim" data-close></div>
+        <div class="hx-sheet-card" id="hx-sheet-card" role="dialog" aria-modal="true" aria-labelledby="hx-sheet-name">
+            <button type="button" class="hx-sheet-x" data-close aria-label="Close">&times;</button>
+            <p class="hx-sheet-kicker" id="hx-sheet-hood"></p>
+            <h2 id="hx-sheet-name"></h2>
+            <div class="hx-sheet-sticker" id="hx-sheet-stamp"></div>
+            <ol class="hx-sheet-about" id="hx-sheet-about"></ol>
+            <div class="hx-sheet-actions">
+                <a class="hx-btn hx-btn--ghost" id="hx-sheet-map" target="_blank" rel="noopener">Directions ↗</a>
+                <button type="button" class="hx-btn" id="hx-sheet-stampit">Stamp it</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/houston-data.js?v=2"></script>
+    <script src="/js/houston.js?v=2"></script>
+</body>
+</html>

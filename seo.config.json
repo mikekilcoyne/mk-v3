@@ -7,7 +7,7 @@
   "noindex": ["admin", "_inbox", "notes", "docs", "netlify"],
 
   "_unlisted": "Direct-link-only pages: kept out of the sitemap and marked noindex, but not listed in robots.txt (which is public).",
-  "unlisted": ["jim", "tara", "sam"],
+  "unlisted": ["jim", "tara", "sam", "houston"],
 
   "priority": {
     "/": "1.0",
