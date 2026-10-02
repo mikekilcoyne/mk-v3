@@ -1,0 +1,585 @@
+/* ── /houston — Lee + Mike's Houston Adventures ──────────────────────
+   A personal, unlisted trip page with its own look: a travel-passport
+   app. Dark leather shell, a cream passport page, ink stamps. Built
+   mobile-first; on desktop it sits as a phone-width column. */
+
+:root {
+    --bg: #1b1511;
+    --card: #251d17;
+    --line: #3b2f26;
+    --text: #f3e9d8;
+    --muted: #a8977f;
+    --accent: #f2782a;
+    --paper: #ece3d2;
+    --paper-ink: #5a4c3d;
+    --paper-rule: #cdbfa8;
+
+    --ink-orange: #d9531e;
+    --ink-teal: #23899a;
+    --ink-navy: #2b4a8a;
+    --ink-green: #2e7d55;
+    --ink-maroon: #9e3441;
+    --ink-purple: #6b55a6;
+    --ink-red: #c23b32;
+
+    --serif: 'Fraunces', Georgia, serif;
+    --mono: 'DM Mono', ui-monospace, Menlo, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --stamp: 'Oswald', 'Arial Narrow', Impact, sans-serif;
+
+    --tabbar: 76px;
+}
+
+* { box-sizing: border-box; }
+
+html { background: var(--bg); }
+body {
+    margin: 0 auto;
+    max-width: 520px;
+    min-height: 100vh;
+    padding: max(20px, env(safe-area-inset-top)) 16px calc(var(--tabbar) + 32px + env(safe-area-inset-bottom));
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+svg { display: block; }
+
+/* ── Header ───────────────────────────────────────────────────────── */
+.hx-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 8px;
+}
+.hx-kicker {
+    margin: 0 0 2px;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+.hx-head h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(2.1rem, 9.5vw, 2.7rem);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+}
+.hx-sub {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 0.98rem;
+}
+
+.hx-share {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    padding: 10px 16px;
+    border: 1.5px solid #6a3a1c;
+    border-radius: 999px;
+    background: #2c1c12;
+    color: var(--accent);
+    font: 600 0.95rem var(--sans);
+    cursor: pointer;
+}
+.hx-share svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.hx-share:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* ── Stat cards ───────────────────────────────────────────────────── */
+.hx-stats {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(150px, 46%);
+    gap: 12px;
+    margin: 22px -16px 0;
+    padding: 0 16px 4px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 16px;
+    scrollbar-width: none;
+}
+.hx-stats::-webkit-scrollbar { display: none; }
+.hx-stat {
+    scroll-snap-align: start;
+    padding: 16px 16px 14px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+}
+.hx-stat-label {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+.hx-stat-value {
+    margin: 8px 0 0;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 2rem;
+    line-height: 1;
+}
+.hx-stat-value small {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+.hx-stat-value--sm { font-size: 1.15rem; line-height: 1.2; }
+.hx-bar {
+    height: 4px;
+    margin: 12px 0 8px;
+    background: var(--line);
+    border-radius: 2px;
+    overflow: hidden;
+}
+.hx-bar i { display: block; height: 100%; background: var(--accent); border-radius: 2px; transition: width .4s ease; }
+.hx-stat-foot { margin: 0; color: var(--muted); font-size: 0.86rem; }
+
+/* ── Section heading ──────────────────────────────────────────────── */
+.hx-section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 30px 2px 14px;
+}
+.hx-section-head h2 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 1.75rem;
+}
+.hx-section-head span { color: var(--muted); font-size: 0.92rem; }
+
+/* ── Passport page ────────────────────────────────────────────────── */
+.hx-page {
+    position: relative;
+    padding: 20px 14px 22px;
+    background: var(--paper);
+    color: var(--paper-ink);
+    border-radius: 22px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.4) inset, 0 18px 40px rgba(0,0,0,0.35);
+    overflow: hidden;
+}
+/* Faint compass watermark, like the security print on a real page. */
+.hx-page::before {
+    content: '';
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: 260px;
+    height: 260px;
+    transform: translate(-50%, -50%);
+    border: 22px solid rgba(90, 76, 61, 0.035);
+    border-radius: 50%;
+    pointer-events: none;
+}
+.hx-page-head {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 6px 12px;
+    border-bottom: 2px dashed var(--paper-rule);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+}
+
+/* ── Stamp grid ───────────────────────────────────────────────────── */
+.hx-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px 6px;
+    margin-top: 18px;
+}
+.hx-stamp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+.hx-stamp svg {
+    width: 100%;
+    max-width: 104px;
+    aspect-ratio: 1;
+    transform: rotate(var(--tilt, 0deg));
+    opacity: 0.78;
+    filter: saturate(0.75);
+    transition: transform .25s cubic-bezier(.2,.9,.3,1.3), opacity .25s ease, filter .25s ease;
+}
+.hx-stamp.is-stamped svg { opacity: 1; filter: none; }
+.hx-stamp:hover svg,
+.hx-stamp:focus-visible svg { transform: rotate(var(--tilt, 0deg)) scale(1.06); opacity: .95; }
+.hx-stamp.is-stamped:hover svg { opacity: 1; }
+.hx-stamp:focus-visible { outline: none; }
+.hx-stamp:focus-visible svg { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 6px; }
+.hx-stamp-meta {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-align: center;
+    line-height: 1.3;
+    min-height: 2.6em;
+}
+.hx-stamp-meta b { display: block; font-weight: 500; color: var(--ink-red); }
+
+/* Stamp ink — the SVG uses currentColor. */
+.ink-orange { color: var(--ink-orange); }
+.ink-teal   { color: var(--ink-teal); }
+.ink-navy   { color: var(--ink-navy); }
+.ink-green  { color: var(--ink-green); }
+.ink-maroon { color: var(--ink-maroon); }
+.ink-purple { color: var(--ink-purple); }
+.ink-red    { color: var(--ink-red); }
+
+.hx-page-foot {
+    position: relative;
+    margin: 22px 6px 0;
+    padding-top: 12px;
+    border-top: 2px dashed var(--paper-rule);
+    font-size: 0.88rem;
+    text-align: center;
+}
+
+/* ── Trip / calendar ──────────────────────────────────────────────── */
+.hx-days {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 8px;
+}
+.hx-day-chip {
+    padding: 10px 0 9px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--card);
+    color: var(--text);
+    text-align: center;
+    text-decoration: none;
+    font: inherit;
+}
+.hx-day-chip span { display: block; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.16em; color: var(--muted); }
+.hx-day-chip strong { display: block; margin-top: 3px; font-family: var(--serif); font-size: 1.4rem; }
+.hx-day-chip.is-today { border-color: var(--accent); }
+.hx-day-chip.is-today span { color: var(--accent); }
+
+.hx-day { margin-top: 22px; scroll-margin-top: 16px; }
+.hx-day-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin: 0 2px 10px;
+}
+.hx-day-head h3 { margin: 0; font-family: var(--serif); font-weight: 600; font-size: 1.3rem; }
+.hx-day-head span { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+.hx-day-head span.is-today { color: var(--accent); }
+
+.hx-plan {
+    display: grid;
+    grid-template-columns: 74px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 14px;
+    margin-bottom: 8px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    color: inherit;
+    text-decoration: none;
+}
+a.hx-plan:hover, a.hx-plan:focus-visible { border-color: #5a4636; outline: none; }
+.hx-plan-time { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); }
+.hx-plan-title { margin: 0; font-weight: 600; font-size: 1rem; line-height: 1.3; }
+.hx-plan-note { margin: 2px 0 0; font-size: 0.86rem; color: var(--muted); }
+.hx-plan-tag {
+    font-family: var(--mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 999px;
+    border: 1px dashed #5a4636;
+    color: var(--muted);
+}
+.hx-plan--flight { background: #2c1c12; border-color: #6a3a1c; }
+.hx-plan--flight .hx-plan-time { color: var(--accent); }
+.hx-plan--flight .hx-plan-tag { border-style: solid; border-color: var(--accent); color: var(--accent); }
+.hx-plan--open { border-style: dashed; background: transparent; }
+
+.hx-note {
+    margin: 26px 2px 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+.hx-note a { color: var(--accent); }
+
+/* ── Bottom tab bar ───────────────────────────────────────────────── */
+.hx-tabs {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+    background: rgba(27, 21, 17, 0.88);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    backdrop-filter: blur(16px) saturate(140%);
+    border-top: 1px solid var(--line);
+}
+.hx-tabs a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 0;
+    color: #8a7a66;
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+.hx-tabs svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.hx-tabs a[aria-current="page"] { color: var(--accent); }
+.hx-tabs a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 10px; }
+
+/* ── Detail sheet ─────────────────────────────────────────────────── */
+.hx-sheet { position: fixed; inset: 0; z-index: 40; }
+.hx-sheet[hidden] { display: none; }
+.hx-sheet-scrim { position: absolute; inset: 0; background: rgba(0,0,0,0.55); animation: hx-fade .2s ease; }
+.hx-sheet-card {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 26px 22px calc(24px + env(safe-area-inset-bottom));
+    background: var(--paper);
+    color: var(--paper-ink);
+    border-radius: 24px 24px 0 0;
+    text-align: center;
+    animation: hx-rise .28s cubic-bezier(.2,.9,.3,1);
+}
+.hx-sheet-x {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    background: none;
+    color: var(--paper-ink);
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+.hx-sheet-stamp svg { width: 112px; height: 112px; margin: 0 auto; }
+.hx-sheet-hood {
+    margin: 14px 0 4px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+.hx-sheet-card h2 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 1.6rem;
+    line-height: 1.15;
+    color: #2a2119;
+}
+.hx-sheet-why {
+    margin: 10px auto 0;
+    max-width: 34ch;
+    font-size: 1rem;
+    line-height: 1.5;
+    text-align: left;
+}
+.hx-sheet-actions { display: flex; gap: 10px; margin-top: 22px; }
+.hx-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 16px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #1b1511;
+    font: 700 1rem var(--sans);
+    text-decoration: none;
+    cursor: pointer;
+}
+.hx-btn--ghost { background: transparent; color: #2a2119; box-shadow: inset 0 0 0 1.5px #b9a98f; }
+.hx-btn.is-done { background: #2a2119; color: var(--paper); }
+.hx-btn:focus-visible { outline: 2px solid #2a2119; outline-offset: 3px; }
+
+@keyframes hx-fade { from { opacity: 0; } }
+@keyframes hx-rise { from { transform: translateY(40px); opacity: 0; } }
+
+/* A fresh stamp lands with a thunk. */
+.hx-stamp.just-stamped svg { animation: hx-thunk .45s cubic-bezier(.2,.9,.3,1.4); }
+@keyframes hx-thunk {
+    0%   { transform: rotate(var(--tilt, 0deg)) scale(1.5); opacity: 0; }
+    60%  { transform: rotate(var(--tilt, 0deg)) scale(0.94); opacity: 1; }
+    100% { transform: rotate(var(--tilt, 0deg)) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+@media (max-width: 360px) {
+    .hx-grid { gap: 14px 2px; }
+    .hx-plan { grid-template-columns: 62px 1fr; }
+    .hx-plan-tag { display: none; }
+}
+
+/* ── Guest-room checklist ─────────────────────────────────────────── */
+.hx-bar--paper { margin: 14px 6px 4px; background: var(--paper-rule); }
+.hx-check-head {
+    margin: 22px 6px 6px;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: #2a2119;
+}
+.hx-checklist { list-style: none; margin: 0; padding: 0; }
+.hx-check {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px dashed var(--paper-rule);
+}
+.hx-check label {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 6px;
+    cursor: pointer;
+    font-size: 0.98rem;
+    line-height: 1.35;
+}
+.hx-check input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.hx-box {
+    flex: none;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #b4a386;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    transition: background .2s ease, border-color .2s ease, transform .2s cubic-bezier(.2,.9,.3,1.4);
+}
+.hx-check input:checked + .hx-box {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: rotate(-8deg) scale(1.05);
+}
+.hx-check input:checked + .hx-box::after {
+    content: '';
+    width: 6px;
+    height: 11px;
+    margin-top: -2px;
+    border: solid #1b1511;
+    border-width: 0 2.5px 2.5px 0;
+    transform: rotate(45deg);
+}
+.hx-check input:focus-visible + .hx-box { outline: 2px solid #2a2119; outline-offset: 2px; }
+.hx-check.is-done .hx-check-text { text-decoration: line-through; text-decoration-color: rgba(90,76,61,.5); opacity: .6; }
+.hx-check-x {
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    background: none;
+    color: var(--paper-ink);
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+.hx-add { display: flex; gap: 8px; margin: 12px 6px 0; }
+.hx-add input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px 14px;
+    border: 1.5px solid #c6b699;
+    border-radius: 12px;
+    background: #f6f0e4;
+    color: #2a2119;
+    font: 16px var(--sans);
+}
+.hx-add input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.hx-add button {
+    padding: 0 18px;
+    border: 0;
+    border-radius: 12px;
+    background: #2a2119;
+    color: var(--paper);
+    font: 700 0.95rem var(--sans);
+    cursor: pointer;
+}
+.hx-done-note { font-family: var(--serif); font-size: 1.1rem; color: var(--ink-red); }
+
+/* ── "From Lee" tag ───────────────────────────────────────────────── */
+.hx-from {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    vertical-align: middle;
+}
+.hx-av {
+    position: relative;
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--accent);
+    color: #1b1511;
+    font: 700 0.66rem var(--sans);
+    box-shadow: 0 0 0 1.5px var(--paper), 0 0 0 2.5px var(--accent);
+}
+.hx-av img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hx-stamp-meta .hx-from {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3px;
+    color: var(--ink-orange);
+    font-weight: 500;
+}
+.hx-plan-title .hx-av { margin: -2px 7px 0 0; box-shadow: 0 0 0 1.5px var(--card), 0 0 0 2.5px var(--accent); }
+.hx-sheet-hood { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.hx-sheet-hood .hx-from {
+    padding: 5px 12px 5px 5px;
+    border-radius: 999px;
+    background: #2a2119;
+    color: var(--paper);
+    letter-spacing: 0.12em;
+}
+.hx-sheet-hood .hx-av { width: 26px; height: 26px; box-shadow: none; }
