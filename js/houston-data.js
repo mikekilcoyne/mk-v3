@@ -1,7 +1,15 @@
-/* Lee + Mike's Houston Adventures — the data behind /houston.
+/* Lee + Mike's Houston Adventures — the STARTING content for /houston.
 
-   Everything on the page comes from here. To add a spot, copy any line in
-   SPOTS and change it. Fields:
+   ⚠ The first time anyone opens the page, `spots` and `plans` below are
+   copied into the shared store (Netlify Blobs, via /api/houston). From
+   then on the store is the truth: add, edit and delete places and plans
+   on the page itself (the + button, "Edit", tapping a calendar row).
+   Changing `spots` / `plans` here afterwards does nothing.
+
+   Still read live from this file: `people`, `trip` (the calendar's
+   default range), `tabs`, and `room` (the checklist's built-in items).
+
+   Spot fields:
      id     unique, lowercase, no spaces (it's what remembers a stamp)
      tab    'eat' | 'go' | 'do'
      name   full name, shown in the detail sheet

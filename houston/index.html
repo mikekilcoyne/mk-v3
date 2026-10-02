@@ -21,7 +21,7 @@
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
     <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
     <link href="https://api.fontshare.com/v2/css?f%5B%5D=clash-display@500,600,700&f%5B%5D=paquito@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/houston.css?v=2">
+    <link rel="stylesheet" href="/css/houston.css?v=3">
     <!-- seo:start -->
     <meta name="robots" content="noindex, nofollow">
     <!-- seo:end -->
@@ -29,7 +29,7 @@
 <body>
     <header class="hx-head">
         <div class="hx-head-row">
-            <p class="hx-kicker" id="hx-sub">Houston, TX</p>
+            <p class="hx-kicker"><span id="hx-sub">Houston, TX</span> <span class="hx-sync" id="hx-sync" data-state="off">Offline</span></p>
             <button type="button" class="hx-share" id="hx-share" aria-label="Share this page">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4M5 12v7h14v-7"/></svg>
                 <span class="hx-share-label">Share</span>
@@ -74,14 +74,27 @@
             <h2 id="hx-sheet-name"></h2>
             <div class="hx-sheet-sticker" id="hx-sheet-stamp"></div>
             <ol class="hx-sheet-about" id="hx-sheet-about"></ol>
+            <a class="hx-sheet-ext" id="hx-sheet-link" target="_blank" rel="noopener" hidden></a>
             <div class="hx-sheet-actions">
                 <a class="hx-btn hx-btn--ghost" id="hx-sheet-map" target="_blank" rel="noopener">Directions ↗</a>
                 <button type="button" class="hx-btn" id="hx-sheet-stampit">Stamp it</button>
             </div>
+            <div class="hx-sheet-tools">
+                <button type="button" id="hx-sheet-plan">+ Put it on the calendar</button>
+                <button type="button" id="hx-sheet-edit">Edit</button>
+            </div>
         </div>
     </div>
 
-    <script src="/js/houston-data.js?v=2"></script>
-    <script src="/js/houston.js?v=2"></script>
+    <!-- Add / edit forms: places and calendar plans. Filled in by houston.js. -->
+    <div class="hx-sheet hx-sheet--form" id="hx-form" hidden>
+        <div class="hx-sheet-scrim" data-close></div>
+        <div class="hx-sheet-card" id="hx-form-card" data-style="white" role="dialog" aria-modal="true" aria-label="Add or edit"></div>
+    </div>
+
+    <button type="button" class="hx-fab" id="hx-fab" aria-label="Add">+</button>
+
+    <script src="/js/houston-data.js?v=3"></script>
+    <script src="/js/houston.js?v=3"></script>
 </body>
 </html>

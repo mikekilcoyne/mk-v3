@@ -47,16 +47,29 @@ svg { display: block; }
     gap: 12px;
 }
 .hx-kicker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin: 0;
     font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 4px;
     white-space: nowrap;
 }
+#hx-sub { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+/* Live / Offline — so you know the other phone sees it. */
+.hx-sync {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+}
+.hx-sync::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.hx-sync[data-state="live"] { color: var(--ink); }
+.hx-sync[data-state="live"]::before { background: var(--pink); box-shadow: 0 0 0 3px rgba(255, 29, 156, 0.2); }
 .hx-head h1 {
     margin: 18px 0 0;
     font-family: var(--display);
@@ -132,7 +145,15 @@ svg { display: block; }
     line-height: 1;
 }
 .hx-stat-value small { font-family: var(--sans); font-size: 0.95rem; font-weight: 700; opacity: 0.7; }
-.hx-stat-value--sm { font-size: 1.2rem; line-height: 1.1; text-transform: uppercase; }
+.hx-stat-value--sm {
+    font-size: 1.1rem;
+    line-height: 1.1;
+    text-transform: uppercase;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
 .hx-bar {
     height: 6px;
     margin: 10px 0 8px;
@@ -281,6 +302,18 @@ svg { display: block; }
     font-size: 1.35rem;
     text-transform: uppercase;
 }
+.hx-day-head h3 { flex: 1; }
+.hx-day-add {
+    flex: none;
+    align-self: center;
+    width: 30px;
+    height: 30px;
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    background: var(--white);
+    font: 700 1.1rem/1 var(--sans);
+    cursor: pointer;
+}
 .hx-day-head span {
     padding: 3px 9px;
     background: var(--pink);
@@ -292,6 +325,12 @@ svg { display: block; }
 }
 
 .hx-plan {
+    width: 100%;
+    background: none;
+    border: 0;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
     display: grid;
     grid-template-columns: 70px 1fr auto;
     align-items: center;
@@ -301,7 +340,8 @@ svg { display: block; }
     color: inherit;
     text-decoration: none;
 }
-a.hx-plan:active { background: var(--paper-2); }
+.hx-plan:active { background: var(--paper-2); }
+.hx-plan:focus-visible { outline: 3px solid var(--pink); outline-offset: 2px; border-radius: 10px; }
 .hx-plan-time { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
 .hx-plan-title { margin: 0; font-weight: 700; font-size: 1.02rem; line-height: 1.3; }
 .hx-plan-note { margin: 2px 0 0; font-size: 0.86rem; color: var(--muted); }
@@ -329,6 +369,7 @@ a.hx-plan:active { background: var(--paper-2); }
 .hx-plan--flight .hx-plan-tag { border-style: solid; border-color: var(--yellow); color: var(--yellow); }
 .hx-plan--open {
     margin-top: 22px;
+    border-bottom: 2px dashed var(--muted);
     padding: 16px 14px;
     border: 2px dashed var(--muted);
     border-radius: 18px;
@@ -614,3 +655,141 @@ a.hx-plan:active { background: var(--paper-2); }
     .hx-plan { grid-template-columns: 60px 1fr; }
     .hx-plan-tag { display: none; }
 }
+
+/* ── Add tile in the sticker grid ─────────────────────────────────── */
+.hx-add-tile {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    max-width: 112px;
+    aspect-ratio: 1;
+    border: 2.5px dashed var(--ink);
+    border-radius: 26px;
+    font: 700 2.4rem var(--display);
+    transition: transform .25s cubic-bezier(.2,.9,.3,1.4), background .2s ease;
+}
+.hx-stamp--add:hover .hx-add-tile, .hx-stamp--add:focus-visible .hx-add-tile { background: var(--yellow); transform: rotate(-4deg); }
+
+/* ── Floating + (adds whatever fits the tab you're on) ────────────── */
+.hx-fab {
+    position: fixed;
+    right: max(16px, calc(50% - 244px));
+    bottom: calc(var(--tabbar) + 18px + env(safe-area-inset-bottom));
+    z-index: 25;
+    width: 54px;
+    height: 54px;
+    border: 2.5px solid var(--ink);
+    border-radius: 50%;
+    background: var(--pink);
+    color: var(--white);
+    font: 600 2rem/1 var(--display);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+}
+.hx-fab:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
+.hx-fab:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+
+/* ── Place sheet extras ───────────────────────────────────────────── */
+.hx-sheet-ext {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-underline-offset: 4px;
+}
+.hx-sheet-tools { display: flex; justify-content: space-between; gap: 12px; margin-top: 16px; }
+.hx-sheet-tools button {
+    padding: 6px 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: 700 0.8rem var(--sans);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    cursor: pointer;
+}
+
+/* ── Forms ────────────────────────────────────────────────────────── */
+.hx-sheet--form .hx-sheet-card h2 { font-size: clamp(1.7rem, 8vw, 2.2rem); }
+.hx-fields { display: grid; gap: 16px; margin-top: 18px; }
+.hx-field { display: grid; gap: 7px; margin: 0; }
+.hx-field > span, .hx-field label > span {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+.hx-field em { font-style: normal; font-weight: 600; letter-spacing: 0.04em; text-transform: none; color: var(--muted); margin-left: 4px; }
+.hx-field--row { grid-template-columns: 1.3fr 1fr; gap: 10px; }
+.hx-field--row label { display: grid; gap: 7px; }
+.hx-fields input:not([type="radio"]), .hx-fields textarea, .hx-fields select {
+    width: 100%;
+    min-width: 0;
+    padding: 12px 13px;
+    border: 2px solid var(--ink);
+    border-radius: 14px;
+    background: var(--paper);
+    color: var(--ink);
+    font: 16px var(--sans);
+    -webkit-appearance: none;
+    appearance: none;
+}
+.hx-fields textarea { resize: vertical; line-height: 1.4; }
+.hx-fields select { background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%); background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%; background-size: 6px 6px; background-repeat: no-repeat; padding-right: 36px; }
+.hx-fields input:focus, .hx-fields textarea:focus, .hx-fields select:focus { outline: 3px solid var(--yellow); outline-offset: 0; }
+.hx-link-row { display: flex; gap: 8px; }
+.hx-mini {
+    flex: none;
+    padding: 0 14px;
+    border: 2px solid var(--ink);
+    border-radius: 14px;
+    background: var(--yellow);
+    font: 700 0.8rem var(--sans);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    box-shadow: 2px 2px 0 var(--ink);
+    cursor: pointer;
+}
+.hx-hint { min-height: 1em; font-size: 0.82rem; color: var(--muted); }
+.hx-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.hx-chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.hx-chip span {
+    display: inline-block;
+    padding: 9px 14px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    background: var(--white);
+    font-size: 0.86rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+.hx-chip input:checked + span { background: var(--yellow); box-shadow: 2px 2px 0 var(--ink); }
+.hx-chip input:focus-visible + span { outline: 3px solid var(--pink); outline-offset: 2px; }
+.hx-form-error { min-height: 1em; margin: 0; color: var(--pink); font-weight: 700; font-size: 0.9rem; }
+.hx-btn--danger { flex: 0 0 auto; padding-inline: 18px; color: var(--pink); border-color: var(--pink); }
+
+/* ── Toast ────────────────────────────────────────────────────────── */
+.hx-toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(var(--tabbar) + 92px + env(safe-area-inset-bottom));
+    z-index: 60;
+    max-width: min(440px, calc(100% - 32px));
+    padding: 12px 16px;
+    border: 2px solid var(--ink);
+    border-radius: 14px;
+    background: var(--ink);
+    color: var(--white);
+    font-size: 0.92rem;
+    font-weight: 600;
+    box-shadow: 3px 3px 0 var(--yellow);
+    transform: translate(-50%, 20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease;
+}
+.hx-toast.is-on { opacity: 1; transform: translate(-50%, 0); }

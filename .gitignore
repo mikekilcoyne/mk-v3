@@ -37,3 +37,6 @@ photos_web/outrospective/*
 !photos_web/outrospective/og-outrospective.jpg
 !photos_web/outrospective/hero-build/
 notes/
+
+# Node deps (Netlify installs these at build time)
+node_modules/
