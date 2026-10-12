@@ -220,8 +220,9 @@ const lineText=it=>it.segs.filter(s=>s.s).map(s=>s.s).join(' ');
 // Scoring: word-level LCS against the script, forgiving punctuation and stretched words.
 const norm=t=>t.toLowerCase().replace(/\[bleep\]/g,' ').replace(/[’']/g,'').replace(/[^a-z0-9 ]+/g,' ')
   .replace(/([a-z])\1{2,}/g,'$1$1').split(/\s+/).filter(Boolean).map(w=>w.replace(/(.)\1+$/,'$1'));
-const NUM={one:'1',two:'2',three:'3',four:'4',five:'5',six:'6',seven:'7',eight:'8',nine:'9',ten:'10',numero:'number',uno:'one'};
-const canon=w=>NUM[w]||w;
+const NUM={one:'1',two:'2',three:'3',thre:'3',four:'4',five:'5',six:'6',seven:'7',eight:'8',nine:'9',ten:'10',numero:'number',uno:'1',
+  yawk:'york',yawkk:'york',walkin:'walking',burtman:'bertman',bertmans:'bertman',burtmans:'bertman',dahntahn:'downtown',yins:'yinz',ok:'okay'};
+const canon=w=>NUM[w]||(w.endsWith('s')&&NUM[w.slice(0,-1)]?NUM[w.slice(0,-1)]+'s':w);
 function score(expected,heard){
   const E=norm(expected),H=norm(heard).map(canon),Ec=E.map(canon);
   const n=E.length,m=H.length;if(!n)return{s:1,hit:[]};
@@ -311,21 +312,23 @@ let actx=null;function beep(f=880,ms=90){try{actx=actx||new (window.AudioContext
 
 // Voice in
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-if(!SR)$('#heard').textContent='This browser can’t listen. Open the page in Safari on iPad, or Chrome on desktop.';
+if(!SR)$('#heard').textContent='This browser can’t listen. Use Chrome or Safari on a Mac, or Safari on iPad.';
 let rec=null;
 function listen(expected){return new Promise(res=>{
   if(!SR){res('');return}
   let final='',interim='',done=false,lastHeard=Date.now();
-  const words=expected.split(/\s+/).length,maxMs=4000+words*900;
+  // Lines with a written (beat)/(pause) get room for it, so a deliberate pause isn't scored as the end of the line.
+  const words=expected.split(/\s+/).length,beats=(listen.beats||0),maxMs=4000+words*900+beats*2500;
+  const quiet=()=>score(expected,final+' '+interim).s>=.8?1600:(beats?3500:2600);
   const finish=()=>{if(done)return;done=true;clearInterval(tick);try{rec.stop()}catch(e){}$('#mic').classList.remove('on');res((final+' '+interim).trim())};
   rec=new SR();rec.lang='en-US';rec.interimResults=true;rec.continuous=true;rec.maxAlternatives=1;
   rec.onresult=e=>{interim='';for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;if(e.results[i].isFinal)final+=' '+t;else interim+=t}
     lastHeard=Date.now();$('#heard').textContent=(final+' '+interim).trim()||'…';
     if(score(expected,final+' '+interim).s>=.95)setTimeout(finish,500)};
-  rec.onerror=e=>{if(e.error==='not-allowed'||e.error==='service-not-allowed'){$('#heard').textContent='Microphone blocked. Allow it for this site in Settings → Safari → Microphone.';stop()}finish()};
+  rec.onerror=e=>{if(e.error==='not-allowed'||e.error==='service-not-allowed'){$('#heard').textContent=/Macintosh/.test(navigator.userAgent)&&!('ontouchend'in document)?'Microphone blocked. Click the icon in the address bar (or Safari → Settings → Websites → Microphone) and allow it for this site, then reload.':'Microphone blocked. Allow it for this site in Settings → Safari → Microphone.';stop()}finish()};
   rec.onend=()=>{if(!done)finish()};
   const t0=Date.now();const tick=setInterval(()=>{const now=Date.now();
-    if(now-t0>maxMs)finish();else if((final||interim)&&now-lastHeard>1600)finish();else if(!final&&!interim&&now-t0>6000)finish()},200);
+    if(now-t0>maxMs)finish();else if((final||interim)&&now-lastHeard>quiet())finish();else if(!final&&!interim&&now-t0>6000)finish()},200);
   try{rec.start();$('#mic').classList.add('on');$('#heard').textContent='Your line…';beep()}catch(e){finish()}
 })}
 function pop(g){const p=$('#pop');p.textContent=g[0]+(streak>2?' ×'+streak:'');p.style.color=getComputedStyle(document.querySelector('.grade.'+g[1])||document.body).color;
@@ -339,6 +342,7 @@ async function run(){
     const it=S[st.idx];mark();
     if(isMine(it)){
       const exp=lineText(it);await wait(250);if(my!==token)return;
+      listen.beats=it.segs.filter(s=>s.p!==undefined&&/beat|pause/i.test(s.p)&&it.segs.indexOf(s)>0).length;
       const heard=await listen(exp);if(my!==token)return;
       const r=score(exp,heard),g=grade(r.s);
       results[st.idx]={s:r.s,g,html:diffHtml(exp,r.hit)};
