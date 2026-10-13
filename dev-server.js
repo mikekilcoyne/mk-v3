@@ -10,6 +10,10 @@
   2. Accepts POST /__notes and appends to notes/design-notes.json, which is
      what Claude reads to action the notes.
 
+  3. Serves /api/houston (the /houston trip page's shared state) from the
+     same logic as the Netlify Function, backed by notes/houston-state.json
+     instead of Netlify Blobs.
+
   Run it via `node dev-server.js` (or the mk-site launch config).
 */
 
@@ -63,8 +67,37 @@ function collect(req) {
     });
 }
 
+/* A file-backed stand-in for a Netlify Blobs store: just the two calls
+   houston-core uses, with the same etag / onlyIfMatch semantics. */
+const HOUSTON_FILE = path.join(ROOT, 'notes', 'houston-state.json');
+const houstonStore = {
+    async getWithMetadata() {
+        try {
+            const raw = fs.readFileSync(HOUSTON_FILE, 'utf8');
+            return { data: JSON.parse(raw), etag: String(fs.statSync(HOUSTON_FILE).mtimeMs) + raw.length };
+        } catch { return null; }
+    },
+    async setJSON(key, data, opts = {}) {
+        const cur = await this.getWithMetadata();
+        if (opts.onlyIfNew && cur) return { modified: false };
+        if (opts.onlyIfMatch && (!cur || cur.etag !== opts.onlyIfMatch)) return { modified: false };
+        fs.mkdirSync(path.dirname(HOUSTON_FILE), { recursive: true });
+        fs.writeFileSync(HOUSTON_FILE, JSON.stringify(data));
+        return { modified: true };
+    }
+};
+let houstonCore = null;
+
 const server = http.createServer(async (req, res) => {
     const url = new URL(req.url, `http://localhost:${PORT}`);
+
+    /* ---- /houston shared state (mirrors the Netlify Function) ---- */
+    if (url.pathname === '/api/houston') {
+        houstonCore = houstonCore || await import('./netlify/lib/houston-core.mjs');
+        const body = req.method === 'POST' ? await collect(req) : undefined;
+        const out = await houstonCore.handle(new Request(url, { method: req.method, body }), houstonStore);
+        return send(res, out.status, TYPES['.json'], await out.text());
+    }
 
     /* ---- notes API ---- */
     if (url.pathname === '/__notes') {
