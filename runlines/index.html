@@ -60,6 +60,10 @@ header{padding:calc(12px + env(safe-area-inset-top,0px)) 16px 10px;border-bottom
 .chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
 .chips button{flex:none;font:700 12px var(--ui);text-transform:uppercase;letter-spacing:2px;border:1px solid var(--line);background:var(--page);color:var(--fg);border-radius:4px;padding:10px 12px;cursor:pointer}
 .chips button.on{border-color:var(--me);color:var(--me)}
+.runbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.runbtn,.scenesel select{font:700 12px var(--ui);text-transform:uppercase;letter-spacing:2px;border:1px solid var(--line);background:var(--page);color:var(--fg);border-radius:4px;padding:10px 12px;min-height:42px;cursor:pointer}
+.scenesel{display:flex;align-items:center;gap:8px}
+.runbtn.on,.scenesel select.on{border-color:var(--me);color:var(--me)}
 details summary{cursor:pointer;list-style:none}
 details summary::-webkit-details-marker{display:none}
 .setgrid{display:flex;flex-wrap:wrap;gap:14px 22px;padding:10px 0 4px;align-items:center;font-size:14px}
@@ -143,7 +147,7 @@ footer{position:fixed;left:0;right:0;bottom:0;background:rgba(11,11,12,.94);back
 <div id="app" hidden>
 <header>
   <div class="row">
-    <div class="title">Run Lines<small>Unwritten Rules · v13 · You talk, it listens</small></div>
+    <div class="title">Run Lines<small>Unwritten Rules · v14 · You talk, it listens</small></div>
     <div class="seg" role="group" aria-label="Your role">
       <button class="r-k" data-role="KILCOYNE">Kilcoyne</button>
       <button class="r-s" data-role="STAKES">Stakes</button>
@@ -162,7 +166,7 @@ footer{position:fixed;left:0;right:0;bottom:0;background:rgba(11,11,12,.94);back
       <button data-mode="show">Full</button>
     </div>
   </div>
-  <div class="chips" id="chips"></div>
+  <div class="runbar"><button class="runbtn" id="b-full">Full run-through</button><label class="scenesel"><span class="lbl">Scene selector</span><select id="scene-sel" aria-label="Scene selector"></select></label></div>
   <div class="board">
     <div class="stat"><b id="s-acc">—</b><span>Accuracy</span></div>
     <div class="stat streak"><b id="s-streak">0</b><span>Streak</span></div>
@@ -224,11 +228,11 @@ const VERS=Array.isArray(P)?[{id:'rev3',label:'Rev. 3',S:P.map((it,i)=>CLIPS.inc
 let VER=ls.get('rl-ver',VERS[VERS.length-1].id);if(!VERS.find(v=>v.id===VER))VER=VERS[VERS.length-1].id;
 const S=VERS.find(v=>v.id===VER).S;
 const SK=VER==='rev3'?'rl-stats-v11':'rl-stats-'+VER;
-const st=Object.assign({role:'KILCOYNE',loop:true,mode:'hide',back:true,vo:true,rate:1.05,vs:'',vk:'',idx:-1},ls.get('rl-set',{}));
+const st=Object.assign({run:'full',role:'KILCOYNE',loop:true,mode:'hide',back:true,vo:true,rate:1.05,vs:'',vk:'',idx:-1},ls.get('rl-set',{}));
 const stats=ls.get(SK,{});            // per line index: {n, sum}
 let streak=0,best=ls.get('rl-best',0),rep=1,playing=false,token=0,repHits=0,repTotal=0;
 const results={};                              // idx -> {score, html}
-const save=()=>ls.set('rl-set',{role:st.role,loop:st.loop,mode:st.mode,back:st.back,vo:st.vo,rate:st.rate,vs:st.vs,vk:st.vk,vkSet:st.vkSet,idx:st.idx});
+const save=()=>ls.set('rl-set',{run:st.run,role:st.role,loop:st.loop,mode:st.mode,back:st.back,vo:st.vo,rate:st.rate,vs:st.vs,vk:st.vk,vkSet:st.vkSet,idx:st.idx});
 const letters=t=>t.replace(/[A-Za-z0-9’']+/g,w=>w[0]);
 const esc=t=>t.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const scenes=[];S.forEach((it,i)=>{if(it.t==='scene')scenes.push(i)});
@@ -237,7 +241,10 @@ let rule='';const ruleAt=S.map(it=>{const m=(it.text||'').match(/RULE #(\d)/);if
 function sceneRange(i){let a=0,b=S.length-1;for(const s of scenes){if(s<=i)a=s;else{b=s-1;break}}
   let x=a;while(x<b&&S[x].t!=='line')x++;let y=b;while(y>x&&S[y].t!=='line')y--;return[x,y]}
 if(!S[st.idx])st.idx=-1;
-if(st.idx<0)st.idx=sceneRange(scenes[1])[0];   // default: first line of the Arcade scene
+const fullStart=sceneRange(scenes[1]!==undefined?scenes[1]:0)[0];
+const fullEnd=(()=>{let y=S.length-1;while(y>0&&S[y].t!=='line')y--;return y})();
+const range=i=>st.run==='full'&&i>=fullStart?[fullStart,fullEnd]:sceneRange(i);   // full run-through starts after the cold-open V.O.
+if(st.idx<0)st.idx=fullStart;   // default: first line of the Arcade scene
 const isMine=it=>it&&it.t==='line'&&it.who===st.role;
 const lineText=it=>it.segs.filter(s=>s.s).map(s=>s.s).join(' ');
 // Rough read time: ~2.7 words/sec conversational, plus ~0.9s for each written (beat)/(pause) inside the line.
@@ -288,7 +295,7 @@ function render(){
     const hid=mine&&!r&&st.mode==='hide';
     return `<div class="it line${mine?' mine':''}${hid?' hid':''}${it.chg?' chg-'+it.chg:''}" data-i="${i}"><div class="who">${esc(it.who)}${it.ext?` <span class="ext">(${it.ext})</span>`:''}${tag}</div>${body}${txt}${bar(i,took[i]||0)}</div>`;
   }).join('');
-  $('#chips').innerHTML=scenes.map((s,k)=>`<button data-jump="${s}">${sceneNames[k]}</button>`).join('');
+  $('#scene-sel').innerHTML=scenes.map((s,k)=>`<option value="${s}">${esc(sceneNames[k])}</option>`).join('');
   board();mark(false);trouble();
 }
 function board(){
@@ -301,10 +308,10 @@ function mark(scroll=true){
   if(el){el.classList.add('cur');if(scroll){const m=$('#main'),r=el.getBoundingClientRect(),mr=m.getBoundingClientRect();
     if(r.top<mr.top+30||r.bottom>mr.bottom-200)m.scrollTo({top:m.scrollTop+r.top-mr.top-mr.height*.28,behavior:'smooth'})}}
   let sc=0;scenes.forEach((s,k)=>{if(st.idx>=s)sc=k});
-  document.querySelectorAll('#chips button').forEach((b,k)=>b.classList.toggle('on',k===sc));
-  const mine=S.map((it,i)=>isMine(it)?i:-1).filter(i=>i>=0),[a,b]=sceneRange(st.idx);
+  $('#scene-sel').value=String(scenes[sc]);$('#b-full').classList.toggle('on',st.run==='full');$('#scene-sel').classList.toggle('on',st.run!=='full');
+  const mine=S.map((it,i)=>isMine(it)?i:-1).filter(i=>i>=0),[a,b]=range(st.idx);
   const inScene=mine.filter(i=>i>=a&&i<=b),done=inScene.filter(i=>i<st.idx).length;
-  $('#where').innerHTML=`<b>${sceneNames[sc]}</b>${ruleAt[st.idx]?' · '+ruleAt[st.idx]:''}`;
+  $('#where').innerHTML=`${st.run==='full'&&st.idx>=fullStart?'Full run · ':''}<b>${sceneNames[sc]}</b>${ruleAt[st.idx]?' · '+ruleAt[st.idx]:''}`;
   $('#count').textContent=`Line ${Math.min(done+1,inScene.length)}/${inScene.length}`;
   $('#b-play').textContent=playing?'❚❚ Pause':'▶ Play';
   save();
@@ -395,7 +402,7 @@ async function run(){
       timeStop(true);mark(false);{const el=document.querySelector(`.tbar[data-t="${st.idx}"]`);if(el)el.outerHTML=bar(st.idx,took[st.idx])}
       await wait(200);if(my!==token)return;
     }
-    const[a,b]=sceneRange(st.idx);
+    const[a,b]=range(st.idx);
     if(st.idx>=b){
       if(!st.loop){playing=false;mark();wake(false);$('#heard').textContent=`Scene done. ${repTotal?Math.round(100*repHits/repTotal)+'% this rep.':''}`;return}
       await wait(1200);if(my!==token)return;
@@ -410,9 +417,9 @@ function stop(){token++;playing=false;timeStop();if(synth)synth.cancel();try{cur
 function go(i){stop();st.idx=i;render();mark()}
 $('#b-play').onclick=()=>{if(playing){stop();mark();return}
   if(synth){synth.cancel();const u=new SpeechSynthesisUtterance(' ');u.volume=0;synth.speak(u)}beep(660,1);try{ctx().resume();if(st.vk==='__real')preloadClips()}catch(e){}
-  if(S[st.idx].t!=='line'){const[a]=sceneRange(st.idx);st.idx=a}
+  if(S[st.idx].t!=='line'){const[a]=range(st.idx);st.idx=a}
   playing=true;wake(true);run()};
-$('#b-skip').onclick=()=>{const was=playing;stop();const[,b]=sceneRange(st.idx);if(st.idx<b){st.idx++;while(st.idx<b&&S[st.idx].t!=='line')st.idx++}mark();if(was){playing=true;wake(true);run()}};
+$('#b-skip').onclick=()=>{const was=playing;stop();const[,b]=range(st.idx);if(st.idx<b){st.idx++;while(st.idx<b&&S[st.idx].t!=='line')st.idx++}mark();if(was){playing=true;wake(true);run()}};
 $('#b-back').onclick=()=>{const was=playing;let i=st.idx-1;while(i>0&&S[i].t!=='line')i--;go(Math.max(i,0));if(was){playing=true;wake(true);run()}};
 // Keyboard: Space play/pause, ← back a line (keeps playing), → next line. Buttons drop focus so Space never double-fires.
 document.addEventListener('click',e=>{const b=e.target.closest('button');if(b)b.blur()});
@@ -421,7 +428,9 @@ document.addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey||e.tar
   else if(e.code==='ArrowLeft'){e.preventDefault();$('#b-back').click()}
   else if(e.code==='ArrowRight'){e.preventDefault();$('#b-skip').click()}});
 $('#page').onclick=e=>{const el=e.target.closest('.it');if(el){const i=+el.dataset.i;go(S[i].t==='line'?i:sceneRange(i)[0])}};
-$('#chips').onclick=e=>{const b=e.target.closest('[data-jump]');if(b){rep=1;repHits=0;repTotal=0;for(const k in results)delete results[k];go(sceneRange(+b.dataset.jump)[0])}};
+const resetRep=()=>{rep=1;repHits=0;repTotal=0;for(const k in results)delete results[k]};
+$('#b-full').onclick=()=>{st.run='full';resetRep();go(fullStart)};
+$('#scene-sel').onchange=e=>{st.run='scene';resetRep();go(sceneRange(+e.target.value)[0])};
 $('#trouble').onclick=e=>{const li=e.target.closest('[data-go]');if(li)go(+li.dataset.go)};
 document.querySelectorAll('[data-role]').forEach(b=>b.onclick=()=>{stop();st.role=b.dataset.role;for(const k in results)delete results[k];streak=0;render()});
 $('#o-loop').onchange=e=>{st.loop=e.target.checked;save()};
