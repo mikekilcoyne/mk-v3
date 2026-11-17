@@ -95,7 +95,8 @@ html,body{height:100%;background:#0b0610;overflow:hidden;color:var(--cream);font
 @keyframes pointL{0%,100%{transform:scaleX(-1) translateX(0) rotate(-2deg)}50%{transform:scaleX(-1) translateX(3px) rotate(0deg)}}
 .navbtn:hover{opacity:1}
 .navbtn[disabled]{opacity:0;pointer-events:none}
-#hint{position:fixed;right:18px;bottom:12px;z-index:100;font:600 13px/1 Bricolage;color:rgba(255,246,228,.55);letter-spacing:.06em}
+#hint{position:fixed;right:18px;bottom:12px;z-index:100;font:600 15px/1 Bricolage;color:rgba(255,246,228,.8);letter-spacing:.04em;text-shadow:1px 1px 0 rgba(20,10,28,.6)}
+#hint b{color:var(--yellow);font-weight:700}
 #pdfLink{position:fixed;left:18px;bottom:10px;z-index:100;font:600 13px/1 Bricolage;color:rgba(255,246,228,.6);text-decoration:none;letter-spacing:.06em}
 #pdfLink:hover{color:var(--yellow)}
 
@@ -537,7 +538,7 @@ body.print #s8 .cap{bottom:120px}
 
 <div id="chrome"><button class="navbtn" id="prev" aria-label="Previous slide"><svg viewBox="0 0 100 70" aria-hidden="true"><defs><filter id="wobL"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="4"/></filter></defs><g filter="url(#wobL)" stroke-linejoin="round"><path transform="translate(5 5)" d="M8 26 L56 24 L54 8 L90 35 L54 62 L56 46 L8 44 Z" fill="#ff6fb0" stroke="#140a1c" stroke-width="5"/><path d="M8 26 L56 24 L54 8 L90 35 L54 62 L56 46 L8 44 Z" fill="#ffc83a" stroke="#140a1c" stroke-width="5"/></g></svg></button><div id="dots"></div><button class="navbtn" id="next" aria-label="Next slide"><svg viewBox="0 0 100 70" aria-hidden="true"><defs><filter id="wobR"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="8"/><feDisplacementMap in="SourceGraphic" scale="4"/></filter></defs><g filter="url(#wobR)" stroke-linejoin="round"><path transform="translate(5 5)" d="M8 26 L56 24 L54 8 L90 35 L54 62 L56 46 L8 44 Z" fill="#ff6fb0" stroke="#140a1c" stroke-width="5"/><path d="M8 26 L56 24 L54 8 L90 35 L54 62 L56 46 L8 44 Z" fill="#ffc83a" stroke="#140a1c" stroke-width="5"/></g></svg></button></div>
 <a id="pdfLink" href="HINT_Deck.pdf" target="_blank">PDF version</a>
-<div id="hint">← → to flip</div>
+<div id="hint" aria-live="polite"></div>
 
 <script>
 (function(){
@@ -716,7 +717,16 @@ function go(i){
   leave(cur); slides.forEach((s,k)=>s.classList.toggle('active',k===i));
   [...dots.children].forEach((d,k)=>d.classList.toggle('on',k===i));
   document.getElementById('prev').disabled = i===0; document.getElementById('next').disabled = i===slides.length-1;
-  cur = i; if (!PRINT) history.replaceState(null,'','#'+(i+1)); enter(i);
+  cur = i; if (!PRINT) history.replaceState(null,'','#'+(i+1)); enter(i); timeLeft(i);
+}
+/* rough time left: seconds per slide (15s reading, plus the song and the rehearsal video) */
+const SECS = {s0:10,s7:55,s8:100,s9:5}, NOTE = {s7:' · song is 40 sec, skip anytime', s8:' · video is 90 sec'};
+function fmtLeft(t){ if (t>=60){ const h=Math.round(t/30)/2, w=Math.floor(h); return '~'+(w||'')+(h%1?'½':'')+' min'; } return '~'+Math.max(5,Math.round(t/5)*5)+' sec'; }
+function timeLeft(i){
+  const el=document.getElementById('hint'); if(!el) return;
+  if (i>=slides.length-1){ el.innerHTML='That\'s a wrap'; return; }
+  let t=0; for(let k=i;k<slides.length;k++) t += SECS[slides[k].id] ?? 15;
+  el.innerHTML='Rough time left: <b>'+fmtLeft(t)+'</b>'+(NOTE[slides[i].id]||'');
 }
 window.deckGo = go;
 document.getElementById('prev').onclick=()=>go(cur-1);
