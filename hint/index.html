@@ -73,10 +73,13 @@ html,body{height:100%;background:#0b0610;overflow:hidden;color:var(--cream);font
 .body b{font-weight:700;color:var(--yellow)}
 
 /* Polaroid frame (from a real scan) */
-.cast{position:absolute;aspect-ratio:720/878;container-type:inline-size;transform:rotate(var(--rot,0deg));filter:drop-shadow(10px 12px 0 rgba(20,10,28,.55))}
-.cast>img{position:absolute;left:4.7%;top:4.3%;width:90.2%;height:74.2%;object-fit:cover;filter:saturate(1.05) contrast(1.03)}
-.cast::after{content:"";position:absolute;inset:0;background:url(assets/polaroid.webp) center/100% 100% no-repeat;pointer-events:none}
-.cast .cap{position:absolute;z-index:2;left:7%;right:7%;top:80.5%;height:15%;display:flex;align-items:center;justify-content:center;
+.cast{position:absolute;aspect-ratio:6574/8000;container-type:inline-size;transform:rotate(var(--rot,0deg));filter:drop-shadow(10px 12px 0 rgba(20,10,28,.55))}
+.cast>img{position:absolute;left:4.75%;top:4.5%;width:89.85%;height:75.5%;object-fit:cover;filter:saturate(1.05) contrast(1.03)}
+.cast.wide{aspect-ratio:8706/8000}
+.cast.wide>img{left:3.55%;width:92.4%}
+.cast.wide::after{background-image:url(assets/polaroid_wide.webp)}
+.cast::after{content:"";position:absolute;inset:0;background:url(assets/polaroid_real.webp) center/100% 100% no-repeat;pointer-events:none}
+.cast .cap{position:absolute;z-index:2;left:7%;right:7%;top:81.5%;height:15%;display:flex;align-items:center;justify-content:center;
   font-family:var(--hand),cursive;font-size:10.5cqw;line-height:1;color:#1f2a5c;transform:rotate(var(--tilt,-2.5deg));white-space:nowrap}
 .slide.active .cast .cap{animation:write .9s var(--wd,.5s) steps(14) both}
 @keyframes write{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
@@ -347,8 +350,8 @@ body.print #s8 .cap{bottom:120px}
     <div class="h2sub credit-sub floaty">…and a whole city of strangers.</div>
     <p class="body">We just moved to Houston. Every episode, we invite someone <b>new (or old) to town</b> over. We play games, eat weird snacks, swap a few secrets, then head out to meet neighbors in the community. By the credits, we've made a new friend, and started a new <b>micro&#8209;community</b>.</p>
 
-    <div class="cast" style="left:1160px;top:40px;width:520px;--rot:3deg"><img src="assets/still_66.jpg" style="object-position:85% 50%" alt="Michael and Lee on the couch"><div class="cap">Ep. 0 w/ Lee</div></div>
-    <div class="cast" style="left:1520px;top:655px;width:310px;--rot:-6deg;--wd:1.1s"><img src="assets/still_8.5.jpg" style="object-position:72% 50%" alt="Lee at the front door"><div class="cap" style="--tilt:3deg">knock knock!</div></div>
+    <div class="cast wide" style="left:1150px;top:46px;width:610px;--rot:3deg"><img src="assets/still_66.jpg" style="object-position:50% 60%" alt="Michael and Lee on the couch"><div class="cap">Ep. 0 w/ Lee</div></div>
+    <div class="cast" style="left:1520px;top:655px;width:310px;--rot:-6deg;--wd:1.1s"><img src="assets/still_door.jpg" alt="Lee at the front door"><div class="cap" style="--tilt:3deg">knock knock!</div></div>
   </div>
 </section>
 
