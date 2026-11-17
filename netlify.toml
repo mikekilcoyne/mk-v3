@@ -6,3 +6,12 @@
   for = "/admin/*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
+
+# Password gate for the Hey! I'm New in Town deck (see netlify/edge-functions/hint-gate.js)
+[[edge_functions]]
+  path = "/hint"
+  function = "hint-gate"
+
+[[edge_functions]]
+  path = "/hint/*"
+  function = "hint-gate"

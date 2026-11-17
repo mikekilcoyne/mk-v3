@@ -22,7 +22,7 @@
 @font-face{font-family:"Credit";src:url(assets/fonts/DejaVuSerif-Bold.woff);font-weight:700}
 @font-face{font-family:"Credit";src:url(assets/fonts/DejaVuSerif-BoldItalic.woff);font-weight:700;font-style:italic}
 
-:root{ --hand:"Covered By Your Grace"; 
+:root{ --hand:"Covered By Your Grace"; --tan:#f2e2c2; 
   --ink:#140a1c; --cream:#fff6e4; --yellow:#ffc83a; --magenta:#b42cb0; --purple:#5b2a9e;
   --deep:#24103a; --teal:#17b3a6; --sky:#4fc0ee; --tomato:#e5472d; --pink:#ff6fb0; --mint:#7ff0dc;
 }
@@ -61,11 +61,11 @@ html,body{height:100%;background:#0b0610;overflow:hidden;color:var(--cream);font
 .shout{font-family:"Inter Display";font-weight:900;text-transform:uppercase;line-height:.9;letter-spacing:-.01em}
 .pop3d{text-shadow:4px 4px 0 var(--s1,#140a1c),8px 8px 0 var(--s2,#b42cb0)}
 /* Lee Cloud credit style */
-.credit{font-family:Credit;font-weight:700;font-variant:small-caps;color:#f6f4ea;line-height:1.05;
+.credit{font-family:Credit;font-weight:700;font-variant:small-caps;color:var(--tan);line-height:1.05;
   text-shadow:-3px -3px 0 #1a1022,3px -3px 0 #1a1022,-3px 3px 0 #1a1022,3px 3px 0 #1a1022,0 -3px 0 #1a1022,0 3px 0 #1a1022,-3px 0 0 #1a1022,3px 0 0 #1a1022,9px 10px 10px rgba(10,0,20,.55)}
 .credit .ch{display:inline-block;animation:hop 2.8s ease-in-out infinite alternate;animation-delay:calc(var(--i) * -0.37s);transform-origin:50% 80%}
 @keyframes hop{0%{transform:translateY(var(--y0,0)) rotate(var(--t0,0deg))}100%{transform:translateY(var(--y1,-6px)) rotate(var(--t1,2deg))}}
-.credit-sub{font-family:Credit;font-style:italic;font-weight:700;color:#f6f4ea;
+.credit-sub{font-family:Credit;font-style:italic;font-weight:700;color:var(--tan);
   text-shadow:-2px -2px 0 #1a1022,2px -2px 0 #1a1022,-2px 2px 0 #1a1022,2px 2px 0 #1a1022,5px 6px 6px rgba(10,0,20,.5)}
 .floaty{animation:floaty 5s ease-in-out infinite alternate}
 @keyframes floaty{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-14px) rotate(1deg)}}
@@ -87,9 +87,14 @@ html,body{height:100%;background:#0b0610;overflow:hidden;color:var(--cream);font
 #dots{display:flex;gap:9px;pointer-events:auto}
 #dots button{width:11px;height:11px;border-radius:50%;border:2px solid rgba(255,246,228,.8);background:transparent;cursor:pointer;padding:0}
 #dots button.on{background:var(--yellow);border-color:var(--yellow);transform:scale(1.25)}
-.navbtn{position:fixed;top:50%;transform:translateY(-50%);z-index:100;width:54px;height:54px;border-radius:50%;border:3px solid var(--ink);background:var(--yellow);color:var(--ink);font:900 26px/1 Bricolage;cursor:pointer;box-shadow:4px 4px 0 var(--ink);opacity:.0;transition:opacity .25s}
-body:hover .navbtn,.navbtn:focus{opacity:.92}
-#prev{left:18px} #next{right:18px}
+.navbtn{position:fixed;top:50%;z-index:100;width:104px;height:70px;padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(3px 4px 0 rgba(20,10,28,.55));transition:transform .15s}
+.navbtn svg{width:100%;height:100%;display:block;overflow:visible}
+#next{right:14px;transform:translateY(-50%);animation:pointR 1.4s ease-in-out infinite}
+#prev{left:14px;transform:translateY(-50%) scaleX(-1);animation:pointL 1.4s ease-in-out infinite}
+@keyframes pointR{0%,100%{transform:translateY(-50%) translateX(0) rotate(-4deg)}50%{transform:translateY(-50%) translateX(6px) rotate(2deg)}}
+@keyframes pointL{0%,100%{transform:translateY(-50%) scaleX(-1) translateX(0) rotate(-4deg)}50%{transform:translateY(-50%) scaleX(-1) translateX(6px) rotate(2deg)}}
+.navbtn:hover{animation-duration:.5s}
+.navbtn[disabled]{opacity:0;pointer-events:none}
 #hint{position:fixed;right:18px;bottom:12px;z-index:100;font:600 13px/1 Bricolage;color:rgba(255,246,228,.55);letter-spacing:.06em}
 #pdfLink{position:fixed;left:18px;bottom:10px;z-index:100;font:600 13px/1 Bricolage;color:rgba(255,246,228,.6);text-decoration:none;letter-spacing:.06em}
 #pdfLink:hover{color:var(--yellow)}
@@ -143,7 +148,7 @@ body.print #s0 .cta{display:none}
 #s3 .studio{background:radial-gradient(ellipse at 25% 30%,#4a2275 0%,#2c1247 55%,#1a0a2b 100%)}
 #s3 .label{position:absolute;left:110px;top:90px;color:var(--yellow)}
 #s3 h2{position:absolute;left:104px;top:132px;width:1040px;font-size:72px;--s2:#b42cb0}
-#s3 .stats{position:absolute;left:110px;top:398px;width:920px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px}
+#s3 .stats{position:absolute;left:110px;top:398px;width:520px;display:grid;grid-template-columns:1fr;gap:22px}
 .stat{background:rgba(255,246,228,.07);border:3px solid rgba(255,246,228,.25);border-radius:18px;padding:22px 20px 20px}
 .stat .n{font:900 70px/1 "Inter Display";color:var(--yellow);letter-spacing:-.02em}
 .stat .n small{font-size:34px}
@@ -188,12 +193,12 @@ body.print #s0 .cta{display:none}
 #sEp h2{position:absolute;left:100px;top:120px;font-size:110px}
 #sEp .h2sub{position:absolute;left:150px;top:222px;font-size:34px}
 #sEp .path{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.space{position:absolute;width:310px;height:260px;background:var(--cream);color:var(--ink);border:5px solid var(--ink);border-radius:22px;box-shadow:8px 9px 0 var(--ink);padding:20px 22px 18px 22px;transform:rotate(var(--rot,0deg))}
+.space{position:absolute;width:310px;height:210px;background:var(--cream);color:var(--ink);border:5px solid var(--ink);border-radius:22px;box-shadow:8px 9px 0 var(--ink);padding:20px 22px 18px 22px;transform:rotate(var(--rot,0deg))}
 .space:before{content:"";position:absolute;left:0;right:0;top:0;height:16px;background:var(--c);border-radius:16px 16px 0 0;border-bottom:4px solid var(--ink)}
 .space .num{position:absolute;right:-20px;top:-24px;width:62px;height:62px;border-radius:14px;background:var(--c);border:4px solid var(--ink);box-shadow:4px 4px 0 var(--ink);font:900 34px/54px "Inter Display";text-align:center;transform:rotate(8deg)}
-.space .st{margin-top:14px;font:800 31px/1.02 Bricolage;letter-spacing:-.01em;text-transform:uppercase}
+.space .st{margin-top:18px;font:800 34px/1.02 Bricolage;letter-spacing:-.01em;text-transform:uppercase}
 .space .sd{margin-top:8px;font:500 19px/1.25 Bricolage;color:#5a4d68}
-.space .sq{position:absolute;left:20px;right:16px;bottom:14px;font-family:var(--hand),cursive;font-size:25px;line-height:1.08;color:#1f2a5c}
+.space .sq{position:absolute;left:20px;right:16px;bottom:16px;font-family:var(--hand),cursive;font-size:29px;line-height:1.08;color:#1f2a5c}
 /* =========== S5 GUESTS =========== */
 #s5 .studio{background:radial-gradient(ellipse at 50% 30%,#8fdcff 0%,#4fc0ee 45%,#2188c4 100%)}
 #s5 .label{position:absolute;left:110px;top:70px;color:var(--ink)}
@@ -223,10 +228,10 @@ body.print #s0 .cta{display:none}
 #s6 .label{position:absolute;left:110px;top:100px;color:var(--yellow)}
 #s6 h2{position:absolute;left:104px;top:150px;font-size:110px}
 #s6 .h2sub{position:absolute;left:150px;top:265px;font-size:36px}
-#s6 .cards{position:absolute;left:110px;right:110px;top:370px;display:grid;grid-template-columns:repeat(4,1fr);gap:30px}
-.card{position:relative;height:520px;background:var(--cream);color:var(--ink);border:5px solid var(--ink);border-radius:18px;box-shadow:10px 11px 0 var(--ink);padding:34px 30px;transform:rotate(var(--rot,0deg))}
+#s6 .cards{position:absolute;left:110px;right:110px;top:400px;display:grid;grid-template-columns:repeat(4,1fr);gap:30px}
+.card{position:relative;height:440px;background:var(--cream);color:var(--ink);border:5px solid var(--ink);border-radius:18px;box-shadow:10px 11px 0 var(--ink);padding:34px 30px;transform:rotate(var(--rot,0deg))}
 .card .cat{display:inline-block;font:900 18px/1 "Inter Display";letter-spacing:.14em;text-transform:uppercase;background:var(--c);color:#fff;padding:9px 12px;border-radius:8px;border:3px solid var(--ink)}
-.card .brand{font:900 54px/.95 "Inter Display";text-transform:uppercase;margin-top:26px;letter-spacing:-.01em}
+.card .brand{font:900 60px/.95 "Inter Display";text-transform:uppercase;margin-top:26px;letter-spacing:-.01em}
 .card .ex{font:600 22px/1.35 Bricolage;color:#5a4d68;margin-top:14px}
 .card .seg{position:absolute;left:30px;right:30px;bottom:30px;border-top:4px dashed var(--ink);padding-top:20px}
 .card .seg small{display:block;font:700 15px/1 Bricolage;letter-spacing:.2em;text-transform:uppercase;color:#7b6e8c}
@@ -362,9 +367,7 @@ body.print #s8 .cap{bottom:120px}
     <div class="label">Why?</div>
     <h2 class="shout pop3d">People need community, but don't know how to find it.</h2>
     <div class="stats">
-      <div class="stat"><div class="n">1 in 2</div><div class="t">U.S. adults say they've experienced loneliness</div></div>
-      <div class="stat"><div class="n">20<small>min</small></div><div class="t">a day with friends in person in 2020, down from 60</div></div>
-      <div class="stat"><div class="n">15<small> cigs</small></div><div class="t">Being disconnected is as risky as smoking 15 cigarettes a day</div></div>
+      <div class="stat"><div class="n" style="font-size:110px">1 in 2</div><div class="t" style="font-size:28px">U.S. adults say they've experienced loneliness.</div></div>
     </div>
     <div class="src">Source: U.S. Surgeon General, "Our Epidemic of Loneliness and Isolation" (2023)</div>
 
@@ -401,7 +404,6 @@ body.print #s8 .cap{bottom:120px}
     <div class="meets credit-sub floaty">meets</div>
     <div class="b shout pop3d">Blue's<br>Clues</div>
     <div class="chips"><span class="chip">Fun</span><span class="chip">Chill</span><span class="chip">Effervescent</span></div>
-    <p class="body">Real secrets on the couch, told like a kids' show: talk to camera, play the game, find the clue. Nobody's performing, and everybody's playing.</p>
     <div class="cast" style="left:1070px;top:70px;width:360px;--rot:-4deg"><img src="assets/still_26.jpg" alt="Giant Connect Four"><div class="cap">game time!!</div></div>
     <div class="cast" style="left:1465px;top:105px;width:360px;--rot:5deg;--wd:.8s"><img src="assets/still_33.jpg" alt="Blind taste test"><div class="cap" style="--tilt:2deg">blind taste test</div></div>
     <div class="cast" style="left:1095px;top:540px;width:360px;--rot:3deg;--wd:1.1s"><img src="assets/still_82.jpg" style="object-position:60% 40%" alt="Dance break"><div class="cap" style="--tilt:-4deg">dance break ★</div></div>
@@ -417,16 +419,16 @@ body.print #s8 .cap{bottom:120px}
   <div class="content">
     <div class="label">One Episode</div>
     <h2 class="credit" data-hop>Start to Finish</h2>
-    <div class="space" style="left:110px;top:330px;--c:#ffc83a;--rot:-2deg"><div class="num">1</div><div class="st">Cold open</div><div class="sd">Michael, to camera.</div><div class="sq">Hi, I'm Michael Kilcoyne…</div></div>
-    <div class="space" style="left:455px;top:330px;--c:#ff6fb0;--rot:1.5deg"><div class="num">2</div><div class="st">Lee knocks</div><div class="sd">Lee comes in.</div><div class="sq">She's new in town too!</div></div>
-    <div class="space" style="left:800px;top:330px;--c:#7ff0dc;--rot:-1deg"><div class="num">3</div><div class="st">Guest knocks</div><div class="sd">Special guest star comes in.</div><div class="sq">knock knock!</div></div>
-    <div class="space" style="left:1145px;top:330px;--c:#4fc0ee;--rot:2deg"><div class="num">4</div><div class="st">Rapid-fire</div><div class="sd">Three quick questions.</div><div class="sq">How'd you get here? Secret spot? Fave community event?</div></div>
-    <div class="space" style="left:1490px;top:330px;--c:#ffc83a;--rot:-1.5deg"><div class="num">5</div><div class="st">Game time</div><div class="sd">Get into the flow, learn about each other.</div><div class="sq">Connect Four, anyone?</div></div>
-    <div class="space" style="left:110px;top:660px;--c:#e5472d;--rot:-2deg"><div class="num">6</div><div class="st">Blind taste test</div><div class="sd">Brought to you by…</div><div class="sq">Shipley Do-Nuts?</div></div>
-    <div class="space" style="left:455px;top:660px;--c:#b42cb0;--rot:1.5deg"><div class="num">7</div><div class="st">Go deep</div><div class="sd">On the couch.</div><div class="sq">Tell us something that might make us cry.</div></div>
-    <div class="space" style="left:800px;top:660px;--c:#ff6fb0;--rot:-1deg"><div class="num">8</div><div class="st">Call our moms</div><div class="sd">On speaker.</div><div class="sq">Hi Mom, you're on TV!</div></div>
-    <div class="space" style="left:1145px;top:660px;--c:#17b3a6;--rot:2deg"><div class="num">9</div><div class="st">Talk to strangers</div><div class="sd">Craigslist roulette and neighbors.</div><div class="sq">What's your deal? How can we help?</div></div>
-    <div class="space" style="left:1490px;top:660px;--c:#ffc83a;--rot:-1.5deg"><div class="num">10</div><div class="st">Goodbyes</div><div class="sd">The episode ends on a plan.</div><div class="sq">So… friend date?</div></div>
+    <div class="space" style="left:110px;top:380px;--c:#ffc83a;--rot:-2deg"><div class="num">1</div><div class="st">Cold open</div><div class="sq">Hi, I'm Michael Kilcoyne…</div></div>
+    <div class="space" style="left:455px;top:380px;--c:#ff6fb0;--rot:1.5deg"><div class="num">2</div><div class="st">Lee knocks</div><div class="sq">She's new in town too!</div></div>
+    <div class="space" style="left:800px;top:380px;--c:#7ff0dc;--rot:-1deg"><div class="num">3</div><div class="st">Guest knocks</div><div class="sq">knock knock!</div></div>
+    <div class="space" style="left:1145px;top:380px;--c:#4fc0ee;--rot:2deg"><div class="num">4</div><div class="st">Rapid-fire</div><div class="sq">How'd you get here? Secret spot? Fave community event?</div></div>
+    <div class="space" style="left:1490px;top:380px;--c:#ffc83a;--rot:-1.5deg"><div class="num">5</div><div class="st">Game time</div><div class="sq">Connect Four, anyone?</div></div>
+    <div class="space" style="left:110px;top:680px;--c:#e5472d;--rot:-2deg"><div class="num">6</div><div class="st">Blind taste test</div><div class="sq">Shipley Do-Nuts?</div></div>
+    <div class="space" style="left:455px;top:680px;--c:#b42cb0;--rot:1.5deg"><div class="num">7</div><div class="st">Go deep</div><div class="sq">Tell us something that might make us cry.</div></div>
+    <div class="space" style="left:800px;top:680px;--c:#ff6fb0;--rot:-1deg"><div class="num">8</div><div class="st">Call our moms</div><div class="sq">Hi Mom, you're on TV!</div></div>
+    <div class="space" style="left:1145px;top:680px;--c:#17b3a6;--rot:2deg"><div class="num">9</div><div class="st">Talk to strangers</div><div class="sq">What's your deal? How can we help?</div></div>
+    <div class="space" style="left:1490px;top:680px;--c:#ffc83a;--rot:-1.5deg"><div class="num">10</div><div class="st">Goodbyes</div><div class="sq">So… friend date?</div></div>
     
   </div>
 </section>
@@ -449,7 +451,6 @@ body.print #s8 .cap{bottom:120px}
       <div class="tile" style="--bg:#ffc83a;--rot:1.5deg"><div class="door"><div class="leaf"></div><div class="who"></div><div class="q">?</div><img src="assets/guests/jj-watt.jpg" style="object-position:50% 30%" data-slot alt="JJ Watt"></div><span class="tag">Wish list</span><div class="nm credit">JJ Watt</div><div class="ds credit-sub">Defense Expert</div></div>
       <div class="tile" style="--bg:#b42cb0;--rot:-1deg"><div class="door"><div class="leaf"></div><div class="who"></div><div class="q">?</div><img src="assets/guests/simone-biles.jpg" style="object-position:50% 30%" data-slot alt="Simone Biles"></div><span class="tag">Old to town</span><div class="nm credit">Simone Biles</div><div class="ds credit-sub">Flipping Expert</div></div>
     </div>
-    <div class="foot">Wish list. Nobody here is booked yet except Lee.</div>
   </div>
 </section>
 
@@ -464,10 +465,10 @@ body.print #s8 .cap{bottom:120px}
     <h2 class="credit" data-hop>Who's bringing snacks?</h2>
     <div class="h2sub credit-sub floaty">Partners that live inside the segments, not between them.</div>
     <div class="cards">
-      <div class="card" style="--c:#e5472d;--rot:-1.5deg"><span class="cat">Snacks</span><div class="brand">Shipley Do-Nuts</div><div class="ex">Houston-born since 1936, with dozens of do-nuts and kolaches to taste blind.</div><div class="seg"><small>Lives in</small><b>The blind taste test &amp; eating games</b></div></div>
-      <div class="card" style="--c:#17b3a6;--rot:1deg"><span class="cat">Wellness</span><div class="brand">BetterHelp</div><div class="ex">Because the couch gets real.</div><div class="seg"><small>Lives in</small><b>The deep-talk segments</b></div></div>
-      <div class="card" style="--c:#5b2a9e;--rot:-1deg"><span class="cat">Tourism</span><div class="brand">Visit Houston</div><div class="ex">The city's official tourism brand, from Houston First.</div><div class="seg"><small>Lives in</small><b>The city itself</b></div></div>
-      <div class="card" style="--c:#b42cb0;--rot:1.5deg"><span class="cat">Eats</span><div class="brand">Domino's</div><div class="ex">Pizza on the couch is the universal friendship language.</div><div class="seg"><small>Lives in</small><b>The eats</b></div></div>
+      <div class="card" style="--c:#e5472d;--rot:-1.5deg"><span class="cat">Snacks</span><div class="brand">Shipley Do-Nuts</div><div class="seg"><small>Lives in</small><b>The blind taste test &amp; eating games</b></div></div>
+      <div class="card" style="--c:#17b3a6;--rot:1deg"><span class="cat">Wellness</span><div class="brand">BetterHelp</div><div class="seg"><small>Lives in</small><b>The deep-talk segments</b></div></div>
+      <div class="card" style="--c:#5b2a9e;--rot:-1deg"><span class="cat">Tourism</span><div class="brand">Visit Houston</div><div class="seg"><small>Lives in</small><b>The city itself</b></div></div>
+      <div class="card" style="--c:#b42cb0;--rot:1.5deg"><span class="cat">Eats</span><div class="brand">Domino's</div><div class="seg"><small>Lives in</small><b>The eats</b></div></div>
     </div>
   </div>
 </section>
@@ -480,7 +481,7 @@ body.print #s8 .cap{bottom:120px}
     <div class="hand">I'm New in Town</div>
     <div class="label">The Theme Song</div>
     <div class="meta">Every guest gets their own verse &nbsp;·&nbsp; Ep. 0: Lee Cloud</div>
-    <div class="ctrl live"><button class="btn" id="sing">▶ Sing along</button><button class="btn ghost" id="mute">Sound on</button><button class="btn ghost" id="syncBtn" title="Tap Space at the start of each line">Sync timing</button><button class="btn ghost" id="resetBtn">Reset</button></div>
+    <div class="ctrl live"><button class="btn" id="sing">▶ Sing along</button><button class="btn ghost" id="mute">Sound on</button></div>
     <div class="karaoke live"><div class="line" id="kLine">&nbsp;</div><div class="next" id="kNext">&nbsp;</div></div>
     <div class="sheet">
       <p class="dim">Um… mike check… hello?</p>
@@ -529,8 +530,8 @@ body.print #s8 .cap{bottom:120px}
 <div class="grain"></div><div class="vignette"></div>
 </div></div>
 
-<button class="navbtn" id="prev" aria-label="Previous slide">‹</button>
-<button class="navbtn" id="next" aria-label="Next slide">›</button>
+<button class="navbtn" id="prev" aria-label="Previous slide"><svg viewBox="0 0 96 64" aria-hidden="true"><defs><filter id="wobL"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="3.2"/></filter></defs><g filter="url(#wobL)" stroke="#140a1c" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"><path d="M52 22 L84 21 C91 21 91 33 84 33 L60 34" fill="#ffc83a"/><path d="M14 22 C14 15 20 12 27 13 L52 15 C58 16 59 23 53 25 L44 26 C52 27 60 29 60 34 C60 39 55 40 50 40 C56 41 57 47 51 49 C56 50 55 57 49 57 L24 57 C15 57 10 50 10 42 Z" fill="#ffc83a"/><path d="M44 26 C40 27 37 31 38 35 M50 40 L40 40 M51 49 L41 49" fill="none"/></g></svg></button>
+<button class="navbtn" id="next" aria-label="Next slide"><svg viewBox="0 0 96 64" aria-hidden="true"><defs><filter id="wobR"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="3.2"/></filter></defs><g filter="url(#wobR)" stroke="#140a1c" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"><path d="M52 22 L84 21 C91 21 91 33 84 33 L60 34" fill="#ffc83a"/><path d="M14 22 C14 15 20 12 27 13 L52 15 C58 16 59 23 53 25 L44 26 C52 27 60 29 60 34 C60 39 55 40 50 40 C56 41 57 47 51 49 C56 50 55 57 49 57 L24 57 C15 57 10 50 10 42 Z" fill="#ffc83a"/><path d="M44 26 C40 27 37 31 38 35 M50 40 L40 40 M51 49 L41 49" fill="none"/></g></svg></button>
 <div id="chrome"><div id="dots"></div></div>
 <a id="pdfLink" href="HINT_Deck.pdf" target="_blank">PDF version</a>
 <div id="hint">← → to flip</div>
@@ -627,7 +628,6 @@ let LYRICS = [
   [36.75,38.4,"dahhh dahhh dahh-",[36.8,37.3,37.8]],
   [38.45,39.5,"ZOW!",[38.5]]
 ];
-try{ const saved=JSON.parse(localStorage.getItem('hint-karaoke-v5')||'null'); if(saved&&saved.length===LYRICS.length) saved.forEach((t,i)=>{LYRICS[i][0]=t; LYRICS[i].length=3; if(i>0) LYRICS[i-1][1]=Math.max(LYRICS[i-1][0]+0.3,t-0.02);}); }catch(e){}
 const SYL = w => Math.max(1,(w.toLowerCase().replace(/[^a-z]/g,'').match(/[aeiouy]+/g)||[]).length - (/[^aeiou]e$/.test(w.toLowerCase().replace(/[^a-z]/g,''))?1:0));
 const SECTIONS = [["Mic check",0,4.0],["Intro",4.0,8.21],["Verse",8.21,23.5],["Lift",23.5,28.4],["Hook",28.4,39.8]];
 const DUR = 39.8;
@@ -680,8 +680,6 @@ document.getElementById('mute').onclick = e=>{ e.stopPropagation();
 let tapMode=false, taps=[];
 function startTap(){ tapMode=true; taps=[]; kPlay(true); kNext.style.display='block'; kNext.textContent='Tap SPACE (or click here) the moment each line starts singing · '+(LYRICS.length-2)+' lines'; }
 kNext.addEventListener('click',e=>{ if(tapMode){ e.stopPropagation(); tap(); } });
-document.getElementById('syncBtn').onclick=e=>{ e.stopPropagation(); startTap(); };
-document.getElementById('resetBtn').onclick=e=>{ e.stopPropagation(); try{localStorage.removeItem('hint-karaoke-v5');}catch(_){} location.reload(); };
 function tap(){ const t=kTime(); taps.push(+t.toFixed(2)); if(tapMode) kNext.textContent='Line '+taps.length+' of '+(LYRICS.length-2)+' tapped';
   if (taps.length===LYRICS.length-2){ tapMode=false;
     const times=[0.3,4.0,...taps]; try{localStorage.setItem('hint-karaoke-v5',JSON.stringify(times));}catch(e){}
@@ -714,6 +712,7 @@ function go(i){
   i = Math.max(0, Math.min(slides.length-1, i)); if (i===cur) return;
   leave(cur); slides.forEach((s,k)=>s.classList.toggle('active',k===i));
   [...dots.children].forEach((d,k)=>d.classList.toggle('on',k===i));
+  document.getElementById('prev').disabled = i===0; document.getElementById('next').disabled = i===slides.length-1;
   cur = i; if (!PRINT) history.replaceState(null,'','#'+(i+1)); enter(i);
 }
 window.deckGo = go;
