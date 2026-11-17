@@ -98,9 +98,9 @@ html,body{height:100%;background:#0b0610;overflow:hidden;color:var(--cream);font
 @keyframes pointL{0%,100%{transform:scaleX(-1) translateX(0) rotate(-2deg)}50%{transform:scaleX(-1) translateX(3px) rotate(0deg)}}
 .navbtn:hover{opacity:1}
 .navbtn[disabled]{opacity:0;pointer-events:none}
-#hint{position:fixed;left:50%;transform:translateX(-50%);bottom:40px;white-space:nowrap;z-index:100;display:flex;align-items:center;gap:10px;font:600 12px/1 Bricolage;background:rgba(20,10,28,.6);padding:6px 12px 6px 8px;border-radius:999px;pointer-events:none;color:rgba(255,246,228,.8);letter-spacing:.04em;text-shadow:1px 1px 0 rgba(20,10,28,.6)}
+#hint{position:fixed;left:50%;transform:translateX(-50%);bottom:38px;white-space:nowrap;z-index:100;display:flex;flex-direction:column;align-items:center;gap:4px;font:600 11px/1 Bricolage;text-align:center;background:rgba(20,10,28,.6);padding:5px 12px 6px;border-radius:12px;pointer-events:none;color:rgba(255,246,228,.8);letter-spacing:.04em;text-shadow:1px 1px 0 rgba(20,10,28,.6)}
 #hint b{color:var(--yellow);font-weight:700}
-#hint .track{position:relative;width:150px;height:9px;border-radius:999px;background:rgba(255,246,228,.18);border:1.5px solid rgba(255,246,228,.55);overflow:hidden}
+#hint .track{position:relative;width:170px;height:8px;border-radius:999px;background:rgba(255,246,228,.18);border:1.5px solid rgba(255,246,228,.55);overflow:hidden}
 #hint .bar{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:999px;background:linear-gradient(90deg,var(--yellow),var(--pink));transition:width .6s cubic-bezier(.3,1.3,.5,1)}
 #hint .note{color:rgba(255,246,228,.6)}
 #pdfLink{position:fixed;left:18px;bottom:10px;z-index:100;font:600 13px/1 Bricolage;color:rgba(255,246,228,.6);text-decoration:none;letter-spacing:.06em}
@@ -126,9 +126,9 @@ html,body{height:100%;background:#0b0610;overflow:hidden;color:var(--cream);font
 #s0 .sub .credit-sub{font-size:54px}
 #s0 .sub{top:574px}
 #s0 .cta{position:absolute;left:0;right:0;top:650px;display:flex;justify-content:center;gap:28px;z-index:7}
-#s0 .madeby{position:absolute;left:0;right:0;top:770px;display:flex;flex-direction:column;align-items:center;gap:10px;z-index:6}
+#s0 .madeby{position:absolute;left:0;right:0;top:760px;display:flex;flex-direction:column;align-items:center;gap:10px;z-index:6}
 #s0 .madeby span{font:700 16px/1 Bricolage;letter-spacing:.3em;text-transform:uppercase;color:var(--tan);text-shadow:2px 2px 0 rgba(20,10,28,.9)}
-#s0 .madeby img{height:164px;transform:rotate(-3deg);filter:drop-shadow(4px 6px 8px rgba(20,10,28,.55))}
+#s0 .madeby img{height:158px;transform:rotate(-3deg);filter:drop-shadow(4px 6px 8px rgba(20,10,28,.55))}
 .bigbtn{font:900 34px/1 "Inter Display";text-transform:uppercase;letter-spacing:.02em;padding:22px 38px;border-radius:999px;border:5px solid var(--ink);background:var(--yellow);color:var(--ink);box-shadow:7px 7px 0 var(--ink);cursor:pointer;transform:rotate(-2deg);transition:transform .15s,box-shadow .15s}
 .bigbtn.alt{background:var(--cream);transform:rotate(1.5deg)}
 .bigbtn:hover{transform:rotate(0) translate(-2px,-3px);box-shadow:10px 10px 0 var(--ink)}
@@ -164,10 +164,10 @@ body.print #s0 .cta{display:none}
 .stat .n small{font-size:34px}
 .stat .t{font:600 21px/1.3 Bricolage;margin-top:10px;color:#f1e6ff}
 #s3 .src{position:absolute;left:112px;top:688px;font:400 16px/1 Bricolage;color:rgba(241,230,255,.6)}
-#s3 .goal{position:absolute;left:0;right:0;bottom:0;height:300px;background:var(--yellow);color:var(--ink);padding:22px 110px 0;border-top:8px solid var(--ink)}
-#s3 .goal .g1{font:900 46px/1.05 "Inter Display";text-transform:uppercase;width:1150px}
+#s3 .goal{position:absolute;left:0;right:0;bottom:0;height:300px;background:var(--yellow);color:var(--ink);padding:10px 110px 0;border-top:8px solid var(--ink)}
+#s3 .goal .g1{font:900 44px/1.05 "Inter Display";text-transform:uppercase;width:1150px}
 #s3 .goal .g1 em{font-style:normal;color:var(--magenta)}
-#s3 .goal .row{display:flex;gap:18px;margin-top:16px}
+#s3 .goal .row{display:flex;gap:18px;margin-top:12px}
 #s3 .goal .chip{font-size:28px;padding:14px 22px}
 #s3 .goal .chip i{background:var(--purple)}
 #s3 .emails{position:absolute;right:90px;top:70px;width:690px;height:690px}
@@ -730,8 +730,9 @@ const SECS = {s0:10,s7:55,s8:100,s9:5}, NOTE = {s7:' · song is 40 sec, skip any
 function fmtLeft(t){ if (t>=60){ const h=Math.round(t/30)/2, w=Math.floor(h); return '~'+(w||'')+(h%1?'½':'')+' min'; } return '~'+Math.max(5,Math.round(t/5)*5)+' sec'; }
 function timeLeft(i){
   const el=document.getElementById('hint'); if(!el) return;
-  if(!el.firstChild){ el.innerHTML='<span class="track"><span class="bar"></span></span><span class="lbl"></span>'; }
+  if(!el.firstChild){ el.innerHTML='<span class="lbl"></span><span class="track"><span class="bar"></span></span>'; }
   let total=0,left=0; slides.forEach((s,k)=>{ const v=SECS[s.id] ?? 15; total+=v; if(k>=i) left+=v; });
+  el.querySelector('.track').style.width=(document.getElementById('dots').offsetWidth||230)+'px';
   el.querySelector('.bar').style.width=((total-left)/total*100).toFixed(1)+'%';
   const lbl=el.querySelector('.lbl');
   if (i>=slides.length-1){ el.querySelector('.bar').style.width='100%'; lbl.innerHTML='<b>That\'s a wrap</b>'; return; }
