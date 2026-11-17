@@ -113,22 +113,22 @@ html,body{height:100%;background:#0b0610;overflow:hidden;color:var(--cream);font
 @keyframes pushin{from{transform:scale(1)}to{transform:scale(1.08)}}
 #s0 .bloom{position:absolute;inset:0;background:url(assets/house_hero.jpg) center 60%/cover;filter:blur(18px) brightness(1.1) saturate(1.3);mix-blend-mode:screen;opacity:.28}
 #s0 .tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,200,120,.10) 0%,rgba(40,15,60,.15) 45%,rgba(30,10,45,.6) 100%),radial-gradient(ellipse at 50% 40%,transparent 50%,rgba(20,6,30,.55) 100%)}
-#s0 .art{position:absolute;left:50%;top:-34px;width:1340px;transform:translateX(-50%);filter:drop-shadow(0 10px 18px rgba(20,6,30,.45))}
+#s0 .art{position:absolute;left:50%;top:-46px;width:1170px;transform:translateX(-50%);filter:drop-shadow(0 10px 18px rgba(20,6,30,.45))}
 #s0 .art img{width:100%;display:block}
 #s0.active .art{animation:slam .7s cubic-bezier(.2,1.6,.35,1) both}
 @keyframes slam{0%{transform:translateX(-50%) scale(.3) rotate(-8deg);opacity:0}100%{transform:translateX(-50%) scale(1) rotate(0);opacity:1}}
 .hand{font-family:var(--hand),"Comic Sans MS",cursive;font-weight:400;color:#f4fff6;line-height:1;
   text-shadow:0 0 18px rgba(127,240,220,.75),0 0 4px rgba(127,240,220,.9),4px 5px 0 rgba(20,6,30,.85)}
-#s0 .hand{position:absolute;left:0;right:0;top:452px;text-align:center;font-size:160px;transform:rotate(-3deg)}
+#s0 .hand{position:absolute;left:0;right:0;top:368px;text-align:center;font-size:160px;transform:rotate(-3deg)}
 #s0.active .hand{animation:handin .8s .45s cubic-bezier(.2,1.4,.4,1) both}
 @keyframes handin{0%{opacity:0;transform:rotate(-3deg) translateY(40px) scale(.85)}100%{opacity:1;transform:rotate(-3deg)}}
 #s0 .sub{position:absolute;left:0;right:0;top:790px;text-align:center}
 #s0 .sub .credit-sub{font-size:54px}
-#s0 .sub{top:672px}
-#s0 .cta{position:absolute;left:0;right:0;top:746px;display:flex;justify-content:center;gap:28px;z-index:7}
-#s0 .madeby{position:absolute;left:0;right:0;top:846px;display:flex;flex-direction:column;align-items:center;gap:6px;z-index:6}
+#s0 .sub{top:574px}
+#s0 .cta{position:absolute;left:0;right:0;top:650px;display:flex;justify-content:center;gap:28px;z-index:7}
+#s0 .madeby{position:absolute;left:0;right:0;top:770px;display:flex;flex-direction:column;align-items:center;gap:10px;z-index:6}
 #s0 .madeby span{font:700 16px/1 Bricolage;letter-spacing:.3em;text-transform:uppercase;color:var(--tan);text-shadow:2px 2px 0 rgba(20,10,28,.9)}
-#s0 .madeby img{height:96px;transform:rotate(-4deg);filter:drop-shadow(3px 4px 0 rgba(20,10,28,.5))}
+#s0 .madeby img{height:164px;transform:rotate(-3deg);filter:drop-shadow(4px 6px 8px rgba(20,10,28,.55))}
 .bigbtn{font:900 34px/1 "Inter Display";text-transform:uppercase;letter-spacing:.02em;padding:22px 38px;border-radius:999px;border:5px solid var(--ink);background:var(--yellow);color:var(--ink);box-shadow:7px 7px 0 var(--ink);cursor:pointer;transform:rotate(-2deg);transition:transform .15s,box-shadow .15s}
 .bigbtn.alt{background:var(--cream);transform:rotate(1.5deg)}
 .bigbtn:hover{transform:rotate(0) translate(-2px,-3px);box-shadow:10px 10px 0 var(--ink)}
@@ -301,9 +301,9 @@ body.print #s0 .cta{display:none}
 /* =========== S9 ZOW =========== */
 #s9{background:#b42cb0}
 #s9 video,#s9 .poster{position:absolute;left:240px;top:0;width:1440px;height:1080px;object-fit:cover}
-#s9 .end{position:absolute;left:0;right:0;top:744px;display:flex;flex-direction:column;align-items:center;gap:10px;z-index:6;opacity:0;transition:opacity .8s 1.6s}
+#s9 .end{position:absolute;left:0;right:0;top:722px;display:flex;flex-direction:column;align-items:center;gap:10px;z-index:6;opacity:0;transition:opacity .8s 1.6s}
 #s9 .end span{font:700 24px/1 Bricolage;letter-spacing:.3em;text-transform:uppercase;color:var(--tan);text-shadow:2px 2px 0 rgba(20,10,28,.9)}
-#s9 .end img{height:150px;transform:rotate(-4deg);filter:drop-shadow(3px 4px 0 rgba(20,10,28,.5))}
+#s9 .end img{height:190px;transform:rotate(-3deg);filter:drop-shadow(4px 6px 8px rgba(20,10,28,.55))}
 #s9.active .end{opacity:1}
 
 /* print/export mode */
@@ -339,7 +339,7 @@ body.print #s8 .cap{bottom:120px}
     <div class="sub"><div class="credit-sub floaty">A show about making friends in a new city.</div></div>
     <div class="cta"><button class="bigbtn" id="ctaTeaser">▶ Watch Teaser</button><button class="bigbtn alt" id="ctaDeck">View Fun Deck →</button></div>
   </div>
-  <div class="madeby"><span>Created by</span><img src="assets/ysj.png" alt="Yellow Satin Jacket"></div>
+  <div class="madeby"><span>Created by</span><img src="assets/ysj_patch.png" alt="Yellow Satin Jacket"></div>
 </section>
 
 <!-- ================= 1 · CONCEPT ================= -->
@@ -536,7 +536,7 @@ body.print #s8 .cap{bottom:120px}
 <section class="slide" id="s9" data-title="Zow!">
   <video class="live" src="assets/zow.mp4" poster="assets/zow_poster.jpg" muted playsinline preload="auto"></video>
   <img class="poster" src="assets/zow_poster.jpg" alt="Zow!" hidden>
-  <div class="end madeby"><span>Created by</span><img src="assets/ysj.png" alt="Yellow Satin Jacket"></div>
+  <div class="end madeby"><span>Created by</span><img src="assets/ysj_patch.png" alt="Yellow Satin Jacket"></div>
 </section>
 
 <div class="grain"></div><div class="vignette"></div>
