@@ -87,13 +87,13 @@ html,body{height:100%;background:#0b0610;overflow:hidden;color:var(--cream);font
 #dots{display:flex;gap:9px;pointer-events:auto}
 #dots button{width:11px;height:11px;border-radius:50%;border:2px solid rgba(255,246,228,.8);background:transparent;cursor:pointer;padding:0}
 #dots button.on{background:var(--yellow);border-color:var(--yellow);transform:scale(1.25)}
-.navbtn{position:fixed;top:50%;z-index:100;width:104px;height:70px;padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(3px 4px 0 rgba(20,10,28,.55));transition:transform .15s}
+.navbtn{position:fixed;top:50%;z-index:100;width:60px;height:42px;opacity:.85;padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(3px 4px 0 rgba(20,10,28,.55));transition:transform .15s}
 .navbtn svg{width:100%;height:100%;display:block;overflow:visible}
-#next{right:14px;transform:translateY(-50%);animation:pointR 1.4s ease-in-out infinite}
-#prev{left:14px;transform:translateY(-50%) scaleX(-1);animation:pointL 1.4s ease-in-out infinite}
-@keyframes pointR{0%,100%{transform:translateY(-50%) translateX(0) rotate(-4deg)}50%{transform:translateY(-50%) translateX(6px) rotate(2deg)}}
-@keyframes pointL{0%,100%{transform:translateY(-50%) scaleX(-1) translateX(0) rotate(-4deg)}50%{transform:translateY(-50%) scaleX(-1) translateX(6px) rotate(2deg)}}
-.navbtn:hover{animation-duration:.5s}
+#next{right:14px;transform:translateY(-50%);animation:pointR 2.4s ease-in-out infinite}
+#prev{left:14px;transform:translateY(-50%) scaleX(-1);animation:pointL 2.4s ease-in-out infinite}
+@keyframes pointR{0%,100%{transform:translateY(-50%) translateX(0) rotate(-2deg)}50%{transform:translateY(-50%) translateX(3px) rotate(0deg)}}
+@keyframes pointL{0%,100%{transform:translateY(-50%) scaleX(-1) translateX(0) rotate(-2deg)}50%{transform:translateY(-50%) scaleX(-1) translateX(3px) rotate(0deg)}}
+.navbtn:hover{opacity:1}
 .navbtn[disabled]{opacity:0;pointer-events:none}
 #hint{position:fixed;right:18px;bottom:12px;z-index:100;font:600 13px/1 Bricolage;color:rgba(255,246,228,.55);letter-spacing:.06em}
 #pdfLink{position:fixed;left:18px;bottom:10px;z-index:100;font:600 13px/1 Bricolage;color:rgba(255,246,228,.6);text-decoration:none;letter-spacing:.06em}
@@ -117,8 +117,11 @@ html,body{height:100%;background:#0b0610;overflow:hidden;color:var(--cream);font
 @keyframes handin{0%{opacity:0;transform:rotate(-3deg) translateY(40px) scale(.85)}100%{opacity:1;transform:rotate(-3deg)}}
 #s0 .sub{position:absolute;left:0;right:0;top:790px;text-align:center}
 #s0 .sub .credit-sub{font-size:54px}
-#s0 .sub{top:760px}
-#s0 .cta{position:absolute;left:0;right:0;top:868px;display:flex;justify-content:center;gap:28px;z-index:7}
+#s0 .sub{top:735px}
+#s0 .cta{position:absolute;left:0;right:0;top:822px;display:flex;justify-content:center;gap:28px;z-index:7}
+#s0 .madeby{position:absolute;left:0;right:0;bottom:34px;display:flex;align-items:center;justify-content:center;gap:16px;z-index:6}
+#s0 .madeby span{font:700 18px/1 Bricolage;letter-spacing:.3em;text-transform:uppercase;color:var(--tan);text-shadow:2px 2px 0 rgba(20,10,28,.9)}
+#s0 .madeby img{height:104px;transform:rotate(-4deg);filter:drop-shadow(3px 4px 0 rgba(20,10,28,.5))}
 .bigbtn{font:900 34px/1 "Inter Display";text-transform:uppercase;letter-spacing:.02em;padding:22px 38px;border-radius:999px;border:5px solid var(--ink);background:var(--yellow);color:var(--ink);box-shadow:7px 7px 0 var(--ink);cursor:pointer;transform:rotate(-2deg);transition:transform .15s,box-shadow .15s}
 .bigbtn.alt{background:var(--cream);transform:rotate(1.5deg)}
 .bigbtn:hover{transform:rotate(0) translate(-2px,-3px);box-shadow:10px 10px 0 var(--ink)}
@@ -327,7 +330,7 @@ body.print #s8 .cap{bottom:120px}
     <div class="sub"><div class="credit-sub floaty">A show about making friends in a new city.</div></div>
     <div class="cta"><button class="bigbtn" id="ctaTeaser">▶ Watch Teaser</button><button class="bigbtn alt" id="ctaDeck">View Fun Deck →</button></div>
   </div>
-  <div style="position:absolute;left:0;right:0;bottom:30px;text-align:center;z-index:6"><span style="display:inline-block;font:700 19px/1 Bricolage;letter-spacing:.3em;text-transform:uppercase;color:var(--cream);text-shadow:2px 2px 0 rgba(20,10,28,.9)">Hosted by Michael Kilcoyne &nbsp;·&nbsp; Filmed in Houston, TX</span></div>
+  <div class="madeby"><span>Created by</span><img src="assets/ysj.png" alt="Yellow Satin Jacket"></div>
 </section>
 
 <!-- ================= 1 · CONCEPT ================= -->
@@ -530,8 +533,8 @@ body.print #s8 .cap{bottom:120px}
 <div class="grain"></div><div class="vignette"></div>
 </div></div>
 
-<button class="navbtn" id="prev" aria-label="Previous slide"><svg viewBox="0 0 96 64" aria-hidden="true"><defs><filter id="wobL"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="3.2"/></filter></defs><g filter="url(#wobL)" stroke="#140a1c" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"><path d="M52 22 L84 21 C91 21 91 33 84 33 L60 34" fill="#ffc83a"/><path d="M14 22 C14 15 20 12 27 13 L52 15 C58 16 59 23 53 25 L44 26 C52 27 60 29 60 34 C60 39 55 40 50 40 C56 41 57 47 51 49 C56 50 55 57 49 57 L24 57 C15 57 10 50 10 42 Z" fill="#ffc83a"/><path d="M44 26 C40 27 37 31 38 35 M50 40 L40 40 M51 49 L41 49" fill="none"/></g></svg></button>
-<button class="navbtn" id="next" aria-label="Next slide"><svg viewBox="0 0 96 64" aria-hidden="true"><defs><filter id="wobR"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="3.2"/></filter></defs><g filter="url(#wobR)" stroke="#140a1c" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"><path d="M52 22 L84 21 C91 21 91 33 84 33 L60 34" fill="#ffc83a"/><path d="M14 22 C14 15 20 12 27 13 L52 15 C58 16 59 23 53 25 L44 26 C52 27 60 29 60 34 C60 39 55 40 50 40 C56 41 57 47 51 49 C56 50 55 57 49 57 L24 57 C15 57 10 50 10 42 Z" fill="#ffc83a"/><path d="M44 26 C40 27 37 31 38 35 M50 40 L40 40 M51 49 L41 49" fill="none"/></g></svg></button>
+<button class="navbtn" id="prev" aria-label="Previous slide"><svg viewBox="0 0 100 70" aria-hidden="true"><defs><filter id="wobL"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="4"/></filter></defs><g filter="url(#wobL)" stroke-linejoin="round"><path transform="translate(5 5)" d="M8 26 L56 24 L54 8 L90 35 L54 62 L56 46 L8 44 Z" fill="#ff6fb0" stroke="#140a1c" stroke-width="5"/><path d="M8 26 L56 24 L54 8 L90 35 L54 62 L56 46 L8 44 Z" fill="#ffc83a" stroke="#140a1c" stroke-width="5"/></g></svg></button>
+<button class="navbtn" id="next" aria-label="Next slide"><svg viewBox="0 0 100 70" aria-hidden="true"><defs><filter id="wobR"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="8"/><feDisplacementMap in="SourceGraphic" scale="4"/></filter></defs><g filter="url(#wobR)" stroke-linejoin="round"><path transform="translate(5 5)" d="M8 26 L56 24 L54 8 L90 35 L54 62 L56 46 L8 44 Z" fill="#ff6fb0" stroke="#140a1c" stroke-width="5"/><path d="M8 26 L56 24 L54 8 L90 35 L54 62 L56 46 L8 44 Z" fill="#ffc83a" stroke="#140a1c" stroke-width="5"/></g></svg></button>
 <div id="chrome"><div id="dots"></div></div>
 <a id="pdfLink" href="HINT_Deck.pdf" target="_blank">PDF version</a>
 <div id="hint">← → to flip</div>
