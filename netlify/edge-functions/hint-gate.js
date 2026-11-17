@@ -6,6 +6,7 @@ const COOKIE = "hint_ok";
 const page = (wrong) => `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
 <title>Hey! I'm New in Town</title>
+<link rel="icon" type="image/png" sizes="32x32" href="/hint-icon/favicon-32.png"><link rel="icon" type="image/png" sizes="512x512" href="/hint-icon/favicon-512.png"><link rel="apple-touch-icon" href="/hint-icon/apple-touch-icon.png">
 <style>
 html,body{height:100%;margin:0}
 body{display:flex;align-items:center;justify-content:center;background:#5b2a9e;font-family:system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;color:#fff6e4}

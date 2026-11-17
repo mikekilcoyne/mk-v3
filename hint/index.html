@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hey! I'm New in Town</title>
+<link rel="icon" type="image/png" sizes="32x32" href="/hint-icon/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/hint-icon/favicon-48.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/hint-icon/favicon-512.png">
+<link rel="apple-touch-icon" href="/hint-icon/apple-touch-icon.png">
+
 <meta name="description" content="Hey! I'm New in Town: the funnest show on the Internet about making friends in a new city.">
 <meta property="og:title" content="Hey! I'm New in Town">
 <meta property="og:description" content="The funnest show on the Internet about making friends in a new city.">
@@ -276,8 +281,11 @@ body.print #s0 .cta{display:none}
 
 /* =========== S8 VIDEO =========== */
 #s8{background:#000}
-#s8 video,#s8 .poster{position:absolute;left:240px;top:0;width:1440px;height:1080px;object-fit:cover;background:#000}
-#s8 .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:200px;height:200px;border-radius:50%;background:var(--yellow);border:6px solid var(--ink);box-shadow:8px 8px 0 #b42cb0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .2s}
+#s8 .cover{position:absolute;left:240px;top:0;width:1440px;height:1080px;object-fit:cover;background:#000}
+#s8 .lv{position:absolute;inset:0;z-index:5;display:none;background:#000}
+#s8 .lv iframe{width:100%;height:100%;border:0;display:block}
+#s8.playing .lv{display:block}
+#s8 .play{position:absolute;left:540px;top:760px;transform:translate(-50%,-50%);width:180px;height:180px;border-radius:50%;background:var(--yellow);border:6px solid var(--ink);box-shadow:8px 8px 0 #b42cb0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .2s}
 #s8 .play:hover{transform:translate(-50%,-50%) scale(1.06)}
 #s8 .play:after{content:"";margin-left:16px;border-left:62px solid var(--ink);border-top:38px solid transparent;border-bottom:38px solid transparent}
 #s8 .cap{position:absolute;left:0;right:0;bottom:150px;text-align:center;pointer-events:none}
@@ -509,8 +517,8 @@ body.print #s8 .cap{bottom:120px}
 <!-- ================= 8 · REHEARSAL ================= -->
 <section class="slide" id="s8" data-title="Rehearsal">
   <div class="side l"></div><div class="side r"></div>
-  <video class="live" id="teaser" src="assets/teaser.mp4" poster="assets/still_8.5.jpg" playsinline preload="metadata"></video>
-  <img class="poster" src="assets/still_8.5.jpg" alt="" hidden>
+  <img class="cover" src="assets/lee_cover.jpg" alt="Lee Cloud at the front door">
+  <div class="lv" id="lividWrap"></div>
   <div class="cap"><div class="credit" data-hop>The Rehearsal</div><div class="credit-sub">Episode 0, with Lee Cloud &nbsp;·&nbsp; 90 sec</div><div class="printonly" style="display:none;margin-top:22px"><span class="sticker" style="position:static;display:inline-block;background:var(--yellow);color:var(--ink);--rot:-2deg">▶ Watch it at mikekilcoyne.com/hint</span></div></div>
   <button class="play live" id="playTeaser" aria-label="Play the rehearsal"></button>
 </section>
@@ -696,25 +704,27 @@ function tap(){ const t=kTime(); taps.push(+t.toFixed(2)); if(tapMode) kNext.tex
     times.forEach((t,i)=>{LYRICS[i][0]=t; LYRICS[i].length=3; if(i>0) LYRICS[i-1][1]=Math.max(LYRICS[i-1][0]+0.3,t-0.02);});
     kNext.style.display='block'; kNext.textContent='Saved: '+JSON.stringify(taps); } }
 /* ---- teaser ---- */
-const teaser = document.getElementById('teaser'), s8 = document.getElementById('s8');
-document.getElementById('playTeaser').onclick = e=>{ e.stopPropagation(); teaser.controls=true; teaser.play(); s8.classList.add('playing'); };
-teaser.addEventListener('ended',()=>{ s8.classList.remove('playing'); teaser.controls=false; teaser.currentTime=0; });
+const s8 = document.getElementById('s8'), lividWrap = document.getElementById('lividWrap');
+const LIVID = 'https://livid.com/embed/J3S3DLnmMdAk?autoplay=1&title=0&transparent=0&color=ffc83a&initial_quality=1080p';
+function playTeaser(){ lividWrap.innerHTML='<iframe src="'+LIVID+'" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="The Rehearsal, Episode 0 with Lee Cloud"></iframe>'; s8.classList.add('playing'); }
+function stopTeaser(){ lividWrap.innerHTML=''; s8.classList.remove('playing'); }
+document.getElementById('playTeaser').onclick = e=>{ e.stopPropagation(); playTeaser(); };
 
 /* ---- title CTAs ---- */
 document.getElementById('ctaDeck').onclick=e=>{ e.stopPropagation(); go(cur+1); };
-document.getElementById('ctaTeaser').onclick=e=>{ e.stopPropagation(); go(slides.findIndex(x=>x.id==='s8')); teaser.controls=true; teaser.currentTime=0; teaser.play().catch(()=>{}); s8.classList.add('playing'); };
+document.getElementById('ctaTeaser').onclick=e=>{ e.stopPropagation(); go(slides.findIndex(x=>x.id==='s8')); playTeaser(); };
 
 /* ---- slide enter/leave ---- */
 function enter(i){
   const s = slides[i];
-  s.querySelectorAll('video.live').forEach(v=>{ if (v===teaser) return; try{ v.currentTime=0; v.play().catch(()=>{});}catch(e){} });
+  s.querySelectorAll('video.live').forEach(v=>{ try{ v.currentTime=0; v.play().catch(()=>{});}catch(e){} });
   if (s.id==='s7') kPlay(true);
 }
 function leave(i){
   const s = slides[i]; if (!s) return;
   s.querySelectorAll('video').forEach(v=>v.pause());
   if (s.id==='s7') kStop();
-  if (s.id==='s8'){ s8.classList.remove('playing'); teaser.controls=false; }
+  if (s.id==='s8') stopTeaser();
 }
 const dots = document.getElementById('dots');
 slides.forEach((s,i)=>{ const b=document.createElement('button'); b.title=s.dataset.title; b.onclick=()=>go(i); dots.append(b); });
