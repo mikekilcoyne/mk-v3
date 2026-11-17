@@ -83,16 +83,16 @@ html,body{height:100%;background:#0b0610;overflow:hidden;color:var(--cream);font
 .sticker{position:absolute;white-space:nowrap;font:900 26px/1 "Inter Display";text-transform:uppercase;padding:14px 22px;border-radius:999px;border:4px solid var(--ink);box-shadow:5px 5px 0 var(--ink);transform:rotate(var(--rot,-6deg))}
 
 /* chrome */
-#chrome{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;gap:16px;padding:10px 14px 14px;z-index:100;pointer-events:none}
+#chrome{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;gap:18px;padding:6px 14px 10px;z-index:100;pointer-events:none}
 #dots{display:flex;gap:9px;pointer-events:auto}
 #dots button{width:11px;height:11px;border-radius:50%;border:2px solid rgba(255,246,228,.8);background:transparent;cursor:pointer;padding:0}
 #dots button.on{background:var(--yellow);border-color:var(--yellow);transform:scale(1.25)}
-.navbtn{position:fixed;top:50%;z-index:100;width:60px;height:42px;opacity:.85;padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(3px 4px 0 rgba(20,10,28,.55));transition:transform .15s}
+.navbtn{position:relative;pointer-events:auto;flex:none;width:38px;height:26px;opacity:.85;padding:0;border:0;background:none;cursor:pointer;filter:drop-shadow(3px 4px 0 rgba(20,10,28,.55));transition:transform .15s}
 .navbtn svg{width:100%;height:100%;display:block;overflow:visible}
-#next{right:14px;transform:translateY(-50%);animation:pointR 2.4s ease-in-out infinite}
-#prev{left:14px;transform:translateY(-50%) scaleX(-1);animation:pointL 2.4s ease-in-out infinite}
-@keyframes pointR{0%,100%{transform:translateY(-50%) translateX(0) rotate(-2deg)}50%{transform:translateY(-50%) translateX(3px) rotate(0deg)}}
-@keyframes pointL{0%,100%{transform:translateY(-50%) scaleX(-1) translateX(0) rotate(-2deg)}50%{transform:translateY(-50%) scaleX(-1) translateX(3px) rotate(0deg)}}
+#next{animation:pointR 2.4s ease-in-out infinite}
+#prev{transform:scaleX(-1);animation:pointL 2.4s ease-in-out infinite}
+@keyframes pointR{0%,100%{transform:translateX(0) rotate(-2deg)}50%{transform:translateX(3px) rotate(0deg)}}
+@keyframes pointL{0%,100%{transform:scaleX(-1) translateX(0) rotate(-2deg)}50%{transform:scaleX(-1) translateX(3px) rotate(0deg)}}
 .navbtn:hover{opacity:1}
 .navbtn[disabled]{opacity:0;pointer-events:none}
 #hint{position:fixed;right:18px;bottom:12px;z-index:100;font:600 13px/1 Bricolage;color:rgba(255,246,228,.55);letter-spacing:.06em}
@@ -118,10 +118,10 @@ html,body{height:100%;background:#0b0610;overflow:hidden;color:var(--cream);font
 #s0 .sub{position:absolute;left:0;right:0;top:790px;text-align:center}
 #s0 .sub .credit-sub{font-size:54px}
 #s0 .sub{top:735px}
-#s0 .cta{position:absolute;left:0;right:0;top:822px;display:flex;justify-content:center;gap:28px;z-index:7}
-#s0 .madeby{position:absolute;left:0;right:0;bottom:34px;display:flex;align-items:center;justify-content:center;gap:16px;z-index:6}
+#s0 .cta{position:absolute;left:0;right:0;top:800px;display:flex;justify-content:center;gap:28px;z-index:7}
+#s0 .madeby{position:absolute;left:0;right:0;bottom:86px;display:flex;align-items:center;justify-content:center;gap:16px;z-index:6}
 #s0 .madeby span{font:700 18px/1 Bricolage;letter-spacing:.3em;text-transform:uppercase;color:var(--tan);text-shadow:2px 2px 0 rgba(20,10,28,.9)}
-#s0 .madeby img{height:104px;transform:rotate(-4deg);filter:drop-shadow(3px 4px 0 rgba(20,10,28,.5))}
+#s0 .madeby img{height:92px;transform:rotate(-4deg);filter:drop-shadow(3px 4px 0 rgba(20,10,28,.5))}
 .bigbtn{font:900 34px/1 "Inter Display";text-transform:uppercase;letter-spacing:.02em;padding:22px 38px;border-radius:999px;border:5px solid var(--ink);background:var(--yellow);color:var(--ink);box-shadow:7px 7px 0 var(--ink);cursor:pointer;transform:rotate(-2deg);transition:transform .15s,box-shadow .15s}
 .bigbtn.alt{background:var(--cream);transform:rotate(1.5deg)}
 .bigbtn:hover{transform:rotate(0) translate(-2px,-3px);box-shadow:10px 10px 0 var(--ink)}
@@ -157,10 +157,10 @@ body.print #s0 .cta{display:none}
 .stat .n small{font-size:34px}
 .stat .t{font:600 21px/1.3 Bricolage;margin-top:10px;color:#f1e6ff}
 #s3 .src{position:absolute;left:112px;top:688px;font:400 16px/1 Bricolage;color:rgba(241,230,255,.6)}
-#s3 .goal{position:absolute;left:0;right:0;bottom:0;height:300px;background:var(--yellow);color:var(--ink);padding:44px 110px 0;border-top:8px solid var(--ink)}
+#s3 .goal{position:absolute;left:0;right:0;bottom:0;height:300px;background:var(--yellow);color:var(--ink);padding:28px 110px 0;border-top:8px solid var(--ink)}
 #s3 .goal .g1{font:900 52px/1.05 "Inter Display";text-transform:uppercase;width:1150px}
 #s3 .goal .g1 em{font-style:normal;color:var(--magenta)}
-#s3 .goal .row{display:flex;gap:18px;margin-top:30px}
+#s3 .goal .row{display:flex;gap:18px;margin-top:22px}
 #s3 .goal .chip{font-size:28px;padding:14px 22px}
 #s3 .goal .chip i{background:var(--purple)}
 #s3 .emails{position:absolute;right:90px;top:70px;width:690px;height:690px}
@@ -487,7 +487,7 @@ body.print #s8 .cap{bottom:120px}
     <div class="ctrl live"><button class="btn" id="sing">▶ Sing along</button><button class="btn ghost" id="mute">Sound on</button></div>
     <div class="karaoke live"><div class="line" id="kLine">&nbsp;</div><div class="next" id="kNext">&nbsp;</div></div>
     <div class="sheet">
-      <p class="dim">Um… mike check… hello?</p>
+      <p class="dim">Um… mic check… hello?</p>
       <p>She packed up her life and walked right out the door<br>Left life in Portland, because she wanted some more!<br>Born in the South, never lived in Houston 'til now<br>Movin' back here, gotta make friends, how?</p>
       <p class="dim">But she's so glad she did it · Game nights, she's in it · And she's on…</p>
       <p><span>HEY! I'm New in Town</span><br>Ba-da-da-dah-dahhhh, dahhh dahhh dahh-</p><img src="assets/zow_art.png" alt="ZOW!" style="height:110px;margin-top:6px">
@@ -533,9 +533,7 @@ body.print #s8 .cap{bottom:120px}
 <div class="grain"></div><div class="vignette"></div>
 </div></div>
 
-<button class="navbtn" id="prev" aria-label="Previous slide"><svg viewBox="0 0 100 70" aria-hidden="true"><defs><filter id="wobL"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="4"/></filter></defs><g filter="url(#wobL)" stroke-linejoin="round"><path transform="translate(5 5)" d="M8 26 L56 24 L54 8 L90 35 L54 62 L56 46 L8 44 Z" fill="#ff6fb0" stroke="#140a1c" stroke-width="5"/><path d="M8 26 L56 24 L54 8 L90 35 L54 62 L56 46 L8 44 Z" fill="#ffc83a" stroke="#140a1c" stroke-width="5"/></g></svg></button>
-<button class="navbtn" id="next" aria-label="Next slide"><svg viewBox="0 0 100 70" aria-hidden="true"><defs><filter id="wobR"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="8"/><feDisplacementMap in="SourceGraphic" scale="4"/></filter></defs><g filter="url(#wobR)" stroke-linejoin="round"><path transform="translate(5 5)" d="M8 26 L56 24 L54 8 L90 35 L54 62 L56 46 L8 44 Z" fill="#ff6fb0" stroke="#140a1c" stroke-width="5"/><path d="M8 26 L56 24 L54 8 L90 35 L54 62 L56 46 L8 44 Z" fill="#ffc83a" stroke="#140a1c" stroke-width="5"/></g></svg></button>
-<div id="chrome"><div id="dots"></div></div>
+<div id="chrome"><button class="navbtn" id="prev" aria-label="Previous slide"><svg viewBox="0 0 100 70" aria-hidden="true"><defs><filter id="wobL"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="4"/></filter></defs><g filter="url(#wobL)" stroke-linejoin="round"><path transform="translate(5 5)" d="M8 26 L56 24 L54 8 L90 35 L54 62 L56 46 L8 44 Z" fill="#ff6fb0" stroke="#140a1c" stroke-width="5"/><path d="M8 26 L56 24 L54 8 L90 35 L54 62 L56 46 L8 44 Z" fill="#ffc83a" stroke="#140a1c" stroke-width="5"/></g></svg></button><div id="dots"></div><button class="navbtn" id="next" aria-label="Next slide"><svg viewBox="0 0 100 70" aria-hidden="true"><defs><filter id="wobR"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="8"/><feDisplacementMap in="SourceGraphic" scale="4"/></filter></defs><g filter="url(#wobR)" stroke-linejoin="round"><path transform="translate(5 5)" d="M8 26 L56 24 L54 8 L90 35 L54 62 L56 46 L8 44 Z" fill="#ff6fb0" stroke="#140a1c" stroke-width="5"/><path d="M8 26 L56 24 L54 8 L90 35 L54 62 L56 46 L8 44 Z" fill="#ffc83a" stroke="#140a1c" stroke-width="5"/></g></svg></button></div>
 <a id="pdfLink" href="HINT_Deck.pdf" target="_blank">PDF version</a>
 <div id="hint">← → to flip</div>
 
@@ -616,7 +614,7 @@ document.querySelectorAll('[data-bg]').forEach(el=>{
 // [start, end, text] per line. Line starts sit on the song's 2-bar grid (~128 BPM), checked against vocal onsets.
 // Words sweep inside each line by syllable count. To re-time by ear: open the theme slide and press T, then tap Space on each line.
 let LYRICS = [
-  [0.3,3.95,"Um… mike check… hello?"],
+  [0.3,3.95,"Um… mic check… hello?"],
   [4,8.15,"♪ ♪ ♪"],
   [8.21,11.95,"She packed up her life and walked right out the door"],
   [11.97,15.7,"Left life in Portland, because she wanted some more!"],
