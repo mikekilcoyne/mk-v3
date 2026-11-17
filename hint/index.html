@@ -282,9 +282,11 @@ body.print #s0 .cta{display:none}
 /* =========== S8 VIDEO =========== */
 #s8{background:#000}
 #s8 .cover{position:absolute;left:240px;top:0;width:1440px;height:1080px;object-fit:cover;background:#000}
-#s8 .lv{position:absolute;inset:0;z-index:5;display:none;background:#000}
+#s8 .lv{position:absolute;inset:0;z-index:5;background:#000}
+body.print #s8 .lv{display:none}
+body:not(.print) #s8 .printcover,body:not(.print) #s8 .cap,body:not(.print) #s8 .play{display:none}
 #s8 .lv iframe{width:100%;height:100%;border:0;display:block}
-#s8.playing .lv{display:block}
+
 #s8 .play{position:absolute;left:540px;top:760px;transform:translate(-50%,-50%);width:180px;height:180px;border-radius:50%;background:var(--yellow);border:6px solid var(--ink);box-shadow:8px 8px 0 #b42cb0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .2s}
 #s8 .play:hover{transform:translate(-50%,-50%) scale(1.06)}
 #s8 .play:after{content:"";margin-left:16px;border-left:62px solid var(--ink);border-top:38px solid transparent;border-bottom:38px solid transparent}
@@ -517,7 +519,7 @@ body.print #s8 .cap{bottom:120px}
 <!-- ================= 8 · REHEARSAL ================= -->
 <section class="slide" id="s8" data-title="Rehearsal">
   <div class="side l"></div><div class="side r"></div>
-  <img class="cover" src="assets/lee_cover.jpg" alt="Lee Cloud at the front door">
+  <img class="cover printcover" src="assets/lee_cover.jpg" alt="Lee Cloud at the front door">
   <div class="lv" id="lividWrap"></div>
   <div class="cap"><div class="credit" data-hop>The Rehearsal</div><div class="credit-sub">Episode 0, with Lee Cloud &nbsp;·&nbsp; 90 sec</div><div class="printonly" style="display:none;margin-top:22px"><span class="sticker" style="position:static;display:inline-block;background:var(--yellow);color:var(--ink);--rot:-2deg">▶ Watch it at mikekilcoyne.com/hint</span></div></div>
   <button class="play live" id="playTeaser" aria-label="Play the rehearsal"></button>
@@ -705,10 +707,10 @@ function tap(){ const t=kTime(); taps.push(+t.toFixed(2)); if(tapMode) kNext.tex
     kNext.style.display='block'; kNext.textContent='Saved: '+JSON.stringify(taps); } }
 /* ---- teaser ---- */
 const s8 = document.getElementById('s8'), lividWrap = document.getElementById('lividWrap');
-const LIVID = 'https://livid.com/embed/J3S3DLnmMdAk?autoplay=1&title=0&transparent=0&color=ffc83a&initial_quality=1080p';
-function playTeaser(){ lividWrap.innerHTML='<iframe src="'+LIVID+'" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="The Rehearsal, Episode 0 with Lee Cloud"></iframe>'; s8.classList.add('playing'); }
-function stopTeaser(){ lividWrap.innerHTML=''; s8.classList.remove('playing'); }
-document.getElementById('playTeaser').onclick = e=>{ e.stopPropagation(); playTeaser(); };
+const LIVID = 'https://livid.com/embed/J3S3DLnmMdAk';
+function loadTeaser(auto){ lividWrap.innerHTML='<iframe src="'+LIVID+(auto?'?autoplay=1':'')+'" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="The Rehearsal, Episode 0 with Lee Cloud"></iframe>'; }
+function playTeaser(){ loadTeaser(true); }
+function stopTeaser(){ lividWrap.innerHTML=''; }
 
 /* ---- title CTAs ---- */
 document.getElementById('ctaDeck').onclick=e=>{ e.stopPropagation(); go(cur+1); };
@@ -719,6 +721,7 @@ function enter(i){
   const s = slides[i];
   s.querySelectorAll('video.live').forEach(v=>{ try{ v.currentTime=0; v.play().catch(()=>{});}catch(e){} });
   if (s.id==='s7') kPlay(true);
+  if (s.id==='s8' && !PRINT && !lividWrap.firstChild) loadTeaser(false);
 }
 function leave(i){
   const s = slides[i]; if (!s) return;
