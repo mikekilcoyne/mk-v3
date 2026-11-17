@@ -294,7 +294,9 @@ body.print #s0 .cta{display:none}
 /* =========== S9 ZOW =========== */
 #s9{background:#b42cb0}
 #s9 video,#s9 .poster{position:absolute;left:240px;top:0;width:1440px;height:1080px;object-fit:cover}
-#s9 .end{position:absolute;left:0;right:0;bottom:60px;text-align:center;font:700 24px/1 Bricolage;letter-spacing:.28em;text-transform:uppercase;color:#ffe9fb;opacity:0;transition:opacity .8s 1.6s}
+#s9 .end{position:absolute;left:0;right:0;bottom:86px;display:flex;align-items:center;justify-content:center;gap:16px;z-index:6;opacity:0;transition:opacity .8s 1.6s}
+#s9 .end span{font:700 18px/1 Bricolage;letter-spacing:.3em;text-transform:uppercase;color:var(--tan);text-shadow:2px 2px 0 rgba(20,10,28,.9)}
+#s9 .end img{height:92px;transform:rotate(-4deg);filter:drop-shadow(3px 4px 0 rgba(20,10,28,.5))}
 #s9.active .end{opacity:1}
 
 /* print/export mode */
@@ -527,7 +529,7 @@ body.print #s8 .cap{bottom:120px}
 <section class="slide" id="s9" data-title="Zow!">
   <video class="live" src="assets/zow.mp4" poster="assets/zow_poster.jpg" muted playsinline preload="auto"></video>
   <img class="poster" src="assets/zow_poster.jpg" alt="Zow!" hidden>
-  <div class="end">Michael Kilcoyne &nbsp;·&nbsp; mikekilcoyne.com/hint</div>
+  <div class="end madeby"><span>Created by</span><img src="assets/ysj.png" alt="Yellow Satin Jacket"></div>
 </section>
 
 <div class="grain"></div><div class="vignette"></div>
