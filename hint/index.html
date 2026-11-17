@@ -62,7 +62,7 @@ html,body{height:100%;background:#0b0610;overflow:hidden;color:var(--cream);font
 .pop3d{text-shadow:4px 4px 0 var(--s1,#140a1c),8px 8px 0 var(--s2,#b42cb0)}
 /* Lee Cloud credit style */
 .credit{font-family:Credit;font-weight:700;font-variant:small-caps;color:var(--tan);line-height:1.05;
-  text-shadow:-3px -3px 0 #1a1022,3px -3px 0 #1a1022,-3px 3px 0 #1a1022,3px 3px 0 #1a1022,0 -3px 0 #1a1022,0 3px 0 #1a1022,-3px 0 0 #1a1022,3px 0 0 #1a1022,9px 10px 10px rgba(10,0,20,.55)}
+  text-shadow:-2px -2px 0 #1a1022,2px -2px 0 #1a1022,-2px 2px 0 #1a1022,2px 2px 0 #1a1022,0 -2px 0 #1a1022,0 2px 0 #1a1022,-2px 0 0 #1a1022,2px 0 0 #1a1022,9px 10px 10px rgba(10,0,20,.55)}
 .credit .ch{display:inline-block;animation:hop 2.8s ease-in-out infinite alternate;animation-delay:calc(var(--i) * -0.37s);transform-origin:50% 80%}
 @keyframes hop{0%{transform:translateY(var(--y0,0)) rotate(var(--t0,0deg))}100%{transform:translateY(var(--y1,-6px)) rotate(var(--t1,2deg))}}
 .credit-sub{font-family:Credit;font-style:italic;font-weight:700;color:var(--tan);
@@ -617,22 +617,22 @@ document.querySelectorAll('[data-bg]').forEach(el=>{
 // Words sweep inside each line by syllable count. To re-time by ear: open the theme slide and press T, then tap Space on each line.
 let LYRICS = [
   [0.3,3.95,"Um… mike check… hello?"],
-  [4.0,8.15,"♪ ♪ ♪"],
+  [4,8.15,"♪ ♪ ♪"],
   [8.21,11.95,"She packed up her life and walked right out the door"],
   [11.97,15.7,"Left life in Portland, because she wanted some more!"],
   [15.74,19.45,"Born in the South, never lived in Houston 'til now"],
-  [19.48,23.2,"Movin' back here, gotta make friends, how?"],
-  [23.5,25.3,"But she's so glad she did it",[23.5,23.75,24.0,24.25,24.6,24.8,25.0]],
-  [25.35,27.0,"Game nights, she's in it",[25.35,25.65,26.1,26.4,26.65]],
-  [27.05,28.35,"And she's on…",[27.1,27.5,27.85]],
-  [28.4,29.3,"HEY!",[28.45]],
-  [29.35,32.6,"I'm New in Town",[29.4,29.8,30.6,31.5]],
-  [33.55,36.7,"Ba- da- da- dah- dahhhh",[33.6,34.05,34.75,35.5,36.0]],
-  [36.75,38.4,"dahhh dahhh dahh-",[36.8,37.3,37.8]],
+  [19.48,23.75,"Movin' back here, gotta make friends, how?"],
+  [23.8,28.4,"But she's so glad she did it",[23.8,24.05,24.3,24.55,24.9,25.1,25.3]],
+  [28.45,30.2,"Game nights, she's in it",[28.45,28.75,29.2,29.5,29.75]],
+  [30.25,32.05,"And she's on…",[30.3,30.7,31.05]],
+  [32.1,32.9,"HEY!",[32.15]],
+  [32.95,35.1,"I'm New in Town",[33,33.4,34.2,34.9]],
+  [35.05,37.2,"Ba- da- da- dah- dahhhh",[35.1,35.55,36.25,36.75,37.1]],
+  [37.25,38.9,"dahhh dahhh dahh-",[37.3,37.8,38.3]],
   [38.45,39.5,"ZOW!",[38.5]]
 ];
 const SYL = w => Math.max(1,(w.toLowerCase().replace(/[^a-z]/g,'').match(/[aeiouy]+/g)||[]).length - (/[^aeiou]e$/.test(w.toLowerCase().replace(/[^a-z]/g,''))?1:0));
-const SECTIONS = [["Mic check",0,4.0],["Intro",4.0,8.21],["Verse",8.21,23.5],["Lift",23.5,28.4],["Hook",28.4,39.8]];
+const SECTIONS = [["Mic check",0,4.0],["Intro",4.0,8.21],["Verse",8.21,23.8],["Lift",23.8,32.1],["Hook",32.1,39.8]];
 const DUR = 39.8;
 const barmap = document.getElementById('barmap');
 SECTIONS.forEach(([n,a,b])=>{ const d=document.createElement('div'); d.textContent=n; d.style.flex=(b-a); barmap.append(d); });
