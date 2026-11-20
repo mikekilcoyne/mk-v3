@@ -285,7 +285,7 @@ body.print #s0 .cta{display:none}
 #s8 .lv{position:absolute;left:0;right:0;top:0;bottom:120px;z-index:5;background:#000}
 body.print #s8 .lv{display:none}
 body:not(.print) #s8 .printcover,body:not(.print) #s8 .cap,body:not(.print) #s8 .play{display:none}
-#s8 .lv iframe{width:100%;height:100%;border:0;display:block}
+#s8 .lv iframe,#sO .lv iframe{width:100%;height:100%;border:0;display:block}
 #s8 .lv video,#sO .lv video{width:100%;height:100%;object-fit:contain;background:#000;display:block}
 
 #s8 .play{position:absolute;left:540px;top:760px;transform:translate(-50%,-50%);width:180px;height:180px;border-radius:50%;background:var(--yellow);border:6px solid var(--ink);box-shadow:8px 8px 0 #b42cb0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .2s}
@@ -509,7 +509,7 @@ I don’t need you to fall in love. I need you to move, like, an inch." id="clBo
   <div class="side l"></div><div class="side r"></div>
   <img class="cover printcover" src="assets/tz_drop.jpg" alt="Have one? Drop me a line.">
   <div class="vtag credit-sub">"Hey! I'm New in Town…"</div>
-  <div class="lv" id="originWrap"><video id="originVid" src="assets/origin.mp4" poster="assets/tz_hi.jpg" controls playsinline preload="metadata"></video></div>
+  <div class="lv" id="originWrap"></div>
   <div class="cap"><div class="credit" data-hop>The Video That Started It All</div><div class="credit-sub">One post. 10+ strangers wrote back.</div><div class="printonly" style="display:none;margin-top:22px"><span class="sticker" style="position:static;display:inline-block;background:var(--yellow);color:var(--ink);--rot:-2deg">▶ Watch it at livid.com/watch/JVUf8r3XPSA4</span></div></div>
   <button class="play live" id="playOrigin" aria-label="Play the video that started it all"></button>
 </section>
@@ -560,7 +560,7 @@ I don’t need you to fall in love. I need you to move, like, an inch." id="clBo
 <section class="slide" id="s8" data-title="The vibe">
   <div class="side l"></div><div class="side r"></div>
   <img class="cover printcover" src="assets/lee_cover.jpg" alt="Lee Cloud at the front door">
-  <div class="lv" id="lividWrap"><video id="vibeVid" src="assets/teaser.mp4" poster="assets/lee_cover.jpg" controls playsinline preload="metadata"></video></div>
+  <div class="lv" id="lividWrap"></div>
   <div class="cap"><div class="credit" data-hop>The Vibe of the Show</div><div class="credit-sub">Rehearsal with Lee Cloud &nbsp;·&nbsp; 90 sec</div><div class="printonly" style="display:none;margin-top:22px"><span class="sticker" style="position:static;display:inline-block;background:var(--yellow);color:var(--ink);--rot:-2deg">▶ Watch it at mikekilcoyne.com/hint</span></div></div>
   <button class="play live" id="playTeaser" aria-label="Play the rehearsal"></button>
 </section>
@@ -779,11 +779,12 @@ function tap(){ const t=kTime(); taps.push(+t.toFixed(2)); if(tapMode) kNext.tex
     times.forEach((t,i)=>{LYRICS[i][0]=t; LYRICS[i].length=3; if(i>0) LYRICS[i-1][1]=Math.max(LYRICS[i-1][0]+0.3,t-0.02);});
     kNext.style.display='block'; kNext.textContent='Saved: '+JSON.stringify(taps); } }
 /* ---- teaser ---- */
-const vibeVid = document.getElementById('vibeVid'), originVid = document.getElementById('originVid');
-function playVid(v){ if(!v) return; try{ v.currentTime=0; }catch(e){} v.muted=false;
-  v.play().catch(()=>{ v.muted=true; v.play().catch(()=>{}); }); }
-function stopVid(v){ if(v){ v.pause(); } }
-function playTeaser(){ playVid(vibeVid); }
+const lividWrap = document.getElementById('lividWrap'), originWrap = document.getElementById('originWrap');
+const LIVID = {s8:['https://livid.com/embed/J3S3DLnmMdAk','The Rehearsal, with Lee Cloud'], sO:['https://livid.com/embed/JVUf8r3XPSA4','Hey! I\'m New in Town: the video that started it all']};
+function loadLivid(id){ const w = id==='s8' ? lividWrap : originWrap; const [src,title]=LIVID[id];
+  w.innerHTML='<iframe src="'+src+'?autoplay=1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="'+title+'"></iframe>'; }
+function stopLivid(id){ (id==='s8' ? lividWrap : originWrap).innerHTML=''; }
+function playTeaser(){ loadLivid('sO'); }
 
 /* ---- craigslist typing ---- */
 let typeTimer=0;
@@ -803,16 +804,14 @@ function enter(i){
   const s = slides[i];
   s.querySelectorAll('video.live').forEach(v=>{ try{ v.currentTime=0; v.play().catch(()=>{});}catch(e){} });
   if (s.id==='s7') kPlay(true);
-  if (s.id==='s8' && !PRINT) playVid(vibeVid);
-  if (s.id==='sO' && !PRINT) playVid(originVid);
+  if ((s.id==='s8' || s.id==='sO') && !PRINT) loadLivid(s.id);
   if (s.id==='sPost') startPost(s);
 }
 function leave(i){
   const s = slides[i]; if (!s) return;
   s.querySelectorAll('video').forEach(v=>v.pause());
   if (s.id==='s7') kStop();
-  if (s.id==='s8') stopVid(vibeVid);
-  if (s.id==='sO') stopVid(originVid);
+  if (s.id==='s8' || s.id==='sO') stopLivid(s.id);
   if (s.id==='sPost') clearTimeout(typeTimer);
 }
 const dots = document.getElementById('dots');
